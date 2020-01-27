@@ -13,7 +13,7 @@ prev_page:
 next_page:
   url: /02/02a-pandas-practice.html
 suffix: .ipynb
-search: df data pandas media giphy year dataset br gm ford variables com methods function variable method sales tables columns github gif essential example want firm name gender e g run save syntax groupby read get youll wide same here feet height io pd mean slice work plot industry python used dataframe need names loc html observations query values leverage also only lecture analysis functions dataframes operations always v column tall practice called jakevdp pythondatasciencehandbook merge drop summary pivot object unbiased because its wrangling exploration steps datasets try into knowing once code documentation help without database single those generally just indexing
+search: df data pandas media giphy dataset year br gm ford variables com methods function variable method example sales tables class columns gender github gif essential want firm name e g run save syntax groupby read get youll wide same here feet height io pd mean slice also work plot industry python used dataframe need names loc html observations query values leverage only lecture analysis functions dataframes operations always code v column tall practice called just jakevdp pythondatasciencehandbook merge drop summary pivot object unbiased because its wrangling exploration steps datasets try common into knowing once documentation help without database few single
 
 comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
 ---
@@ -325,7 +325,7 @@ give your dataframes better names!</p>
 <li><code>df['feet']=df['height']//12</code> will create a new column called feet</li>
 <li><code>df[['gender','height']]</code> will return just those two columns- </li>
 <li><code>df.loc[df['feet']==5,'feet'] = np.nan</code> will overwrite the feet variable only when feet equals 5</li>
-<li><a href="https://jakevdp.github.io/PythonDataScienceHandbook/03.02-data-indexing-and-selection.html">More on indexing and selection here---highly recommend!</a></li>
+<li>More on indexing and selection <a href="https://jakevdp.github.io/PythonDataScienceHandbook/03.02-data-indexing-and-selection.html">here</a>---highly recommend!</li>
 </ul>
 
 </div>
@@ -513,7 +513,9 @@ give your dataframes better names!</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>   <span class="p">(</span><span class="s1">&#39;Ford&#39;</span><span class="p">,</span><span class="mi">2000</span><span class="p">):</span><span class="mi">10</span><span class="p">,</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># AN ASIDE ON RESHAPING</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>   <span class="p">(</span><span class="s1">&#39;Ford&#39;</span><span class="p">,</span><span class="mi">2000</span><span class="p">):</span><span class="mi">10</span><span class="p">,</span>
                    <span class="p">(</span><span class="s1">&#39;Ford&#39;</span><span class="p">,</span><span class="mi">2001</span><span class="p">):</span><span class="mi">12</span><span class="p">,</span>
                    <span class="p">(</span><span class="s1">&#39;Ford&#39;</span><span class="p">,</span><span class="mi">2002</span><span class="p">):</span><span class="mi">14</span><span class="p">,</span>
                    <span class="p">(</span><span class="s1">&#39;Ford&#39;</span><span class="p">,</span><span class="mi">2003</span><span class="p">):</span><span class="mi">16</span><span class="p">,</span>
@@ -613,7 +615,16 @@ GM      11   13   13   15
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This is generally true with python but I'll reiterate here: 
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h3 id="Temp-vs.-Permanent-Methods">Temp vs. Permanent Methods<a class="anchor-link" href="#Temp-vs.-Permanent-Methods"> </a></h3><p>This is generally true with python but I'll reiterate here: 
 Using methods on an object (e.g. a DataFrame) will give you an
 object with the method applied, as you
 can see here:</p>
@@ -889,7 +900,7 @@ options:</strong></p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Essential-pandas:-Exploring-the-dataset">Essential <code>pandas</code>: Exploring the dataset<a class="anchor-link" href="#Essential-pandas:-Exploring-the-dataset"> </a></h3><p>You should always, always, always open your datasets up to physically (digitally?) look at them and then also generate summary statistics:</p>
+<h3 id="Essential-pandas:-Exploring-the-dataset">Essential <code>pandas</code>: Exploring the dataset<a class="anchor-link" href="#Essential-pandas:-Exploring-the-dataset"> </a></h3><p>You should <strong>always, always, always</strong> open your datasets up to physically (digitally?) look at them and then also generate summary statistics:</p>
 <ol>
 <li>Print the first and last five rows: <code>df.head()</code> and <code>df.tail()</code></li>
 <li>What is the shape of the data? <code>df.shape</code></li>
@@ -1196,7 +1207,7 @@ without saving.</p>
 <li>Combine M and F gender counts if a name is used by both in the same year</li>
 <li>Plot without saving: "Pipe" in the plotting function </li>
 </ol>
-<p>The code below produces a plot identical to V1 and V2, but it is unreadable. Don't try - I'm about to make this readable!</p>
+<p>The code below produces a plot identical to V1 and V2, <strong>but it is unreadable. Don't try - I'm about to make this readable!</strong> Just <em>one more</em> iteration...</p>
 
 </div>
 </div>
@@ -1324,8 +1335,9 @@ without saving.</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>WOW.</strong></p>
-<h4 id="Naming-your-baby-Daenerys-after-the-hero...">Naming your baby Daenerys after the hero...<a class="anchor-link" href="#Naming-your-baby-Daenerys-after-the-hero..."> </a></h4><p>...is a bad break.</p>
+<p><strong>WOW. That's nice code!</strong></p>
+<p>Also: <strong>Naming your baby Daenerys after the hero...</strong></p>
+<p>...is a bad break.</p>
 
 </div>
 </div>
@@ -1495,6 +1507,7 @@ without saving.</p>
 <li>In tables that cut data based on two variables, how do you decide on the "second variable" to slice? <ol>
 <li>Secondary slices might be on <em>a priori</em> (known in advance) interesting variables ("everyone talks about growth potential so I'll also cut by that too because they will wonder about it if I don't") </li>
 <li>Or, choose second variables because you think that the impact of the first variable will depend on the second variable. Suppose you divide firms into "young and old" as a first slice. Your second slice might be industries: perhaps leverage is only a little lower for older railroad firms but leverage is much higher for large firms in tech industries.</li>
+<li>Another example: A common data science training dataset is about surviving the Titanic. Women survived at higher rates, but this is <strong>especially</strong> true in first class, where very few women died. The gender disparity was less severe in third class; while third class  men were more likely to perish than first class men, 45% of women in third class died, compared to ~0 in first class. </li>
 </ol>
 </li>
 </ul>
