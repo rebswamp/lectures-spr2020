@@ -43,7 +43,20 @@
   - title: "Golden Rules"
     url: /01/04_Golden_Rules
 
-  
+- title: "Wrangling with Data"
+  url: "/02/00_Data_Wrangling_Intro"
+  not_numbered: true  
+  sections:
+  - title: "Intro to Numpy"
+    url: "/02/01_Numpy"     
+    not_numbered: false  
+  - title: "Numpy Practice"
+    url: "/02/01a-numpy-practice"
+  - title: "Intro to Pandas"
+    url: /02/02_Pandas
+  - title: "Pandas Practice"
+    url: /02/02a-pandas-practice
+
 #    subsections:
 #    - url: /01/3/subsection/subsections
 #    - url: /01/3/subsection/subsectiontwo
