@@ -13,7 +13,7 @@ prev_page:
 next_page:
   url: /02/02a-pandas-practice.html
 suffix: .ipynb
-search: df data pandas media giphy dataset year br gm ford variables com methods function variable github method example sales tables class columns gender gif essential want firm name io e g run save syntax groupby read get youll wide same here feet height html pd mean slice also work plot industry python used dataframe need names loc jakevdp pythondatasciencehandbook observations query values leverage only lecture analysis functions dataframes operations always code v column tall practice called just indexing merge drop summary pivot object unbiased because its wrangling exploration steps datasets try common into knowing once documentation help without database few
+search: df data pandas media giphy dataset year br gm ford com variables methods function variable github method example sales tables class columns gender gif essential want firm name io e g run save syntax groupby read get youll wide same here names feet height html pd mean values slice also work plot industry python used dataframe need loc jakevdp pythondatasciencehandbook observations query leverage only analysis functions dataframes operations always code v column tall practice called just indexing merge drop summary pivot object unbiased because its lecture wrangling exploration steps datasets try common into knowing once documentation help without database few
 
 comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
 ---
@@ -397,7 +397,21 @@ give your dataframes better names!</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Essential-pandas:-Manipulating-data">Essential <code>pandas</code>: Manipulating data<a class="anchor-link" href="#Essential-pandas:-Manipulating-data"> </a></h3><p><strong>Try to notice, throughout this lecture, when methods operate on specific DataFrames (e.g. <code>assign</code>)  and when methods are a called on the pandas module itself (e.g. <code>pd.merge</code>). <em>Generally,</em> methods that work outside a single DataFrame (the load data or work on multiple datasets) are called via <code>pd.&lt;method&gt;</code> while methods that work on a single DataFrame are called via <code>&lt;dfname&gt;.&lt;method&gt;</code>.</strong></p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h3 id="Essential-pandas:-Manipulating-data">Essential <code>pandas</code>: Manipulating data<a class="anchor-link" href="#Essential-pandas:-Manipulating-data"> </a></h3><p>Try to notice, throughout this lecture, when methods operate on specific DataFrames (e.g. <code>assign</code>)  and when methods are a called on the pandas module itself (e.g. <code>pd.merge</code>). <em>Generally,</em> methods that work outside a single DataFrame (the load data or work on multiple datasets) are called via <code>pd.&lt;method&gt;</code> while methods that work on a single DataFrame are called via <code>&lt;dfname&gt;.&lt;method&gt;</code>.</p>
 <table>
 <thead><tr>
 <th style="text-align:left">Function</th>
@@ -903,8 +917,12 @@ options:</strong></p>
 <td>Cumulative minimum</td>
 </tr>
 <tr>
+<td>nunique</td>
+<td>How many unique values?</td>
+</tr>
+<tr>
 <td>value_counts</td>
-<td>How many of each value are there?</td>
+<td>How many of each unique value are there?</td>
 </tr>
 </tbody>
 </table>
@@ -923,7 +941,7 @@ options:</strong></p>
 <li>Print the first and last five rows: <code>df.head()</code> and <code>df.tail()</code></li>
 <li>What is the shape of the data? <code>df.shape</code></li>
 <li>How much memory does it take, and what are the variable names/types? <code>df.info()</code></li>
-<li>Summary stats on variables: <code>df.describe()</code></li>
+<li>Summary stats on variables: <code>df.describe()</code>, <code>df.value_counts[:10]</code>, and <code>df['var'].nunique()</code></li>
 </ol>
 <p>Consider these <strong>Golden Rules</strong>.</p>
 
@@ -1012,7 +1030,7 @@ max        7.900000     4.400000      6.900000     2.500000
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Game-of-Thrones-example---slicing,-group-stats,-and-plotting">Game of Thrones example - slicing, group stats, and plotting<a class="anchor-link" href="#Game-of-Thrones-example---slicing,-group-stats,-and-plotting"> </a></h3><p>I didn't find an off the shelf dataset to run our seminal analysis from the last lecture, but I found an analysis that explored if Game of Thrones prompted parents to start naming their children differently. The following is inspired by that, but uses pandas to acquire and wrangle our data in a "Tidyverse"-style (how R would do it) flow.</p>
+<h3 id="Game-of-Thrones-example---slicing,-group-stats,-and-plotting">Game of Thrones example - slicing, group stats, and plotting<a class="anchor-link" href="#Game-of-Thrones-example---slicing,-group-stats,-and-plotting"> </a></h3><p>I didn't find an off the shelf dataset to run our seminal analysis from last week, but I found <a href="https://www.kaggle.com/dhanushkishore/impact-of-game-of-thrones-on-us-baby-names">an analysis</a> that explored if Game of Thrones prompted parents to start naming their children differently. The following is inspired by that, but uses pandas to acquire and wrangle our data in a "Tidyverse"-style (how R would do it) flow.</p>
 
 </div>
 </div>

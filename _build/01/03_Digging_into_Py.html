@@ -13,7 +13,7 @@ prev_page:
 next_page:
   url: /01/04_Golden_Rules.html
 suffix: .ipynb
-search: code python object print jupyter com github not class function want above list returns into media giphy open data example true line block spyder file through should jakevdp point markdown whirlwindtourofpython built called org ipynb functions objects set lines condition computer debugging might any run false statements bug method arguments note next state states issue coding repo learn must read notebook here need lists sns after element capitol help packages gif me participation files try large much e inputs logic check right variables nbviewer blob master syntax program because just loop dont even youve let name before semester whirlwind execute
+search: python code object print jupyter com github not class function want above list returns into media giphy open data example true line block spyder file through should jakevdp point markdown whirlwindtourofpython built called org ipynb functions objects set lines condition computer debugging might any run false statements bug method arguments note next state states issue coding repo learn must read notebook here need lists sns after element capitol help packages gif me participation files try large much e inputs logic check right variables nbviewer blob master syntax program because just loop dont even youve let name before semester whirlwind execute
 
 comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
 ---
@@ -293,9 +293,9 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Parentheses:</strong> You can (and certainly will at some point need to) check for the truth of statements involving many variables, and complex logic requests. You can dictate the order Python evaluates statements. So, for example,</p>
-
-<pre><code>if (Poor and TaxRateAtOrBelowNegative10) or (MiddleClass and TaxRateAtOrBelow5) or (Rich and TaxRateBelow15):
-    start_audit()</code></pre>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">Poor</span> <span class="ow">and</span> <span class="n">TaxRateAtOrBelowNegative10</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">MiddleClass</span> <span class="ow">and</span> <span class="n">TaxRateAtOrBelow5</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">Rich</span> <span class="ow">and</span> <span class="n">TaxRateBelow15</span><span class="p">):</span>
+    <span class="n">start_audit</span><span class="p">()</span>
+</pre></div>
 <p>will audit rich filers if they have less than a 15% tax rate, but will only audit poor tax filers if they had a negative tax rate.</p>
 
 </div>
@@ -685,10 +685,10 @@ I am here
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Conversely, how you use whitespace <em>within</em> a line is up to you. Both of these lines of code are the same:</p>
+<div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>      <span class="n">a</span><span class="p">)</span>
 
-<pre><code>print(      a)
-
-print(a)</code></pre>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
 
 </div>
 </div>
@@ -700,14 +700,14 @@ print(a)</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="If,-elif,-else">If, elif, else<a class="anchor-link" href="#If,-elif,-else"> </a></h3><p>Syntax:</p>
-
-<pre><code>if &lt;condition #1&gt;:                         # you must use the colon!
-     &lt;do some stuff if condition is true&gt;
-elif &lt;condition #2&gt;:                       # as in "Else-If"
-    &lt;if condition #1 is false, and 
-    condition #2 is true, run this block&gt;
-else:
-    &lt;if neither #1 or #2 are true, do this&gt;</code></pre>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">&lt;</span><span class="n">condition</span> <span class="c1">#1&gt;:                         # you must use the colon!</span>
+     <span class="o">&lt;</span><span class="n">do</span> <span class="n">some</span> <span class="n">stuff</span> <span class="k">if</span> <span class="n">condition</span> <span class="ow">is</span> <span class="n">true</span><span class="o">&gt;</span>
+<span class="k">elif</span> <span class="o">&lt;</span><span class="n">condition</span> <span class="c1">#2&gt;:                       # as in &quot;Else-If&quot;</span>
+    <span class="o">&lt;</span><span class="k">if</span> <span class="n">condition</span> <span class="c1">#1 is false, and </span>
+    <span class="n">condition</span> <span class="c1">#2 is true, run this block&gt;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="k">if</span> <span class="n">neither</span> <span class="c1">#1 or #2 are true, do this&gt;</span>
+</pre></div>
 <p>Comments:</p>
 <ul>
 <li>You can include zero or as many <code>elif</code> code blocks as you want</li>
@@ -726,9 +726,9 @@ else:
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="While">While<a class="anchor-link" href="#While"> </a></h3><p>Syntax:</p>
-
-<pre><code>while &lt;condition is True&gt;:
-    &lt;do some stuff&gt;</code></pre>
+<div class="highlight"><pre><span></span><span class="k">while</span> <span class="o">&lt;</span><span class="n">condition</span> <span class="ow">is</span> <span class="kc">True</span><span class="o">&gt;</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="n">do</span> <span class="n">some</span> <span class="n">stuff</span><span class="o">&gt;</span>
+</pre></div>
 <p>For example:</p>
 
 </div>
