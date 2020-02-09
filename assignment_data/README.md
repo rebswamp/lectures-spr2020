@@ -8,7 +8,7 @@ Don
 # firms_2006_fuller.dta
 
 | Var | Description |
-| : --- | : --- |
+| :--- | :--- |
 |  gvkey           |           Standard and Poor's Identifier                            |     
 |  fyear           |           Data Year - Fiscal                                        |
 |  datadate        |           Data Date                                                 |
