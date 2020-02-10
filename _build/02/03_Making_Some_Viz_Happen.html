@@ -13,7 +13,7 @@ prev_page:
 next_page:
   url: /02/03a_practice.html
 suffix: .ipynb
-search: data x y sns df group graph plot variable figure seaborn should want com plotting pandas example functions bmi html variables type values br graphs using hue distplot kde pairplot viz common get just above relationship into visualization not python scatter matplotlib only org code www tutorial boxplot different analysis question figures why groups does bar chart function bins examining examine scatterplot jointplot kind useful exploring absolutely work ever also co our examples below dataset looking its effective times right necessary density plots features customize control parts made simple parameters pydata might built cut healthy top kdeplot categorical line fit
+search: data x y sns df group graph plot variable figure seaborn should want com plotting pandas example functions bmi html variables type values br graphs using hue distplot kde pairplot viz common get just above relationship into visualization not python scatter matplotlib only org code www tutorial boxplot different analysis question figures why below groups does bar chart function bins examining examine scatterplot jointplot kind useful exploring absolutely work ever also co our examples dataset looking its effective times right necessary density plots features customize control parts made simple parameters pydata might built cut healthy top kdeplot categorical line fit
 
 comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
 ---
@@ -170,23 +170,9 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 </div>
 </div>
 
-<div class="jb_cell tag_hide_input">
+<div class="jb_cell tag_remove_input">
 
-<div class="cell border-box-sizing code_cell rendered tag_hide_input">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-           <span class="n">col</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="c1"># do the plot once for each dataset</span>
-           <span class="n">col_wrap</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>    <span class="c1"># only two plots per row</span>
-           <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="c1"># diff color for each dataset</span>
-          <span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
+<div class="cell border-box-sizing code_cell rendered tag_remove_input">
 
 <div class="output_wrapper">
 <div class="output">
@@ -231,31 +217,9 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 </div>
 </div>
 
-<div class="jb_cell tag_hide_input">
+<div class="jb_cell tag_remove_input">
 
-<div class="cell border-box-sizing code_cell rendered tag_hide_input">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># let&#39;s graph dataset 3, with and without the outlier</span>
-<span class="c1"># so make that dataframe </span>
-<span class="n">temp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>       <span class="c1"># concat takes a list of dataframes, thus the extra brackets</span>
-                    <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;dataset == &quot;III&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="s1">&#39;With outlier&#39;</span><span class="p">),</span>
-                    <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;dataset == &quot;III&quot; &amp; y &lt; 12 &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="s1">&#39;No outlier&#39;</span><span class="p">)</span>
-                    <span class="p">])</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">temp_df</span><span class="p">,</span> <span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-          <span class="n">col</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="p">)</span>
-
-<span class="c1"># alternative (easier to write) code</span>
-<span class="c1"># this will do the same content-wise, but the y-axes differ, so fmt&#39;ing is needed to sync them</span>
-<span class="c1"># sns.lmplot(x=&#39;x&#39;,y=&#39;y&#39;,data=df.query(&#39;dataset == &quot;III&quot;&#39;),ci=None)</span>
-<span class="c1"># sns.lmplot(x=&#39;x&#39;,y=&#39;y&#39;,data=df.query(&#39;dataset == &quot;III&quot; &amp; y &lt; 12&#39;),ci=None)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
+<div class="cell border-box-sizing code_cell rendered tag_remove_input">
 
 <div class="output_wrapper">
 <div class="output">
@@ -300,41 +264,16 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 </div>
 </div>
 
-<div class="jb_cell tag_hide_input">
+<div class="jb_cell tag_remove_input">
 
-<div class="cell border-box-sizing code_cell rendered tag_hide_input">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>       
-                    <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;dataset == &quot;I&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s2">&quot;G-1&quot;</span><span class="p">),</span>
-                    <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;dataset == &quot;I&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s2">&quot;G-2&quot;</span><span class="p">),</span>
-                    <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;dataset == &quot;I&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s2">&quot;G-3&quot;</span><span class="p">),</span>
-                    <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;dataset == &quot;I&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s2">&quot;G-4&quot;</span><span class="p">),</span>
-                    <span class="p">])</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
+<div class="cell border-box-sizing code_cell rendered tag_remove_input">
 
 </div>
 </div>
 
-<div class="jb_cell tag_hide_input">
+<div class="jb_cell tag_remove_input">
 
-<div class="cell border-box-sizing code_cell rendered tag_hide_input">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">temp_df</span> <span class="p">,</span><span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
+<div class="cell border-box-sizing code_cell rendered tag_remove_input">
 
 <div class="output_wrapper">
 <div class="output">
@@ -372,30 +311,16 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>... but it should be <strong>positive, taking the groups into account:</strong></p>
+<p>... but it should be <strong>positive, taking the groups (colored below) into account:</strong></p>
 
 </div>
 </div>
 </div>
 </div>
 
-<div class="jb_cell tag_hide_input">
+<div class="jb_cell tag_remove_input">
 
-<div class="cell border-box-sizing code_cell rendered tag_hide_input">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># sns.scatterplot(x=&quot;x&quot;, y=&quot;y&quot;,data=temp_df, hue=&quot;group&quot;,  )</span>
-<span class="p">(</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">temp_df</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="p">)</span>    
-</pre></div>
-
-    </div>
-</div>
-</div>
+<div class="cell border-box-sizing code_cell rendered tag_remove_input">
 
 <div class="output_wrapper">
 <div class="output">
