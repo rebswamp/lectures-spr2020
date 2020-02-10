@@ -56,6 +56,14 @@
     url: /02/02_Pandas
   - title: "Pandas Practice"
     url: /02/02a-pandas-practice
+  - title: "Making Viz"
+    url: /02/03_Making_Some_Viz_Happen
+  - title: "Visualization Practice"
+    url: /02/03a_practice
+  - title: "Making Good Viz"
+    url: /02/04_Making_Good_Viz_Happen
+
+
 
 #    subsections:
 #    - url: /01/3/subsection/subsections
