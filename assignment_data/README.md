@@ -47,3 +47,16 @@ Don
 # CCM_cleaned_for_class.dta (40GB)
 
 Similar to firms_2006_fuller.dta, but for 1975-2014, with a few more variables.
+
+# compnames.csv
+
+Has two variables: `coname` and `gvkey`. GVKEY can be linked to Compustat and CCM (and via CCM, CRSP). It's useful if you want to bring in the names of firms. 
+
+If you need to use this to do any string matching to outside datasets (e.g. datasets without GVKEY, PERMNO, or CUSIP), you should scroll through it manually to get a sense of how names are stored:
+- Are all letters upper case, lower case, or is there a mix? (**When doing string matching, it's a good idea to convert everything to upper case.**) 
+- What punctuations are included and are those punctuations typically meaningful or signify anything? Should you replace them with spaces or delete them? 
+- How are you going to deal with legal entity "tokens?" (a token is a group of letters). "ABC INCORPORATED" and "AAA INCORPORATED" are very similar - 14/16 characters are the same. 
+- These names are valid as of 2020, meaning that merging to databases with older names won't work. For example, Phillip Morris changed its name to Altria, and this dataset calls it Altria. If you have a dataset with Phillip Morris in it, you're out of luck for that firm.
+
+
+
