@@ -34,6 +34,13 @@ Don
 |  td_mv           |           Leverage (D/(E+D)) = (dlc+dltt)/(dlc+dltt+csho*prcc_f)                         |
 |  dltt_a          |           Long term leverage = dltt/at                                                   |
 |  dv_a            |           Dividend ratio = dv/at                                                     |
+| invopps_FG09 | Investment Opportunity Proxy = |
+| sales_g  | Sales Growth |
+| short_debt  |  % of 1 yr debt = dlc/td |
+| long_debt_dum  |  Any LT debt? (dltt > 0) if dltt != . |
+| atr |  Avg Tax Rate (Not marginal tax rate!) = txt/(txt+ib), 0 if txt<0, 1 if txt>ib |
+| smalltaxlosscarry | = 1 if (tlcf>0) and  tlcf < a threshold |
+| largetaxlosscarry | = 1 if (tlcf>0) and tlcf > a threshold  |
 |  tnic3hhi        |           Industry concentration  (TNIC industry def)                        |
 |  tnic3tsimm      |           Total simularity within TNIC3 peers                       |
 |  prodmktfluid    |           Industry Fluidity                                                  | (dynamism)
