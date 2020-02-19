@@ -26,6 +26,7 @@ Don
 |  prof_a          |           Profitability = oibdp/at                           |
 |  mb              |           Market to book = (at - ceq + (csho*prcc_f))/at                             |
 |  ppe_a           |           Tangibility = ppe/at                                                    |
+|  capx_a          |           CAPX (scaled) = capx/at                                        |
 |  xrd_a           |           R&D investment (scaled) = xrd/at; 0 if blank                                        |
 |  cash_a          |           Cash / Assets = che/at                                                    |
 |  div_d           |           Dividend Dummy, blank if dv blank                              |
