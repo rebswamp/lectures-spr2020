@@ -13,7 +13,7 @@ prev_page:
 next_page:
   url: 
 suffix: .ipynb
-search: data datasets missing merge left merging variable right m values observations media giphy github both good pandas should level example com dataset firm world before merged variables inner obs observation year context gif given need going youve few forward dealing mechanics key youre same e unmatched name also think try less describe count common our remember objectives io explore far point well organized learn habits skills issues python already its talk get strings examples easy just bad names isnt always html read parameters function org dataframe functions arent outer suffix option because any doing different levels copy lets happens repeat
+search: data datasets missing merge left merging variable values right m observations media giphy github both good pandas should level example year com dataset firm world before merged variables e inner obs observation context gif given need going youve few forward dealing mechanics key youre same unmatched name also think try less describe count common fill our remember objectives io explore far point well organized learn habits skills issues python already its talk get strings examples easy just bad names isnt always html read parameters function org dataframe functions arent g outer suffix option because any doing different levels copy lets
 
 comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
 ---
@@ -187,7 +187,8 @@ when the cost of doing so isn't high.</p>
 <li><code>fillna</code> - any value (strings included) you want, back fill, forward, fill, and more</li>
 <li><code>dropna</code> - might not be explicitly needed, some functions ignore NaNs, but some don't. I tend to drop only as needed for a given estimation, and only temporarily. </li>
 <li><code>replace</code> - some datasets use a certain number to indicate missing data (i.e. -99). Convert these to NaN with this function.</li>
-<li><code>interpolate</code> - </li>
+<li><code>interpolate</code> - e.g. use values in surrounding time periods to fill in gaps</li>
+<li>Deduce. Suppose PPE this year is missing. $PPE_t = PPE_{t-1} + CAPX_t - DP_t $</li>
 </ul>
 <p>Copy the following code into your live code and we can try a few things:</p>
 
