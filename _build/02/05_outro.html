@@ -1,0 +1,226 @@
+---
+redirect_from:
+  - "/02/05-outro"
+interact_link: content/02/05_outro.ipynb
+kernel_name: python3
+kernel_path: content/02
+has_widgets: false
+title: |-
+  Outro
+pagenum: 15
+prev_page:
+  url: /02/04_Making_Good_Viz_Happen.html
+next_page:
+  url: 
+suffix: .ipynb
+search: data datasets missing merge left merging variable right m values observations media giphy github both good pandas should level example com dataset firm world before merged variables inner obs observation year context gif given need going youve few forward dealing mechanics key youre same e unmatched name also think try less describe count common our remember objectives io explore far point well organized learn habits skills issues python already its talk get strings examples easy just bad names isnt always html read parameters function org dataframe functions arent outer suffix option because any doing different levels copy lets happens repeat
+
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+    <main class="jupyter-page">
+    <div id="page-info"><div id="page-title">Outro</div>
+</div>
+    <div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Wrangling-Outro">Wrangling Outro<a class="anchor-link" href="#Wrangling-Outro"> </a></h1><p><strong>Context - our goals were:</strong> Remember, the class's <a href="https://ledatascifi.github.io/">objectives</a> are to:</p>
+<blockquote><ol>
+<li>obtain, explore, groom, visualize, and analyze data</li>
+<li>make all of that reproducible, reusable, and shareable</li>
+</ol>
+</blockquote>
+<p><img src="https://media.giphy.com/media/R2m2NzVxQ3pbG/giphy.gif" alt=""></p>
+<p><strong>Context - so far:</strong> At this point, we're in the ballpark for all of that! In fact, if you recall the lengthier objectives, the "data: cleaning, exploring, visualizing and organizing" one said:</p>
+<blockquote><p>Some data will be given to you and well organized, but much of the data that will be given to you will be poorly organized. So we need to know how to explore it (both to clean it and learn from it). Tables will help you understand data, but visuals are usually better. [Plus], we are going to learn good dataset habits.</p>
+</blockquote>
+<p><img src="https://media.giphy.com/media/xUOxfh6ZM75efM3Bqo/giphy.gif" alt=""></p>
+<p>At this point, you've added skills</p>
+<ul>
+<li>GitHub for collaboration (issues on peer reviews and discussion board) and sharing (forking your peer's repos)</li>
+<li>GitHub for project management/development and version control</li>
+<li>Python: numpy, pandas, seaborn, matplotlib</li>
+<li>Datasets: CRSP (stock prices), Compustat (firm financial statements), FRED, Data.World</li>
+<li>Data scraping: Yes, you've done this already!</li>
+<li>Finance: Factor-loading estimates ("A Simple Program" and its sequel)</li>
+</ul>
+<p>We need to talk about a few more issues before we get properly ambitious.</p>
+<p><img src="https://media.giphy.com/media/kdFujikoYAdfgQQVrs/giphy.gif" alt=""></p>
+<p><strong>Context - going forward:</strong> We need to introduce a few more skills before we start <em>really</em> running analytical models.</p>
+<ol>
+<li>Merging datasets </li>
+<li>What to do with missing values?</li>
+<li>How to get a world of data off the world wide web</li>
+<li>Strings</li>
+</ol>
+<p>Today, we will talk about those first two topics: Merging, and Dealing With Missing Values.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Merging">Merging<a class="anchor-link" href="#Merging"> </a></h2><p>You've already merged datasets. But so far, our examples have been "well-behaved" so it was easy to just proceed. But real world datasets are messy (bad variable names, poor documentation) and big, and so merging isn't always as easy as "just do it".</p>
+<h3 id="A-nice-overview">A nice overview<a class="anchor-link" href="#A-nice-overview"> </a></h3><p>The <a href="https://jakevdp.github.io/PythonDataScienceHandbook/03.07-merge-and-join.html">Python Data Science Handbook</a> has a wonderful breakdown of the mechanics of merging. You should read it!</p>
+<h3 id="Important-parameters-of-pd.merge">Important parameters of <code>pd.merge</code><a class="anchor-link" href="#Important-parameters-of-pd.merge"> </a></h3><p>Read through the <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.merge.html">parameters of the function here</a>.</p>
+<p><strong>Key functions:</strong></p>
+<ul>
+<li><code>right</code>, <code>left</code> - your datasets</li>
+<li><code>on</code> - a single variable or a list of variables you're matching<ul>
+<li>if the variable names aren't the same in the datasets (e.g. "ID" in one and "identity" in the other), use <code>left_on</code> and <code>right_on</code></li>
+</ul>
+</li>
+<li><code>how</code> =<ul>
+<li>"inner" --&gt; obs in both datasets </li>
+<li>"left" --&gt; inner + all unmatched obs in left </li>
+<li>"right" (inner + all unmatched obs in right), right, outer</li>
+<li>"left" (inner + all unmatched obs in left), right, outer</li>
+</ul>
+</li>
+<li><code>suffix</code> = when a variable is in both datasets, how should we name each. <ul>
+<li><strong>It's a good idea to always use this option and specific the source, because the default option is uninformative! </strong></li>
+</ul>
+</li>
+<li><code>indicator=True</code> will create a variable saying which dataset the variable came from</li>
+</ul>
+<p><strong>How many observations will my merge produce?</strong></p>
+<p>It depends on <code>how</code> you merge the datasets. But also, any time you merge datasets, you should think about the variables you're merging <code>on</code> (the "keys") and ask:</p>
+<ol>
+<li>Is it 1 observation per key in one, both, or neither? </li>
+<li>Am I doing 1:1, 1:M, M:1, or M:M merge? The differences are huge!</li>
+<li>Related: What's the "observation level" before and after? Which variables will be at different levels?</li>
+<li>Is the key ever empty in either datasets? </li>
+</ol>
+<p>Copy the datasets below. Let's try merging different combinations and see what happens.</p>
+<p>Let's also see what happens when we repeat a merge or try to merge in a dataset with a variable of the same name.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># this &quot;firm&quot; variable is really &quot;last firm&quot; but the database manager called it what they called it </span>
+<span class="c1"># and now IT is scared that fixing it will break all their systems, so it&#39;s &quot;stuck as-is&quot;</span>
+<span class="n">some_employees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;employee&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Jake&#39;</span><span class="p">,</span> <span class="s1">&#39;Lisa&#39;</span><span class="p">,</span> <span class="s1">&#39;Sue&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;firm&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Citi&#39;</span><span class="p">,</span><span class="s1">&#39;GS&#39;</span><span class="p">,</span><span class="s1">&#39;Accenture&#39;</span><span class="p">,</span><span class="s1">&#39;Wells Fargo&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Accounting&#39;</span><span class="p">,</span> <span class="s1">&#39;Engineering&#39;</span><span class="p">,</span> <span class="s1">&#39;Engineering&#39;</span><span class="p">,</span> <span class="s1">&#39;HR&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;hire_date&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2004</span><span class="p">,</span> <span class="mi">2008</span><span class="p">,</span> <span class="mi">2012</span><span class="p">,</span> <span class="mi">2014</span><span class="p">]})</span>
+
+<span class="n">departments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Accounting&#39;</span><span class="p">,</span> <span class="s1">&#39;Engineering&#39;</span><span class="p">,</span> <span class="s1">&#39;HR&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;employees&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="p">})</span>
+
+<span class="n">current_employer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;employee&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Jake&#39;</span><span class="p">,</span> <span class="s1">&#39;Lisa&#39;</span><span class="p">,</span> <span class="s1">&#39;Sue&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;firm&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Yahoo&#39;</span><span class="p">,</span><span class="s1">&#39;Yahoo&#39;</span><span class="p">,</span><span class="s1">&#39;Yahoo&#39;</span><span class="p">,</span><span class="s1">&#39;Yahoo&#39;</span><span class="p">],</span>
+
+<span class="n">some_employees_alt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;employee&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Jonathan&#39;</span><span class="p">,</span> <span class="s1">&#39;Mary&#39;</span><span class="p">,</span> <span class="s1">&#39;Lisa&#39;</span><span class="p">,</span> <span class="s1">&#39;Sue&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;firm&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;?&#39;</span><span class="p">,</span><span class="s1">&#39;Lehigh&#39;</span><span class="p">,</span><span class="s1">&#39;Accenture&#39;</span><span class="p">,</span><span class="s1">&#39;Wells Fargo&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Accounting&#39;</span><span class="p">,</span> <span class="s1">&#39;CEO&#39;</span><span class="p">,</span> <span class="s1">&#39;Engineering&#39;</span><span class="p">,</span> <span class="s1">&#39;HR&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;hire_date&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">2019</span><span class="p">,</span> <span class="mi">2012</span><span class="p">,</span> <span class="mi">2014</span><span class="p">]})</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Good-merging-habits">Good merging habits<a class="anchor-link" href="#Good-merging-habits"> </a></h3><ol>
+<li>Specify <code>how</code> and <code>suffix</code>. </li>
+<li>Before the merge think about (1) the observation levels in the left and right (2) <code>how</code> you're merging and (3) whether you think the merge is 1:1, 1:M, M:M, or M:1. Guess how many observations you'll have (more or less than left? more or less than right or left?) and then check afterwards. </li>
+<li>Look at the data! <em>(Example: In the golden rules lecture "Good and Bad Data" example, if we merged the firm-level data to the firm-year level data, check that "GM"'s first year is matched to all annual observations for GM.)</em></li>
+<li><code>describe()</code> the data and look at "count" for each variable (and also <code>isnull().sum()</code> to count missing observations). Does the count make sense?<ul>
+<li>Repeat this for each section of the merged dataset (the observations from the left data, from the right data, and from both). For example,  <code>df.query('_merge != "right_only").describe()</code> will describe the merged dataset's observations from the left data. </li>
+</ul>
+</li>
+<li>Going forward, remember the new observation level. I often actively name the dataframe to remind myself exactly that. For example, I know exactly how <code>state_industry_year_df</code> and <code>state_industry_df</code> should differ.      </li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Dealing-With-Missing-Values">Dealing With Missing Values<a class="anchor-link" href="#Dealing-With-Missing-Values"> </a></h2>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ol>
+<li><code>df.isnull().sum</code> will report missing values by variable.</li>
+<li>With new datasets, look out for "missing values" that aren't missing. Some datasets use a certain number to indicate missing data (i.e. -99). Convert these to NaNs with <code>replace</code>. </li>
+</ol>
+<p><a href="https://github.com/matthewbrems/ODSC-missing-data-may-18/blob/master/Analysis%20with%20Missing%20Data.pdf">These slides</a> on missing data are quite good! <a href="https://www.geeksforgeeks.org/working-with-missing-data-in-pandas/">This article</a> has examples too.</p>
+<p><strong>You should focus on the whys and hows of dealing with missing data rather than mechanics.</strong>
+(You can look up mechanics later.)</p>
+<p>For example, with firm level data that investment analysts deal with, the most common approach is to keep all valid data, and for each test you run, use all observations that have no missing values for the variables of interest. In the slides, this is called "Complete-Case Analysis".</p>
+<p>It is less common in my field of research to impute missing values. However, "Deductive imputation" is common
+when the cost of doing so isn't high.</p>
+<p>In general, when you can confidently deduce a value (my height this year is the same as last year because I'm a fully grown adult (mostly)), go ahead.  That is valid data.</p>
+<h3 id="Options">Options<a class="anchor-link" href="#Options"> </a></h3><ul>
+<li><code>fillna</code> - any value (strings included) you want, back fill, forward, fill, and more</li>
+<li><code>dropna</code> - might not be explicitly needed, some functions ignore NaNs, but some don't. I tend to drop only as needed for a given estimation, and only temporarily. </li>
+<li><code>replace</code> - some datasets use a certain number to indicate missing data (i.e. -99). Convert these to NaN with this function.</li>
+<li><code>interpolate</code> - </li>
+</ul>
+<p>Copy the following code into your live code and we can try a few things:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                   <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> 
+                   <span class="s2">&quot;C&quot;</span><span class="p">:[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> 
+                   <span class="s2">&quot;D&quot;</span><span class="p">:[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+ 
+
+
+    </main>
+    
