@@ -65,6 +65,14 @@
   - title: "Outro"
     url: /02/05_outro
 
+- title: "Get and Parsing Web Data"
+  url: "/03/00_World_Wide_Data"
+  not_numbered: true  
+  sections:
+  - title: "Getting Data"
+    url: "/03/01_Intro_to_scraping"     
+
+
 #    subsections:
 #    - url: /01/3/subsection/subsections
 #    - url: /01/3/subsection/subsectiontwo

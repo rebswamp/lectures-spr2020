@@ -1,0 +1,404 @@
+---
+redirect_from:
+  - "/03/01-intro-to-scraping"
+interact_link: content/03/01_Intro_to_scraping.ipynb
+kernel_name: python3
+kernel_path: content/03
+has_widgets: false
+title: |-
+  Getting Data
+pagenum: 17
+prev_page:
+  url: /03/00_World_Wide_Data.html
+next_page:
+  url: 
+suffix: .ipynb
+search: api html data code page get example search web try scraping open br org requests python wiki without want run not need elements practice download e g urllib parse q inside info master file click before url wikipedia only text urls request github using com its pages after above spider list often pd en also packages www should change package might requestshtml webpage table building solution tags files ks class tables webpages readhtml listofspcompanies part website server main io manual queries sites cant title greg much sometimes sending import opening except youre r tag slow nealcaren json pandas our read
+
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+    <main class="jupyter-page">
+    <div id="page-info"><div id="page-title">Getting Data</div>
+</div>
+    <div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Outline">Outline<a class="anchor-link" href="#Outline"> </a></h2><ol>
+<li>Overview of different ways to get data </li>
+<li>API: description, demo, practice</li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Ways-to-get-data-from-the-web">Ways to get data from the web<a class="anchor-link" href="#Ways-to-get-data-from-the-web"> </a></h2><ol>
+<li><strong>Manually click and download.</strong> The way you would have done it before this class.</li>
+<li><strong>Let <code>pandas</code> download.</strong> E.g. our assignments often begin with <code>pd.read_stata(&lt;url&gt;)</code>. <ul>
+<li>Did you know? Pandas can often directly read tables on webpages! Try <code>pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')</code></li>
+<li><code>read_html</code> can only handle basic HTML tables encoded directly in the page (no Javascript, e.g.) and only grabs displayed text -- no URLS.</li>
+<li>You can use the data without saving it to your hard drive if you want. The good/bad part of this is that if the website changes the data, the next time you run it, you'll get the newer version of data. (Unstable, potentially, but also updates automatically.)</li>
+</ul>
+</li>
+<li><strong>"Install and play" APIs</strong>, which let you interact with a website without specifying the exact API requests. API stands for Application Programming Interface, and it is a way for your computer to send a request (a query) to a server and get some response (hopefully useful data).<ul>
+<li>The <code>pandas_datareader</code> plug in for Yahoo stock prices is one version of this. </li>
+<li><code>datadotworld</code> was another. </li>
+<li>Kaggle and most of the <a href="https://ledatascifi.github.io/studentresourcevert/resource-landing.html#getting-data-and-practicing-ml">data sources listed on our main site</a> have API packages for Python. </li>
+<li>I download your peer reviews using <code>PyGithub</code>. </li>
+</ul>
+</li>
+<li><strong>Manual API queries</strong> for websites without "install and play" APIs. Many sites have an API port of some kind serving up the data they show visitors. </li>
+<li><strong>Scraping the data implicitly on the website.</strong> The last resort. You can't find the API serving the data, but your eyes see it. And you want it, cause websites contain a lot of data, like <a href="https://www.imdb.com/title/tt0944947/?ref_=nv_sr_srsg_0">GoT's IMDB page</a>.<ul>
+<li>AGAIN: The last resort.</li>
+</ul>
+</li>
+</ol>
+<h3 id="Wisdom-from-Greg-Reda-that-applies-to-all-of-these:">Wisdom from <a href="http://www.gregreda.com/2013/03/03/web-scraping-101-with-python/">Greg Reda</a> that applies to all of these:<a class="anchor-link" href="#Wisdom-from-Greg-Reda-that-applies-to-all-of-these:"> </a></h3><blockquote><ol>
+<li>You should check a site's terms and conditions before you scrape them. It's their data and they likely have some rules to govern it.</li>
+<li>Be nice - A computer will send web requests much quicker than a user can. Make sure you space out your requests a bit so that you don't hammer the site's server.</li>
+<li>Scrapers break - Sites change their layout all the time. If that happens, be prepared to rewrite your code.</li>
+<li>Web pages are inconsistent - There's sometimes some manual clean up that has to happen even after you've gotten your data.</li>
+</ol>
+</blockquote>
+<h3 id="Which-method-should-you-choose?">Which method should you choose?<a class="anchor-link" href="#Which-method-should-you-choose?"> </a></h3><p><strong>Options 1-3 are BY FAR the easiest.</strong> If you want more than 10 tables or so (but the threshold depends on your coding speed), I'd abandon the manual option and go with <code>pandas</code> or a nice API package.</p>
+<p>Never ever try #4 or #5 without searching for "\&lt;website&gt; python api" first.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="A-scraping-toolkit">A scraping toolkit<a class="anchor-link" href="#A-scraping-toolkit"> </a></h2><h3 id="Useful-packages,-tricks,-and-tips">Useful packages, tricks, and tips<a class="anchor-link" href="#Useful-packages,-tricks,-and-tips"> </a></h3><p>Web scraping packages are always developing and evolving.</p>
+<table>
+<thead><tr>
+<th style="text-align:left">Task</th>
+<th style="text-align:left">Thoughts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">To "open" a page</td>
+<td style="text-align:left"><code>urllib</code> or <code>requests</code>. <code>requests</code> is probably the best for sending API queries. <br> <br> Warning: lots of walkthroughs online use <code>urllib2</code>, which worked for Python2 but not Python3. Use <code>urllib</code> instead, and you might have to include a few tweaks. For example, if you see <code>from urllib2 import urlopen</code> replace it with from <code>urllib.request import urlopen</code></td>
+</tr>
+<tr>
+<td style="text-align:left">To parse a page</td>
+<td style="text-align:left"><code>beautifulsoup</code>, <code>lxml</code>, or <code>pyquery</code></td>
+</tr>
+<tr>
+<td style="text-align:left">Combining opening/parsing</td>
+<td style="text-align:left"><code>requests_html</code> is a relatively new package and might be excellent. Its code is simply a combination of many of the above.</td>
+</tr>
+<tr>
+<td style="text-align:left">Blocked because you look like a bot?</td>
+<td style="text-align:left"><code>selenium</code> is one way to "impersonate" a human, and also can help develop scraping macros, but you might not need it except on difficult scraping projects. It opens a literal browser window. <br> <br> <code>requests_html</code> and <code>requests</code> can also store and use cookies. I'd recommend you try this before selenium.</td>
+</tr>
+<tr>
+<td style="text-align:left">Blocked because you're sending requests too fast?</td>
+<td style="text-align:left"><code>from time import sleep</code> allows you to <code>sleep(&lt;# of seconds&gt;)</code> your code.</td>
+</tr>
+<tr>
+<td style="text-align:left">Wonder what your current HTML looks like?</td>
+<td style="text-align:left"><code>from IPython.display import HTML</code> then <code>HTML(&lt;html object&gt;)</code> will show you what the HTML you have looks like. <br> E.g. if you're using <code>r = requests(url)</code>, then you can use <code>HTML(r.text)</code> to see the request object.</td>
+</tr>
+<tr>
+<td style="text-align:left">How do I find a particular "piece" of a webpage</td>
+<td style="text-align:left">E.g. Q: Where is that table? <br> A: Oh, it's inside the HTML tag called "table3". <br> <br> You can search for elements via attributes, CSS selectors, XPath, and text. This will make more sense next class. <br> <br> To find that info: Right click on an element you're interested and click "Inspect Element". (F12 is the Windows shortcut.)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="My-suggestion">My suggestion<a class="anchor-link" href="#My-suggestion"> </a></h3><p>This is subject to change, but <strong>I think you should pick ONE opening and ONE parsing module and stick with it <em>for now</em></strong>. <code>requests_html</code> is a pretty good option that opens pages and can parse them, and it allows you to use <code>lxml</code>, or <code>pyquery</code> within it.</p>
+<p>You can change and try other stuff as you go, but get as familiar with one package as you can (in a cheap/efficient way).</p>
+<p>Now to contradict myself: Some of the packages above can't do things others can, or do them much slower, or the code is hard to write, read, and debug. Sometimes, you're holding a hammer but you need a screwdriver. What I'm saying is, if another package can easily do the job, use it. (Just realize that learning a new package comes with a fixed cost, so be sure you need that screwdriver before grabbing it.)</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-skills-do-I-need-to-learn-to-be-a-master-Hacker(wo)man?">What skills do I need to learn to be a master Hacker(wo)man?<a class="anchor-link" href="#What-skills-do-I-need-to-learn-to-be-a-master-Hacker(wo)man?"> </a></h3><ol>
+<li>How to open/read a webpage, and pass specific queries to a server</li>
+<li>How to parse a (single) page, to find specific elements of interest (like tables, specific text, URLs) </li>
+<li>Doing that for a large number of webpages (building a "scraper" or "crawler" or "spider")<ul>
+<li>monitor progress (<code>tqdm</code>)</li>
+<li>deal with and log errors </li>
+<li>slow down</li>
+<li>passing cookies and API tokens if needed</li>
+<li>building a directory to store the pages/data from webpages</li>
+<li>doing this in a repo without uploading it all to GitHub (<code>.gitignore</code>)</li>
+</ul>
+</li>
+</ol>
+<p>So let's start building up those skills through demos and practice!</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Skill-#1:-Retrieving-URLs-and-sending-manual-API-queries">Skill #1: Retrieving URLs and sending manual API queries<a class="anchor-link" href="#Skill-#1:-Retrieving-URLs-and-sending-manual-API-queries"> </a></h2><ol>
+<li>Prof led: <a href="https://nbviewer.jupyter.org/github/nealcaren/ScrapingData/blob/master/Notebooks/5_APIs.ipynb">The Neal Caren "First API" example</a></li>
+<li>For your reference: Sometimes a webpage is "hiding" an API. You run a search and the URL doesn't look obviously like a search. But often, inside that page is a "backdoor" to an API you can search just like the above example. <a href="https://nbviewer.jupyter.org/github/nealcaren/ScrapingData/blob/master/Notebooks/Bonus_Undocument_APIs.ipynb">This</a> tutorial shows one example of this and more importantly, how the author found the API. </li>
+<li>YOUR TURN: Exchange rates<ul>
+<li>Start with <code>url = 'https://api.exchangeratesapi.io/latest?base=NOK'</code></li>
+<li>Q1: What is the average exchange rate value this search returns?</li>
+<li><a href="https://exchangeratesapi.io/">The documentation</a> for this database (how to search it, change parameters, etc.)</li>
+<li>Q2: Change the base to Euros, then tell me how many Japanese Yen is in a euro.</li>
+<li>Q3: What was the number of Yen per Euro on Jan 2, 2018?</li>
+<li>Q4: Bonus, prof can show: Get a time series of EURJPY from 2018 through 2019.</li>
+</ul>
+</li>
+<li>AFTER CLASS PRACTICE: <ul>
+<li>Rewrite our code for Q1-Q4 using <code>requests_html</code> to the extent possible. If and when you succeed, email your solution to me!</li>
+</ul>
+</li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Skill-2:-How-to-parse-a-(single)-page">Skill 2: How to parse a (single) page<a class="anchor-link" href="#Skill-2:-How-to-parse-a-(single)-page"> </a></h2><p>You might parse a page to</p>
+<ul>
+<li>isolate the data/text/urls you need</li>
+<li>find a link to collect (or click!)</li>
+</ul>
+<p>Data on page is typically HTML, XML, or JSON.</p>
+<ol>
+<li><strong>J</strong>ava<strong>S</strong>cript <strong>O</strong>bject <strong>N</strong>otation (JSON)</li>
+<li>e<strong>X</strong>tensible <strong>M</strong>arkup <strong>L</strong>anguage (XML)</li>
+<li>HTML - for <a href="view-source:https://en.m.wikipedia.org/wiki/List_of_S%26P_500_companies">example</a>. </li>
+</ol>
+<p>You can right click on a page and "view source" to see the underlying HTML, XML, or JSON.</p>
+<ul>
+<li>Go to the <a href="https://en.wikipedia.org/wiki/List_of_S%26P_500_companies">S&amp;P500 wiki page</a></li>
+<li>Right click and view the source. See the structure? That's HTML!</li>
+</ul>
+<p>From <a href="https://en.wikipedia.org/wiki/HTML">wikipedia</a>:</p>
+<blockquote><p>HTML markup consists of several key components, including those called tags (and their attributes), character-based data types, character references and entity references. HTML tags most commonly come in pairs like <code>&lt;h1&gt;</code> and <code>&lt;/h1&gt;</code>, although some represent empty elements and so are unpaired, for example <code>&lt;img&gt;</code>. The first tag in such a pair is the start tag, and the second is the end tag (they are also called opening tags and closing tags).</p>
+<p>Another important component is the HTML document type declaration, which triggers standards mode rendering.</p>
+<p>The following is an example of the classic "Hello, World!" program:</p>
+<div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+   <span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+     <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+       <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>This is a title<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+     <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+     <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+       <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Hello world!<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+     <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+   <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</blockquote>
+<p>Elements can nest inside elements (a paragraph within the body of the page, the title inside the header, the rows inside the table with columns inside them).</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Practice">Practice<a class="anchor-link" href="#Practice"> </a></h3><p><a href="https://flukeout.github.io/">Let's play a game</a> about finding and selecting elements using the html tags.</p>
+<h3 id="Practice/challenge:-Get-a-list-of-wiki-pages-for-S&amp;P500-firms">Practice/challenge: Get a list of wiki pages for S&amp;P500 firms<a class="anchor-link" href="#Practice/challenge:-Get-a-list-of-wiki-pages-for-S&amp;P500-firms"> </a></h3><ul>
+<li>Revisit the S&amp;P 500 wiki: <code>pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')</code></li>
+<li>Let's try to grab all the URLs. Notice the <code>pd.read_html</code> approach can't do this.</li>
+<li>Use your browser's Inspector to find info you can use to select the table, and then we will try to extract the URLs.</li>
+</ul>
+<h3 id="AFTER-CLASS-PRACTICE">AFTER CLASS PRACTICE<a class="anchor-link" href="#AFTER-CLASS-PRACTICE"> </a></h3><p>I really, really like the tutorials Greg Reda wrote (<a href="http://www.gregreda.com/2013/03/03/web-scraping-101-with-python/">here</a> and <a href="http://www.gregreda.com/2013/04/29/more-web-scraping-with-python/">here</a>). See the caveat about <code>urllib2</code> above, but otherwise this code works. Greg uses <code>urllib</code> to open and <code>beautifulsoup</code> to parse, but if you want to, you should be able to rewrite his code using <code>requests_html</code> pretty easily. When you succeed, please email me!</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Skill-#3:-Building-a-scraper">Skill #3: Building a scraper<a class="anchor-link" href="#Skill-#3:-Building-a-scraper"> </a></h2><p>We can open a page, pass an API query, and parse a page for the elements we're interested in.</p>
+<h3 id="One-API-hit-is-cool,-but--do-you-know-whats-really-cool?">One API hit is cool, but  do you know whats really cool?<a class="anchor-link" href="#One-API-hit-is-cool,-but--do-you-know-whats-really-cool?"> </a></h3><p>One million API hits.</p>
+<p><img src="https://media.giphy.com/media/sEULHciNa7tUQ/giphy.gif" alt=""></p>
+<p>Ok, maybe not a million.* But now that you can write a <code>request</code> and modify search parameters, you might need to run a bunch of searches. You could:</p>
+<ol>
+<li>loop over the search terms</li>
+<li>loop through pages of search results</li>
+</ol>
+<p>Here is a way you could do the first: Define a function to do one search, then call that for each search in a list of searches.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">search_itunes</span><span class="p">(</span><span class="n">search_term</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Simplified iTunes search&#39;&#39;&#39;</span>
+    
+    <span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;https://itunes.apple.com/search&#39;</span>
+    <span class="n">search_parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;term&#39;</span><span class="p">:</span> <span class="n">search_term</span><span class="p">}</span>
+    
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">search_parameters</span><span class="p">)</span>
+    
+    <span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;results&#39;</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="n">results_df</span>
+
+<span class="n">search_itunes</span><span class="p">(</span><span class="s1">&#39;billie eilish&#39;</span><span class="p">)</span>      <span class="c1"># one at a time</span>
+<span class="n">search_itunes</span><span class="p">(</span><span class="s1">&#39;father john misty&#39;</span><span class="p">))</span> <span class="c1"># &quot;another one&quot; - dj khaled</span>
+
+<span class="n">artists</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;billie eilish&#39;</span><span class="p">,</span><span class="s1">&#39;father john misty&#39;</span><span class="p">]</span> <span class="c1"># or loop over them!</span>
+
+<span class="c1"># step 1: download the results and save locally</span>
+<span class="k">for</span> <span class="n">artist</span> <span class="ow">in</span> <span class="n">artists</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">search_itunes</span><span class="p">(</span><span class="n">artist</span><span class="p">)</span>
+    <span class="c1"># you could do anything with the results here</span>
+    <span class="c1"># a good idea in many projects: save the webpage/search results</span>
+    <span class="c1"># even better: add the saving function inside the &quot;search_itunes&quot; fcn</span>
+    <span class="c1"># but this is just a toy illustration, so nothing happens</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span> 
+    
+<span class="c1"># step 2: load the results</span>
+<span class="k">for</span> <span class="n">artist</span> <span class="ow">in</span> <span class="n">artists</span><span class="p">:</span>
+    <span class="c1"># load the saved file</span>
+    <span class="c1"># call a function you wrote to parse one file</span>
+    <span class="c1"># do something with the output from the parser</span>
+    <span class="c1"># but this is just a toy illustration, so nothing happens    </span>
+    <span class="k">pass</span>   
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="The-main-web-scraping-problems-(and-workarounds)">The main web scraping problems (and workarounds)<a class="anchor-link" href="#The-main-web-scraping-problems-(and-workarounds)"> </a></h3><p>Also, again, check out  table above on useful packages and tips.</p>
+<h4 id="Issue-1:--The-jobs-are-slow">Issue 1:  The jobs are slow<a class="anchor-link" href="#Issue-1:--The-jobs-are-slow"> </a></h4><p>In many web scraping projects, a lot of data needs to get scraped, over thousands (or millions) (or billions) of pages. It's unlikely that you can do this all in one session. (What if your WiFi disconnects, or Windows decides to do an update, or the webpage freezes you out for a period of time?)</p>
+<p>Solutions:</p>
+<ol>
+<li>Write code that only hits the server one time, and saves the results to your computer. See the "step 1" and "step 2" breakdown for the <code>search_itunes</code> example above. Then use those files. </li>
+<li>Ensure that your code can resume where it left off without having to restart from scratch. My usual solution: <div class="highlight"><pre><span></span><span class="c1"># as I&#39;m looping over webpages:</span>
+ <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="o">&lt;</span><span class="n">filename</span> <span class="n">this</span> <span class="n">page</span> <span class="n">would</span> <span class="n">get</span><span class="o">&gt;</span><span class="p">):</span> 
+     <span class="n">okay_do_the_download</span><span class="p">()</span> <span class="c1"># whatever the function is</span>
+ <span class="c1"># if not, skip to the next webpage</span>
+</pre></div>
+</li>
+<li>Your spider WILL fail - you don't want it to stop. I typically use a <code>try-except-else</code> block. The <code>try</code> part accesses the url/send the API request, the <code>except</code> part prints or logs a failure to a log file, and the <code>else</code> part only executes the code I need to run after the url request if the <code>try</code> code was successful. For example, I could improve the <code>search_itunes</code> function:<div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+     <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">search_parameters</span><span class="p">)</span>
+ <span class="k">except</span><span class="p">:</span>
+     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hey this didn&#39;t work! prob print better info than&quot;</span><span class="p">)</span>
+     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;this string&quot;</span><span class="p">)</span>
+     <span class="c1"># or... create strings and append them to an &quot;error_list&quot;,</span>
+     <span class="c1"># which you save to a text file or csv after the code finishes</span>
+     <span class="c1"># and you can look at it then</span>
+ <span class="k">else</span><span class="p">:</span>
+     <span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;results&#39;</span><span class="p">])</span>
+</pre></div>
+</li>
+<li>Your spider WILL fail - you will want to know what. You should log failures, warnings, and errors. The prior example can be adjusted to do this well. </li>
+</ol>
+<h4 id="Issue-2:-Too-much-speed">Issue 2: Too much speed<a class="anchor-link" href="#Issue-2:-Too-much-speed"> </a></h4><p>Servers aren't free and can get overloaded. You've seen or heard of websites crashing due to high traffic - <a href="https://www.blazemeter.com/blog/biggest-web-failures-2016-and-2017-resolutions/">Fandango for Star Wars; Rogue Wars, Black Fridays, and the Canadian Immigration site in Nov 2016</a>.</p>
+<p>As such, webmasters often throttle or block computers that are sending too much traffic.</p>
+<p>Solutions:</p>
+<ol>
+<li>Slow your code down with <code>sleep(#)</code>. This is the main solution.</li>
+<li>Get API access with special permissions.</li>
+<li>If you can't slow down your spider (the code crawling the site), use multiple computers/IP addresses</li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Issue-3:-So...-I'm-downloading-a-loooot-of-files">Issue 3: So... I'm downloading a loooot of files<a class="anchor-link" href="#Issue-3:-So...-I'm-downloading-a-loooot-of-files"> </a></h4><p>You are!</p>
+<p>It's important to save them in an organized way. There is no "one way", and the directory/storage scheme I choose depends on the job. The main thing is that you probably want two abilities ater the download:</p>
+<ol>
+<li>If you sequentially open all files, can you tell what they are? (E.g. the firm, the year, the form type.)</li>
+<li>If you want to only open some files, can you do that without opening all files? (E.g. only open 10-Ks but not 10-Qs.)</li>
+</ol>
+<p>How you achieve these is somewhat up to you but you basically have two choices (and these can work in tandom):</p>
+<p><strong>Solution 1: Build the folder structure so that the path to the file tells you what you need to know.</strong></p>
+<p>E.g. <code>/gvkey_10145/10-ks/2008/934573495-923875934.txt</code> is "obviously" the 2008 10-K for firm 10145, and you know this without needing to open the file and even though the filename itself is not very clear.</p>
+<p><strong>Solution 2: Keep a master list of documents</strong></p>
+<p>Sometimes it's not possible or reasonable to know exactly how to build the directory in advance. For example, forms filed to the SEC in 2008 are often for fiscal year 2007. So what does the "2008" folder mean? How can you tell before running everything? So maybe you just download all the 10-ks for that firm inside the <code>/gvkey_10145/10-ks/</code> folder.</p>
+<p>To find the 2008 10-K, you'd open up a master list of documents which contains variables with enough info to assemble the path to each file, and info about each file. Then you can <code>query("form='10-K' &amp; fyear=2008")</code>, assemble the filename, and run your code.</p>
+<p>This master list must either be assembled before you run your spider (like in Assignment 5), as you run the spider (collect the info and save it as you go), or after the download you run some code one time to assemble it (either using their paths a la <code>/gvkey_10145/10-ks/2008/934573495-923875934.txt</code>, or open every single file to extract the info about the document).</p>
+<h3 id="Some-more-tutorials">Some more tutorials<a class="anchor-link" href="#Some-more-tutorials"> </a></h3><p>Again, Greg Reda has a nice <a href="https://nbviewer.jupyter.org/github/nealcaren/ScrapingData/blob/master/Notebooks/Bonus_Downloading.ipynb">walkthrough</a> discussing building a robust code to download a list, and incorporates many of the elements in code we've talked about.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Practice">Practice<a class="anchor-link" href="#Practice"> </a></h3><p><strong>This exercise will be introduced Thursday.</strong></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Footnotes">Footnotes<a class="anchor-link" href="#Footnotes"> </a></h2><p>* <em>I've done well over a million API hits in the name of science.</em></p>
+<h2 id="Credits">Credits<a class="anchor-link" href="#Credits"> </a></h2><ul>
+<li>STAT545, as always</li>
+<li><a href="https://nealcaren.org/">Neal Caren</a></li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+ 
+
+
+    </main>
+    
