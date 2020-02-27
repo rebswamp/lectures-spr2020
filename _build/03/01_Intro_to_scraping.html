@@ -13,7 +13,7 @@ prev_page:
 next_page:
   url: 
 suffix: .ipynb
-search: api html data code page get example search web try scraping open br org requests python wiki without want run not need elements practice download e g urllib parse q inside info master file click before url wikipedia only text urls request github using com its pages after above spider list often pd en also packages www should change package might requestshtml webpage table building solution tags files ks class tables webpages readhtml listofspcompanies part website server main io manual queries sites cant title greg much sometimes sending import opening except youre r tag slow nealcaren json pandas our read
+search: api html data page code get want try search python scraping not example web requests open br url org wiki urls without need inside list e g run pages elements practice click download its urllib parse q info master spider json file before pd wikipedia only text request github using com sometimes after might above filename save folder often webpages en also server packages www should change package requestshtml except r webpage table just building through solution tags files path ks class tables readhtml listofspcompanies part website another main io manual queries sites show cant title again greg nice much
 
 comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
 ---
@@ -155,7 +155,12 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Skill-#1:-Retrieving-URLs-and-sending-manual-API-queries">Skill #1: Retrieving URLs and sending manual API queries<a class="anchor-link" href="#Skill-#1:-Retrieving-URLs-and-sending-manual-API-queries"> </a></h2><ol>
-<li>Prof led: <a href="https://nbviewer.jupyter.org/github/nealcaren/ScrapingData/blob/master/Notebooks/5_APIs.ipynb">The Neal Caren "First API" example</a></li>
+<li>Prof led: <a href="https://nbviewer.jupyter.org/github/nealcaren/ScrapingData/blob/master/Notebooks/5_APIs.ipynb">The Neal Caren "First API" example</a><ul>
+<li><strong>JSON is just a data storage structure, and in python it's a dictionary.</strong> We make the search give us JSON because it can be easier to extract data from JSON than HTML sometimes.</li>
+<li>You look for whats in a dictionary with <code>dict.keys()</code> and then <code>dict['key']</code> will show you the value/object belonging to the key</li>
+<li><code>pd.DataFrame()</code> can convert a dictionary to a data frame</li>
+</ul>
+</li>
 <li>For your reference: Sometimes a webpage is "hiding" an API. You run a search and the URL doesn't look obviously like a search. But often, inside that page is a "backdoor" to an API you can search just like the above example. <a href="https://nbviewer.jupyter.org/github/nealcaren/ScrapingData/blob/master/Notebooks/Bonus_Undocument_APIs.ipynb">This</a> tutorial shows one example of this and more importantly, how the author found the API. </li>
 <li>YOUR TURN: Exchange rates<ul>
 <li>Start with <code>url = 'https://api.exchangeratesapi.io/latest?base=NOK'</code></li>
@@ -197,7 +202,7 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 <li>Go to the <a href="https://en.wikipedia.org/wiki/List_of_S%26P_500_companies">S&amp;P500 wiki page</a></li>
 <li>Right click and view the source. See the structure? That's HTML!</li>
 </ul>
-<p>From <a href="https://en.wikipedia.org/wiki/HTML">wikipedia</a>:</p>
+<p>From <a href="https://en.wikipedia.org/wiki/HTML">Wikipedia</a>:</p>
 <blockquote><p>HTML markup consists of several key components, including those called tags (and their attributes), character-based data types, character references and entity references. HTML tags most commonly come in pairs like <code>&lt;h1&gt;</code> and <code>&lt;/h1&gt;</code>, although some represent empty elements and so are unpaired, for example <code>&lt;img&gt;</code>. The first tag in such a pair is the start tag, and the second is the end tag (they are also called opening tags and closing tags).</p>
 <p>Another important component is the HTML document type declaration, which triggers standards mode rendering.</p>
 <p>The following is an example of the classic "Hello, World!" program:</p>
@@ -243,12 +248,14 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 <h2 id="Skill-#3:-Building-a-scraper">Skill #3: Building a scraper<a class="anchor-link" href="#Skill-#3:-Building-a-scraper"> </a></h2><p>We can open a page, pass an API query, and parse a page for the elements we're interested in.</p>
 <h3 id="One-API-hit-is-cool,-but--do-you-know-whats-really-cool?">One API hit is cool, but  do you know whats really cool?<a class="anchor-link" href="#One-API-hit-is-cool,-but--do-you-know-whats-really-cool?"> </a></h3><p>One million API hits.</p>
 <p><img src="https://media.giphy.com/media/sEULHciNa7tUQ/giphy.gif" alt=""></p>
-<p>Ok, maybe not a million.* But now that you can write a <code>request</code> and modify search parameters, you might need to run a bunch of searches. You could:</p>
+<p>Ok, maybe not a million.* But now that you can write a <code>request</code> and modify search parameters, you might need to run a bunch of searches.</p>
+<p>Scraping jobs typically fall into one of two camps:</p>
 <ol>
-<li>loop over the search terms</li>
-<li>loop through pages of search results</li>
+<li>loop over URLs (predetermined list)</li>
+<li>navigate from an initial page through subsequent pages (e.g through search results)</li>
 </ol>
-<p>Here is a way you could do the first: Define a function to do one search, then call that for each search in a list of searches.</p>
+<p>Of course, both can be true: sometimes a scraper might have a list of URLs (search for crime 1, then crime 2) and for each URL (crime) click through all result pages.</p>
+<p><strong>When your job falls into the first camp - you want to loop over a list of URLs - a good way to do that is</strong>: Define a function to do one search, then call that for each search in a list of searches.</p>
 
 </div>
 </div>
@@ -274,12 +281,12 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
     
     <span class="k">return</span> <span class="n">results_df</span>
 
-<span class="n">search_itunes</span><span class="p">(</span><span class="s1">&#39;billie eilish&#39;</span><span class="p">)</span>      <span class="c1"># one at a time</span>
+<span class="n">search_itunes</span><span class="p">(</span><span class="s1">&#39;billie eilish&#39;</span><span class="p">)</span>      <span class="c1"># one search at a time</span>
 <span class="n">search_itunes</span><span class="p">(</span><span class="s1">&#39;father john misty&#39;</span><span class="p">))</span> <span class="c1"># &quot;another one&quot; - dj khaled</span>
 
-<span class="n">artists</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;billie eilish&#39;</span><span class="p">,</span><span class="s1">&#39;father john misty&#39;</span><span class="p">]</span> <span class="c1"># or loop over them!</span>
+<span class="n">artists</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;billie eilish&#39;</span><span class="p">,</span><span class="s1">&#39;father john misty&#39;</span><span class="p">]</span> <span class="c1"># you can loop over them!</span>
 
-<span class="c1"># step 1: download the results and save locally</span>
+<span class="c1"># download the results and save locally</span>
 <span class="k">for</span> <span class="n">artist</span> <span class="ow">in</span> <span class="n">artists</span><span class="p">:</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">search_itunes</span><span class="p">(</span><span class="n">artist</span><span class="p">)</span>
     <span class="c1"># you could do anything with the results here</span>
@@ -288,7 +295,7 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
     <span class="c1"># but this is just a toy illustration, so nothing happens</span>
     <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span> 
     
-<span class="c1"># step 2: load the results</span>
+<span class="c1"># LATER, you will want to analyze those files. Just loop over the files again:</span>
 <span class="k">for</span> <span class="n">artist</span> <span class="ow">in</span> <span class="n">artists</span><span class="p">:</span>
     <span class="c1"># load the saved file</span>
     <span class="c1"># call a function you wrote to parse one file</span>
@@ -308,34 +315,35 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="The-main-web-scraping-problems-(and-workarounds)">The main web scraping problems (and workarounds)<a class="anchor-link" href="#The-main-web-scraping-problems-(and-workarounds)"> </a></h3><p>Also, again, check out  table above on useful packages and tips.</p>
-<h4 id="Issue-1:--The-jobs-are-slow">Issue 1:  The jobs are slow<a class="anchor-link" href="#Issue-1:--The-jobs-are-slow"> </a></h4><p>In many web scraping projects, a lot of data needs to get scraped, over thousands (or millions) (or billions) of pages. It's unlikely that you can do this all in one session. (What if your WiFi disconnects, or Windows decides to do an update, or the webpage freezes you out for a period of time?)</p>
-<p>Solutions:</p>
+<h2 id="The-main-web-scraping-problems-(and-workarounds)">The main web scraping problems (and workarounds)<a class="anchor-link" href="#The-main-web-scraping-problems-(and-workarounds)"> </a></h2><p>Also, again, check out  table above on useful packages and tips.</p>
+<h3 id="Issue-1:--The-jobs-are-slow">Issue 1:  The jobs are slow<a class="anchor-link" href="#Issue-1:--The-jobs-are-slow"> </a></h3><p>In many web scraping projects, a lot of data needs to get scraped, over thousands (or millions) (or billions) of pages. It's unlikely that you can do this all in one session. (What if your WiFi disconnects, or Windows decides to do an update, or the webpage freezes you out for a period of time?)</p>
+<p><strong>Solutions:</strong></p>
 <ol>
-<li>Write code that only hits the server one time, and saves the results to your computer. See the "step 1" and "step 2" breakdown for the <code>search_itunes</code> example above. Then use those files. </li>
-<li>Ensure that your code can resume where it left off without having to restart from scratch. My usual solution: <div class="highlight"><pre><span></span><span class="c1"># as I&#39;m looping over webpages:</span>
+<li><strong>Write code that only hits the server one time</strong>, and saves the results to your computer. "Step 1" of the <code>search_itunes</code> example above does that. Then "step 2" uses/parses those files without going to the webpages again. </li>
+<li><strong>You want your spider to resume, not restart.</strong> Ensure that your code can resume where it left off without having to restart from scratch. My usual solution: <div class="highlight"><pre><span></span><span class="c1"># as I&#39;m looping over webpages:</span>
  <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="o">&lt;</span><span class="n">filename</span> <span class="n">this</span> <span class="n">page</span> <span class="n">would</span> <span class="n">get</span><span class="o">&gt;</span><span class="p">):</span> 
      <span class="n">okay_do_the_download</span><span class="p">()</span> <span class="c1"># whatever the function is</span>
  <span class="c1"># if not, skip to the next webpage</span>
 </pre></div>
 </li>
-<li>Your spider WILL fail - you don't want it to stop. I typically use a <code>try-except-else</code> block. The <code>try</code> part accesses the url/send the API request, the <code>except</code> part prints or logs a failure to a log file, and the <code>else</code> part only executes the code I need to run after the url request if the <code>try</code> code was successful. For example, I could improve the <code>search_itunes</code> function:<div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
-     <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">search_parameters</span><span class="p">)</span>
- <span class="k">except</span><span class="p">:</span>
-     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hey this didn&#39;t work! prob print better info than&quot;</span><span class="p">)</span>
-     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;this string&quot;</span><span class="p">)</span>
-     <span class="c1"># or... create strings and append them to an &quot;error_list&quot;,</span>
-     <span class="c1"># which you save to a text file or csv after the code finishes</span>
-     <span class="c1"># and you can look at it then</span>
- <span class="k">else</span><span class="p">:</span>
-     <span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;results&#39;</span><span class="p">])</span>
+<li>Your spider WILL fail - you don't want it to stop. I typically use a <code>try-except-else</code> block. The <code>try</code> part accesses the url/send the API request, the <code>except</code> part prints or logs a failure to a log file, and the <code>else</code> part only executes the code I need to run after the url request if the <code>try</code> code was successful. For example, I could improve the <code>search_itunes</code> function:<div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="o">&lt;</span><span class="n">filename</span> <span class="n">this</span> <span class="n">page</span> <span class="n">would</span> <span class="n">get</span><span class="o">&gt;</span><span class="p">):</span> 
+     <span class="k">try</span><span class="p">:</span>
+         <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">search_parameters</span><span class="p">)</span>
+     <span class="k">except</span><span class="p">:</span>
+         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hey this didn&#39;t work! prob print better info than&quot;</span><span class="p">)</span>
+         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;this string&quot;</span><span class="p">)</span>
+         <span class="c1"># or... create strings and append them to an &quot;error_list&quot;,</span>
+         <span class="c1"># which you save to a text file or csv after the code finishes</span>
+         <span class="c1"># and you can look at it then</span>
+     <span class="k">else</span><span class="p">:</span>
+         <span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;results&#39;</span><span class="p">])</span>
 </pre></div>
 </li>
 <li>Your spider WILL fail - you will want to know what. You should log failures, warnings, and errors. The prior example can be adjusted to do this well. </li>
 </ol>
-<h4 id="Issue-2:-Too-much-speed">Issue 2: Too much speed<a class="anchor-link" href="#Issue-2:-Too-much-speed"> </a></h4><p>Servers aren't free and can get overloaded. You've seen or heard of websites crashing due to high traffic - <a href="https://www.blazemeter.com/blog/biggest-web-failures-2016-and-2017-resolutions/">Fandango for Star Wars; Rogue Wars, Black Fridays, and the Canadian Immigration site in Nov 2016</a>.</p>
+<h3 id="Issue-2:-Too-much-speed">Issue 2: Too much speed<a class="anchor-link" href="#Issue-2:-Too-much-speed"> </a></h3><p>Servers aren't free and can get overloaded. You've seen or heard of websites crashing due to high traffic - <a href="https://www.blazemeter.com/blog/biggest-web-failures-2016-and-2017-resolutions/">Fandango for Star Wars - Rogue One, Black Fridays, and the Canadian Immigration site in Nov 2016</a>.</p>
 <p>As such, webmasters often throttle or block computers that are sending too much traffic.</p>
-<p>Solutions:</p>
+<p><strong>Solutions:</strong></p>
 <ol>
 <li>Slow your code down with <code>sleep(#)</code>. This is the main solution.</li>
 <li>Get API access with special permissions.</li>
@@ -351,7 +359,7 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Issue-3:-So...-I'm-downloading-a-loooot-of-files">Issue 3: So... I'm downloading a loooot of files<a class="anchor-link" href="#Issue-3:-So...-I'm-downloading-a-loooot-of-files"> </a></h4><p>You are!</p>
+<h3 id="Issue-3:-So...-I'm-downloading-a-loooot-of-files">Issue 3: So... I'm downloading a loooot of files<a class="anchor-link" href="#Issue-3:-So...-I'm-downloading-a-loooot-of-files"> </a></h3><p>You are!</p>
 <p>It's important to save them in an organized way. There is no "one way", and the directory/storage scheme I choose depends on the job. The main thing is that you probably want two abilities ater the download:</p>
 <ol>
 <li>If you sequentially open all files, can you tell what they are? (E.g. the firm, the year, the form type.)</li>
@@ -364,7 +372,22 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 <p>Sometimes it's not possible or reasonable to know exactly how to build the directory in advance. For example, forms filed to the SEC in 2008 are often for fiscal year 2007. So what does the "2008" folder mean? How can you tell before running everything? So maybe you just download all the 10-ks for that firm inside the <code>/gvkey_10145/10-ks/</code> folder.</p>
 <p>To find the 2008 10-K, you'd open up a master list of documents which contains variables with enough info to assemble the path to each file, and info about each file. Then you can <code>query("form='10-K' &amp; fyear=2008")</code>, assemble the filename, and run your code.</p>
 <p>This master list must either be assembled before you run your spider (like in Assignment 5), as you run the spider (collect the info and save it as you go), or after the download you run some code one time to assemble it (either using their paths a la <code>/gvkey_10145/10-ks/2008/934573495-923875934.txt</code>, or open every single file to extract the info about the document).</p>
-<h3 id="Some-more-tutorials">Some more tutorials<a class="anchor-link" href="#Some-more-tutorials"> </a></h3><p>Again, Greg Reda has a nice <a href="https://nbviewer.jupyter.org/github/nealcaren/ScrapingData/blob/master/Notebooks/Bonus_Downloading.ipynb">walkthrough</a> discussing building a robust code to download a list, and incorporates many of the elements in code we've talked about.</p>
+<h3 id="Summary">Summary<a class="anchor-link" href="#Summary"> </a></h3><p>You can combine all this discussion into a "general structure" for spiders. For each page you want to visit, you need to know</p>
+<ol>
+<li>The URL</li>
+<li>The folder and filename you want to save it to</li>
+</ol>
+<p>And then, for each page you want to visit:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="o">&lt;</span><span class="n">filename</span> <span class="n">this</span> <span class="n">page</span> <span class="n">would</span> <span class="n">get</span><span class="o">&gt;</span><span class="p">):</span> 
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">&lt;</span><span class="n">the</span> <span class="n">url</span><span class="o">&gt;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># log the error somehow</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># save the results, I typically save the RAW source</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># be nice to server</span>
+</pre></div>
+<h3 id="Would-you-like-another-tutorial-to-try?">Would you like another tutorial to try?<a class="anchor-link" href="#Would-you-like-another-tutorial-to-try?"> </a></h3><p>Again, Greg Reda has a nice <a href="https://nbviewer.jupyter.org/github/nealcaren/ScrapingData/blob/master/Notebooks/Bonus_Downloading.ipynb">walkthrough</a> discussing building a robust code to download a list, and incorporates many of the elements in code we've talked about.</p>
 
 </div>
 </div>
@@ -375,7 +398,7 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Practice">Practice<a class="anchor-link" href="#Practice"> </a></h3><p><strong>This exercise will be introduced Thursday.</strong></p>
+<h3 id="Practice">Practice<a class="anchor-link" href="#Practice"> </a></h3><p>Start a "repo" - this time I just mean a folder inside the participation folder, but treat it like a standalone repo - and inside it, crawl all the S&amp;P 500 firms' wiki pages.</p>
 
 </div>
 </div>
