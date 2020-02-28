@@ -66,5 +66,19 @@ If you need to use this to do any string matching to outside datasets (e.g. data
 - How are you going to deal with legal entity "tokens?" (a token is a group of letters). "ABC INCORPORATED" and "AAA INCORPORATED" are very similar - 14/16 characters are the same. 
 - These names are valid as of 2020, meaning that merging to databases with older names won't work. For example, Phillip Morris changed its name to Altria, and this dataset calls it Altria. If you have a dataset with Phillip Morris in it, you're out of luck for that firm.
 
+# 2007_inv_and_tech.dta
+
+Similar to firms_2006_fuller.dta, but for **2007 AND 2008**, with a few new variables:
+
+| Var | Description |
+| :--- | :--- |
+|  l_stock_grant_citew          |    Log(1+Stock of Firms Own Patents)                      |     
+|  l_stock_trans_in_citew       |    Log(1+Stock of Patents Bought or Licensed-In)          |
+|  l_stock_trans_out_citew      |    Log(1+Stock of Patents Sold or Licensed-Out)           |
+
+The "stock" of patents granted is the stock of patents granted last year depreciated by 15% plus the "flow" of patents this year. The "flow" of patents is the number of patents granted plus new citations received by the firm. The `trans+in` and `trans_out` are computed similarly. 
+
+The stock variables are heavily skewed, so we take the log. But the stock is often zero and log(0) is undefined, so we use "1+" inside the log to prevent that. 
+
 
 
