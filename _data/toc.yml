@@ -71,7 +71,8 @@
   sections:
   - title: "Getting Data"
     url: /03/01_Intro_to_scraping  
-
+  - title: "Parsing and Searching Text"
+    url: /03/02_parse_and_search_text
 
 #    subsections:
 #    - url: /01/3/subsection/subsections
