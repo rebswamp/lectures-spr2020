@@ -151,18 +151,39 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left"></td>
+<td style="text-align:left"><code>.</code></td>
+<td style="text-align:left">any character except a newline</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>^</code></td>
+<td style="text-align:left">start of the string <br> <br> <code>^[a-z]+</code> matches the "hi" in "hi there" but not "there"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>$</code></td>
+<td style="text-align:left">end of the string or just before the newline at the end of the string <br> <br>   <code>foo</code> matches both 'foo' and 'foobar', but <code>foo$</code> matches only 'foo'</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>*</code></td>
+<td style="text-align:left">match 0 or more repetitions of the preceding RE, as many repetitions as are possible. <code>ab*</code> will match "a", "ab", or "abbbbbbb"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>+</code></td>
+<td style="text-align:left">match 1 or more repetitions of the preceding RE, as many repetitions as are possible. <code>ab+</code> will match "ab", or "abbbbbbb" but not "a"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>?</code></td>
+<td style="text-align:left">match 0 or 1 repetitions of the preceding RE. <code>ab?</code> will match "a" and "ab"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{m}</code></td>
+<td style="text-align:left">match <code>m</code> repetitions of the preceding RE. <code>ab{3}</code> will match "abbb" but not "abb"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{m,n}</code></td>
+<td style="text-align:left">match <code>m</code> to <code>n</code> repetitions of the preceding RE. <code>ab{3,5}</code> will match "abbb" and "abbbbb" but not "abb"</td>
 </tr>
 </tbody>
 </table>
-<p><code>.</code> | any character except a newline
-<code>^</code> | start of the string <br> <br> <code>^[a-z]+</code> matches the "hi" in "hi there" but not "there"
-<code>$</code> | end of the string or just before the newline at the end of the string <br> <br>   <code>foo</code> matches both 'foo' and 'foobar', but <code>foo$</code> matches only 'foo'
-<code>*</code> |  match 0 or more repetitions of the preceding RE, as many repetitions as are possible. <code>ab*</code> will match "a", "ab", or "abbbbbbb"
-<code>+</code> |  match 1 or more repetitions of the preceding RE, as many repetitions as are possible. <code>ab+</code> will match "ab", or "abbbbbbb" but not "a"
-<code>?</code> |  match 0 or 1 repetitions of the preceding RE. <code>ab?</code> will match "a" and "ab"
-<code>{m}</code> |  match <code>m</code> repetitions of the preceding RE. <code>ab{3}</code> will match "abbb" but not "abb"
-<code>{m,n}</code> | match <code>m</code> to <code>n</code> repetitions of the preceding RE. <code>ab{3,5}</code> will match "abbb" and "abbbbb" but not "abb"</p>
 <p>Note: Do you want the largest match or the smallest?</p>
 <ul>
 <li><strong><code>*</code>, <code>+</code>, <code>{m}</code> and <code>{m,n}</code> are GREEDY: they match as much text as possible.</strong> So if you search <code>ab+</code> against "abbb" it will match the full string "abbb". But sometimes you want</li>
@@ -176,14 +197,25 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left"></td>
+<td style="text-align:left"><code>\</code></td>
+<td style="text-align:left">1. escapes special characters <code>\*</code> will actuallye search for an asterisk. <br><br> 2. or signals a "special sequence"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>[]</code></td>
+<td style="text-align:left">Indicates a set of characters. In a set: <code>[amk]</code> will match 'a', 'm', or 'k'. <br> <br> Common ranges: <code>[a-z]</code>, <code>[A-Z]</code>,  <code>[0-9]</code>. You can combine ranges: <code>[A-Za-z0-9]</code>. <br> <br> Special characters lose their special meaning inside sets. For example, [(+<em>)] will match any of the literal characters '(', '+', '</em>', or ')'.</td>
+</tr>
+<tr>
+<td style="text-align:left">`</td>
+<td style="text-align:left">`</td>
+<td>The "or" operator: `a</td>
+<td>b` matches both "a" and "b"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>(...)</code></td>
+<td style="text-align:left">Makes a group. POWERFUL and necessary in most uses of regex. <br> <br> If you actually want to match parentheses, use a backslash: <code>\(</code></td>
 </tr>
 </tbody>
 </table>
-<p><code>\</code> | 1. escapes special characters <code>\*</code> will actuallye search for an asterisk. <br><br> 2. or signals a "special sequence"
-<code>[]</code> | Indicates a set of characters. In a set: <code>[amk]</code> will match 'a', 'm', or 'k'. <br> <br> Common ranges: <code>[a-z]</code>, <code>[A-Z]</code>,  <code>[0-9]</code>. You can combine ranges: <code>[A-Za-z0-9]</code>. <br> <br> Special characters lose their special meaning inside sets. For example, [(+<em>)] will match any of the literal characters '(', '+', '</em>', or ')'.
-<code>|</code> | The "or" operator: <code>a|b</code> matches both "a" and "b"
-<code>(...)</code> | Makes a group. POWERFUL and necessary in most uses of regex. <br> <br> If you actually want to match parentheses, use a backslash: <code>\(</code></p>
 <p>There is SO MANY more special characters. If you can imagine a "feature" in the pattern of a string, there is probably a special character. <code>\b</code> matches word boundaries, <code>\d for digits,</code>\s` for whitespace, and more.</p>
 <h3 id="Moral:-Most-&quot;regex&quot;-in-practice-is-just-Googling-for-someone-who-has-done-a-similar-thing.">Moral: Most "regex" in practice is just Googling for someone who has done a similar thing.<a class="anchor-link" href="#Moral:-Most-&quot;regex&quot;-in-practice-is-just-Googling-for-someone-who-has-done-a-similar-thing."> </a></h3>
 </div>
