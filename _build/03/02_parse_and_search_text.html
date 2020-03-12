@@ -1,0 +1,815 @@
+---
+redirect_from:
+  - "/03/02-parse-and-search-text"
+interact_link: content/03/02_parse_and_search_text.ipynb
+kernel_name: python3
+kernel_path: content/03
+has_widgets: false
+title: |-
+  Parsing and Searching Text
+pagenum: 18
+prev_page:
+  url: /03/01_Intro_to_scraping.html
+next_page:
+  url: 
+suffix: .ipynb
+search: match re string pattern m regex text ab search python r br want matches group w special repetitions object characters span findall quickly just not preceding regular numbers any dont words assignment html carefully compile isaac newton only ff z foo abbb sometimes expressions rules files lets com aka list returns wly similar d end put parenthesized few patterns case raw example possible n practice nearregex usually tags intro golden parsing why learning imagine document bunch phone enough makes computer within emails import common functions full here docs org library looks c abcdef strings disguised captured police finditer get s
+
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+    <main class="jupyter-page">
+    <div id="page-info"><div id="page-title">Parsing and Searching Text</div>
+</div>
+    <div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Outline">Outline<a class="anchor-link" href="#Outline"> </a></h2><ol>
+<li>Intro to "Regular Expressions"</li>
+<li>Golden rules for parsing text files</li>
+</ol>
+<h2 id="But-first...">But first...<a class="anchor-link" href="#But-first..."> </a></h2><p><a href="https://streamable.com/ys5ye">Let's check in on the local sports team.</a></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Intro-to-&quot;Regular-Expressions&quot;-(aka-&quot;regex&quot;-aka-&quot;regx&quot;-aka-&quot;re&quot;)">Intro to "Regular Expressions" (aka "regex" aka "regx" aka "re")<a class="anchor-link" href="#Intro-to-&quot;Regular-Expressions&quot;-(aka-&quot;regex&quot;-aka-&quot;regx&quot;-aka-&quot;re&quot;)"> </a></h2><h3 id="Why-are-we-learning-regex">Why are we learning regex<a class="anchor-link" href="#Why-are-we-learning-regex"> </a></h3><p>Q: Imagine you have a webpage or document which includes (buried in the text) a bunch of numbers. How can you collect all the phone numbers?</p>
+<p>A: Look for all the instances of this pattern: (###) ###-####.</p>
+<p>Your eyeballs can easily do that, but once the job involves enough enough numbers, it makes sense to let your computer do it for you.</p>
+<p>*<em>Regex is how you tell a computer to search for any pattern within a string.</em></p>
+<ul>
+<li>Phone numbers </li>
+<li>Emails (regex is why people don't spell out their emails "correctly" online)</li>
+<li>Addresses</li>
+<li>Certain words/topics (like assignment 5!)</li>
+</ul>
+<h3 id="Learning-by-playing">Learning by playing<a class="anchor-link" href="#Learning-by-playing"> </a></h3><p>Let's go to <a href="https://regexone.com/">https://regexone.com/</a> . Watch me first, then you can take off.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Regex-in-Python">Regex in Python<a class="anchor-link" href="#Regex-in-Python"> </a></h3><p>Regex is a skill that works in all programming languages, so this lesson is portable - you can use regex in R or whatever your language of choice is.</p>
+<p>But obviously, we're going to use python. <strong>Run <code>import re</code> to load the regex package.</strong></p>
+<h3 id="Common-functions:">Common functions:<a class="anchor-link" href="#Common-functions:"> </a></h3><p><a href="https://docs.python.org/3/library/re.html#module-contents">The full list of functions is here</a>.</p>
+<ul>
+<li><code>re.search(pattern, string, karg**)</code> looks for the <strong>first instance</strong> of the regex pattern within the string and returns a "match object" if one is found. Returns <code>None</code> if no match.  <div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;abcdef&quot;</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">re</span><span class="o">.</span><span class="n">Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="o">&gt;</span>
+</pre></div>
+</li>
+<li><code>re.findall(pattern,string)</code> returns a list of matching strings, and <strong>is how you can count the number of matches</strong><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;He was carefully disguised but captured quickly by police.&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\w+ly&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;carefully&#39;</span><span class="p">,</span> <span class="s1">&#39;quickly&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\w+ly&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+<span class="mi">2</span>
+</pre></div>
+</li>
+<li><code>re.finditer(pattern,string)</code> is similar to <code>findall</code> but gives you a list of match objects, which is nice if you want to get more info about the matches than just the string<div class="highlight"><pre><span></span><span class="c1"># i want to find all of the adverbs AND THEIR POSITIONS in some text</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;He was carefully disguised but captured quickly by police.&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\w+ly&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%02d</span><span class="s1">-</span><span class="si">%02d</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">(),</span> <span class="n">m</span><span class="o">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+<span class="mi">07</span><span class="o">-</span><span class="mi">16</span><span class="p">:</span> <span class="n">carefully</span>
+<span class="mi">40</span><span class="o">-</span><span class="mi">47</span><span class="p">:</span> <span class="n">quickly</span>
+</pre></div>
+</li>
+<li><code>pattern_to_use = re.compile(pattern)</code> will create a pattern you can put as the input to <code>search</code>, <code>find</code>, and <code>findall</code>.<div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+<span class="c1"># is equivalent to:</span>
+<span class="n">prog</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">prog</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</pre></div>
+</li>
+<li><code>.group(#)</code> if your search or match has parenthesized subgroups, you can access each parenthetical. <div class="highlight"><pre><span></span><span class="c1"># looks for two words with 1 space between</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\w+) (\w+)&quot;</span><span class="p">,</span> <span class="s2">&quot;Isaac Newton, physicist&quot;</span><span class="p">)</span>  
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>       <span class="c1"># The entire match</span>
+<span class="s1">&#39;Isaac Newton&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>       <span class="c1"># The first parenthesized subgroup.</span>
+<span class="s1">&#39;Isaac&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>       <span class="c1"># The second parenthesized subgroup.</span>
+<span class="s1">&#39;Newton&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1"># Multiple arguments give us a tuple.</span>
+<span class="p">(</span><span class="s1">&#39;Isaac&#39;</span><span class="p">,</span> <span class="s1">&#39;Newton&#39;</span><span class="p">)</span>
+</pre></div>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A few pointers:</p>
+<ul>
+<li>You only benefit from using <code>re.compile</code> when you are creating a bunch of regex patterns. In that case, you "compile" them and can immediately use them all quickly. But if you only have a few patterns, don't bother.</li>
+<li><code>re.match</code> is similar to <code>re.search</code>, but only starts at the beginning of the string. I don't use <code>match</code> almost ever.</li>
+</ul>
+<h3 id="Raw-string-notation">Raw string notation<a class="anchor-link" href="#Raw-string-notation"> </a></h3><p>You'll often see people put an "r" in from of the regex pattern. For example: <code>re.search(r"c", "abcdef")</code>.</p>
+<p><strong>Raw string notation (<code>r"text"</code>) keeps regular expressions sane. Without it, every backslash ('\') in a regular expression would have to be prefixed with another one to escape it.</strong></p>
+<div class="highlight"><pre><span></span><span class="c1"># These lines are functionally identical</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\W(.)\1\W&quot;</span><span class="p">,</span> <span class="s2">&quot; ff &quot;</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">re</span><span class="o">.</span><span class="n">Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s1">&#39; ff &#39;</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">W(.)</span><span class="se">\\</span><span class="s2">1</span><span class="se">\\</span><span class="s2">W&quot;</span><span class="p">,</span> <span class="s2">&quot; ff &quot;</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">re</span><span class="o">.</span><span class="n">Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s1">&#39; ff &#39;</span><span class="o">&gt;</span>
+
+<span class="c1"># so are these:</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">re</span><span class="o">.</span><span class="n">Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">re</span><span class="o">.</span><span class="n">Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="o">&gt;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Special-characters-to-build-your-patterns">Special characters to build your patterns<a class="anchor-link" href="#Special-characters-to-build-your-patterns"> </a></h3><p>Most of this is taken directly from the <a href="https://docs.python.org/3/library/re.html">official documentation</a>.</p>
+<table>
+<thead><tr>
+<th style="text-align:left">Char</th>
+<th style="text-align:left">Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>.</code></td>
+<td style="text-align:left">any character except a newline</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>^</code></td>
+<td style="text-align:left">start of the string <br> <br> <code>^[a-z]+</code> matches the "hi" in "hi there" but not "there"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>$</code></td>
+<td style="text-align:left">end of the string or just before the newline at the end of the string <br> <br>   <code>foo</code> matches both 'foo' and 'foobar', but <code>foo$</code> matches only 'foo'</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>*</code></td>
+<td style="text-align:left">match 0 or more repetitions of the preceding RE, as many repetitions as are possible. <code>ab*</code> will match "a", "ab", or "abbbbbbb"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>+</code></td>
+<td style="text-align:left">match 1 or more repetitions of the preceding RE, as many repetitions as are possible. <code>ab+</code> will match "ab", or "abbbbbbb" but not "a"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>?</code></td>
+<td style="text-align:left">match 0 or 1 repetitions of the preceding RE. <code>ab?</code> will match "a" and "ab"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{m}</code></td>
+<td style="text-align:left">match <code>m</code> repetitions of the preceding RE. <code>ab{3}</code> will match "abbb" but not "abb"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{m,n}</code></td>
+<td style="text-align:left">match <code>m</code> to <code>n</code> repetitions of the preceding RE. <code>ab{3,5}</code> will match "abbb" and "abbbbb" but not "abb"</td>
+</tr>
+</tbody>
+</table>
+<p>Note: Do you want the largest match or the smallest?</p>
+<ul>
+<li><strong><code>*</code>, <code>+</code>, <code>{m}</code> and <code>{m,n}</code> are GREEDY: they match as much text as possible.</strong> So if you search <code>ab+</code> against "abbb" it will match the full string "abbb". But sometimes you want</li>
+<li>If you add <code>?</code> to any of those, it will perform the match in a minimal way: using <code>ab+</code> on string "abbbbb" will just return "ab". Use <code>ab*</code> instead and you'll get "a". </li>
+</ul>
+<table>
+<thead><tr>
+<th style="text-align:left">Char</th>
+<th style="text-align:left">Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>\</code></td>
+<td style="text-align:left">1. escapes special characters <code>\*</code> will actuallye search for an asterisk. <br><br> 2. or signals a "special sequence"</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>[]</code></td>
+<td style="text-align:left">Indicates a set of characters. In a set: <code>[amk]</code> will match 'a', 'm', or 'k'. <br> <br> Common ranges: <code>[a-z]</code>, <code>[A-Z]</code>,  <code>[0-9]</code>. You can combine ranges: <code>[A-Za-z0-9]</code>. <br> <br> Special characters lose their special meaning inside sets. For example, <code>[(+*)]</code> will match any of the literal characters <code>(</code>, <code>+</code>, <code>*</code>, or <code>)</code>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>(...)</code></td>
+<td style="text-align:left">Makes a group. POWERFUL and necessary in most uses of regex. <br> <br> If you actually want to match parentheses, use a backslash: <code>\(</code></td>
+</tr>
+</tbody>
+</table>
+<p>There is SO MANY more special characters. If you can imagine a "feature" in the pattern of a string, there is probably a special character. <code>\b</code> matches word boundaries, <code>\d for digits,</code>\s` for whitespace, and more.</p>
+<h3 id="Moral:-Most-&quot;regex&quot;-in-practice-is-just-Googling-for-someone-who-has-done-a-similar-thing.">Moral: Most "regex" in practice is just Googling for someone who has done a similar thing.<a class="anchor-link" href="#Moral:-Most-&quot;regex&quot;-in-practice-is-just-Googling-for-someone-who-has-done-a-similar-thing."> </a></h3>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Developing-your-regex">Developing your regex<a class="anchor-link" href="#Developing-your-regex"> </a></h2><ol>
+<li>Think of the PATTERN you want to capture in general terms. "I want three letter words."</li>
+<li>Write <code>pattern = "\w{3}"</code> and then try it on a few practice strings. The goal is to BREAK your pattern, find out where it fails, and notice new parts of the pattern you missed.</li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;\w</span><span class="si">{3}</span><span class="s2">&quot;</span>
+<span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span><span class="s2">&quot;hey there guy&quot;</span><span class="p">)</span> <span class="c1"># whoops, &quot;the&quot; isnt a 3 letter word</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;hey&#39;, &#39;the&#39;]</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># tried but failed: </span>
+<span class="c1">#      &quot;(\w{3}) &quot;     &lt;-- a space</span>
+<span class="c1">#      &quot;(\w{3})\b&quot;    &lt;-- a word boundary should work! why not?</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(\w</span><span class="si">{3}</span><span class="s2">)\b&quot;</span> <span class="c1"># trying that raw string notation thing </span>
+<span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span><span class="s2">&quot;hey there guy&quot;</span><span class="p">)</span>  
+<span class="c1"># it made the `\b` work!, but pattern still it is failing...</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;hey&#39;, &#39;ere&#39;, &#39;guy&#39;]</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\b(\w</span><span class="si">{3}</span><span class="s2">)\b&quot;</span>  <span class="c1"># make sur the word has a boundary before it</span>
+<span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span><span class="s2">&quot;hey there guy&quot;</span><span class="p">)</span>  <span class="c1"># got it!</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;hey&#39;, &#39;guy&#39;]</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Finding-words-near-each-other">Finding words near each other<a class="anchor-link" href="#Finding-words-near-each-other"> </a></h2><p>You can find and download <a href="https://raw.githubusercontent.com/danielappierto/ASGN05-dapp101/master/NEAR_regex.py?token=AMEHJ2YH7URQERQBKEPDPWK6NJKTU">this function here</a>.</p>
+<p>I usually put it in the same folder as my code for an assignment, and then in the assignment write <code>from NEAR_regex import NEAR_regex</code>. Then, you can use it in an assignment without pasting this big block of code into it.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">NEAR_regex</span><span class="p">(</span><span class="n">list_of_words</span><span class="p">,</span><span class="n">max_words_between</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">partial</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">cases_matter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    list_of_words : list</span>
+<span class="sd">        A list of &quot;words&quot;, each element is a string</span>
+<span class="sd">        </span>
+<span class="sd">        This program will return a regex that will look for times where word1 </span>
+<span class="sd">        is near word2, or word2 is near word 1.</span>
+<span class="sd">        </span>
+<span class="sd">        It works with multiple words: You can see if words1 is near word2 or</span>
+<span class="sd">        word3. </span>
+<span class="sd">        </span>
+<span class="sd">    max_words_between : int, optional</span>
+<span class="sd">        How many &quot;words&quot; are allowed between words in list_of_words. The default</span>
+<span class="sd">        is 5, but you should consider this carefully.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;words&quot; in between are chunks of characters. &quot;DON don don- don12 2454&quot; </span>
+<span class="sd">        is 5 words.</span>
+<span class="sd">        </span>
+<span class="sd">        This will not allow matches if the words are separated by a newline </span>
+<span class="sd">        (&quot;\n&quot;) character.</span>
+<span class="sd">        </span>
+<span class="sd">    partial : Boolean, optional</span>
+<span class="sd">        If true, will accept longer words than you give. For example, if one </span>
+<span class="sd">        word in your list is &quot;how&quot;, it will match to &quot;howdy&quot;. Be careful in </span>
+<span class="sd">        choosing this based on your problem. Partial makes more sense with </span>
+<span class="sd">        longer words. </span>
+<span class="sd">        The default is True.</span>
+<span class="sd">        </span>
+<span class="sd">    cases_matter: Boolean, optional bt IMPORTANT</span>
+<span class="sd">        If True, will return a regex string that will only catch cases where  </span>
+<span class="sd">        words in the string have the same case as given as input to this </span>
+<span class="sd">        function. For example, if one word here is &quot;Hi&quot;, then the regex </span>
+<span class="sd">        produced by this function will not catch &quot;hi&quot;.</span>
+<span class="sd">        </span>
+<span class="sd">        If false, will return a regex string that will only work if all letters</span>
+<span class="sd">        in search string are lowercase.</span>
+<span class="sd">        </span>
+<span class="sd">        The default is True.</span>
+<span class="sd">     </span>
+<span class="sd">        </span>
+<span class="sd">    Warning / Feature</span>
+<span class="sd">    -------</span>
+<span class="sd">    This WILL find matches where the words are separated by line breaks.</span>
+<span class="sd">    </span>
+<span class="sd">    I recommend purging line breaks from your strings, in most cases, unless </span>
+<span class="sd">    you are SURE the only breaks left are meaningful paragraph breaks. </span>
+<span class="sd">    </span>
+<span class="sd">        </span>
+<span class="sd">    Unsure about speed</span>
+<span class="sd">    -------</span>
+<span class="sd">    I don&#39;t think this is a very &quot;fast&quot; function, but it should be robust. </span>
+<span class="sd">  </span>
+<span class="sd">    </span>
+<span class="sd">    Suggested use</span>
+<span class="sd">    -------</span>
+<span class="sd">    a_string_you_have = &#39;Jack and Jill went up the hill&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    # 1. define words and set up the regex</span>
+<span class="sd">    words = [&#39;jack&#39;,&#39;hill&#39;]                         </span>
+<span class="sd">    rgx = NEAR_regex(words)                       </span>
+<span class="sd">    </span>
+<span class="sd">    # 2. convert the string to lowercase before searching!</span>
+<span class="sd">    a_string_you_have = a_string_you_have.lower()   </span>
+<span class="sd">    </span>
+<span class="sd">    # 3. len+findall+rgx = counts the number of times the word groups are close</span>
+<span class="sd">    count = len(re.findall(rgx,test))              </span>
+<span class="sd">    print(count)                                 </span>
+
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A string which is a regex that can be used to look for cases where all the </span>
+<span class="sd">    input words are near each other.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+               
+    <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">permutations</span>
+    
+    <span class="n">start</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;(?:\b&#39;</span> <span class="c1"># the r means &quot;raw&quot; as in the backslash is just a backslash, not an escape character</span>
+    
+    <span class="k">if</span> <span class="n">partial</span><span class="p">:</span>
+        <span class="n">gap</span>   <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;[A-Za-z]*\b(?: +[^ \n\r]*){0,&#39;</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">max_words_between</span><span class="p">)</span><span class="o">+</span><span class="sa">r</span><span class="s1">&#39;} *\b&#39;</span>
+        <span class="n">end</span>   <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;[A-Za-z]*\b)&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gap</span>   <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\b(?: +[^ \n]*){0,&#39;</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">max_words_between</span><span class="p">)</span><span class="o">+</span><span class="sa">r</span><span class="s1">&#39;} *\b&#39;</span>
+        <span class="n">end</span>   <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\b)&#39;</span>
+        
+    <span class="n">regex_list</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">permu</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">permutations</span><span class="p">(</span><span class="n">list_of_words</span><span class="p">)):</span>
+        <span class="c1"># catch this permutation: start + word + gap (+ word + gap)... + end</span>
+        <span class="k">if</span> <span class="n">cases_matter</span><span class="p">:</span> <span class="c1"># case sensitive - what cases the user gives are given back</span>
+              <span class="n">regex_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="o">+</span><span class="n">gap</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">permu</span><span class="p">)</span><span class="o">+</span><span class="n">end</span><span class="p">)</span>           
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># the resulting search will only work if all words are lowercase</span>
+            <span class="n">lowerpermu</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">permu</span><span class="p">]</span>
+            <span class="n">regex_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="o">+</span><span class="n">gap</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lowerpermu</span><span class="p">)</span><span class="o">+</span><span class="n">end</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">regex_list</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">test</span>  <span class="o">=</span> <span class="s1">&#39;This is a partial string another break with words&#39;</span>
+<span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;part&#39;</span><span class="p">,</span><span class="s1">&#39;with&#39;</span><span class="p">]</span>
+<span class="n">rgx</span>   <span class="o">=</span> <span class="n">NEAR_regex</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">rgx</span><span class="p">,</span><span class="n">test</span><span class="p">)))</span>            <span class="c1"># no match (partials not allowed) - good!</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rgx</span> <span class="o">=</span> <span class="n">NEAR_regex</span><span class="p">(</span><span class="n">words</span><span class="p">,</span><span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">rgx</span><span class="p">,</span><span class="n">test</span><span class="p">)))</span>            <span class="c1"># match (partials allowed) - good!</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rgx</span>   <span class="o">=</span> <span class="n">NEAR_regex</span><span class="p">(</span><span class="n">words</span><span class="p">,</span><span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">max_words_between</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">rgx</span><span class="p">,</span><span class="n">test</span><span class="p">)))</span>            <span class="c1"># no match (too far apart) - good!</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;part&#39;</span><span class="p">,</span><span class="s1">&#39;With&#39;</span><span class="p">]</span>
+<span class="n">rgx</span>   <span class="o">=</span> <span class="n">NEAR_regex</span><span class="p">(</span><span class="n">words</span><span class="p">,</span><span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">cases_matter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">rgx</span><span class="p">,</span><span class="n">test</span><span class="p">)))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;part&#39;</span><span class="p">,</span><span class="s1">&#39;with&#39;</span><span class="p">,</span><span class="s1">&#39;this&#39;</span><span class="p">]</span>
+<span class="n">rgx</span> <span class="o">=</span> <span class="n">NEAR_regex</span><span class="p">(</span><span class="n">words</span><span class="p">,</span><span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">rgx</span><span class="p">,</span><span class="n">test</span><span class="p">)))</span>           <span class="c1"># no match - good! &quot;This&quot; != &quot;this&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">rgx</span><span class="p">,</span><span class="n">test</span><span class="o">.</span><span class="n">lower</span><span class="p">())))</span>    <span class="c1"># match - good!</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+1
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test</span>  <span class="o">=</span> <span class="s1">&#39;This is a partial string </span><span class="se">\n</span><span class="s1"> another break with words&#39;</span>
+<span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;part&#39;</span><span class="p">,</span><span class="s1">&#39;with&#39;</span><span class="p">]</span>
+<span class="n">rgx</span> <span class="o">=</span> <span class="n">NEAR_regex</span><span class="p">(</span><span class="n">words</span><span class="p">,</span><span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">rgx</span><span class="p">,</span><span class="n">test</span><span class="p">)))</span>            <span class="c1"># fails because of the \n break</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test</span>  <span class="o">=</span> <span class="s1">&#39;This is a partial string </span><span class="se">\r</span><span class="s1"> another break with words&#39;</span>
+<span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;part&#39;</span><span class="p">,</span><span class="s1">&#39;with&#39;</span><span class="p">]</span>
+<span class="n">rgx</span> <span class="o">=</span> <span class="n">NEAR_regex</span><span class="p">(</span><span class="n">words</span><span class="p">,</span><span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">rgx</span><span class="p">,</span><span class="n">test</span><span class="p">)))</span>            <span class="c1"># fails with \r too.</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test</span>  <span class="o">=</span> <span class="s1">&#39;This is a partial string                      another break with words&#39;</span>
+<span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;part&#39;</span><span class="p">,</span><span class="s1">&#39;with&#39;</span><span class="p">]</span>
+<span class="n">rgx</span> <span class="o">=</span> <span class="n">NEAR_regex</span><span class="p">(</span><span class="n">words</span><span class="p">,</span><span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">rgx</span><span class="p">,</span><span class="n">test</span><span class="p">)))</span>            <span class="c1"># extra spaces don&#39;t affect</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Golden-rules-for-parsing-text-files">Golden rules for parsing text files<a class="anchor-link" href="#Golden-rules-for-parsing-text-files"> </a></h2><p>These rules should usually be followed, but there are exceptions. For example, sometimes, the case of a letter matters, and sometimes, keeping punctuation can help. But usually, textual analysis proceeds as follows:</p>
+<ol>
+<li>Use html tags to change/remove unneeded sections. If there are tables you don't want to parse or useless header or footer information, toss them out. Sometimes, you can use the hmtl tags to extract just the part of files you want. If so, do it! If not, proceed: </li>
+<li>Remove html tags, and turn the document into a pure text string.</li>
+<li>Lower case everything.</li>
+<li>Delete punctuation. </li>
+<li>Delete all excess whitespace.</li>
+<li>Now you can search/parse the text.</li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Practice">Practice<a class="anchor-link" href="#Practice"> </a></h2><p>Let's use Telsa:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.sec.gov/Archives/edgar/data/1318605/000156459019003165/0001564590-19-003165.txt&#39;</span>
+<span class="n">edgar_resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="c1"># save the url</span>
+<span class="c1"># then in the next part of assignment, youll load it again</span>
+<span class="c1"># here - i&#39;m skipping those steps so we can grab one document to look at</span>
+
+<span class="n">loaded_file</span> <span class="o">=</span> <span class="n">edgar_resp</span><span class="o">.</span><span class="n">content</span>
+
+<span class="kn">from</span> <span class="nn">NEAR_regex</span> <span class="kn">import</span> <span class="n">NEAR_regex</span> 
+
+<span class="n">help</span><span class="p">(</span><span class="n">NEAR_regex</span><span class="p">)</span>
+
+<span class="c1"># try to use NEAR_regex... look for it working and failing...</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+ 
+
+
+    </main>
+    
