@@ -1,5 +1,5 @@
 
-use "inputs/CCM_cleaned_for_class.dta", clear
+use "../CCM_cleaned_for_class.dta", clear
 keep if fyear == 2006
 duplicates report  lpermno fyear, joint
 
