@@ -74,6 +74,14 @@
   - title: "Parsing and Searching Text"
     url: /03/02_parse_and_search_text
 
+
+- title: "Models - Prediction and Interpretation"
+  url: /04/00_intro
+  not_numbered: true  
+  sections:
+  - title: "Modeling Intro"
+    url: /04/01_modeling_intro  
+
 #    subsections:
 #    - url: /01/3/subsection/subsections
 #    - url: /01/3/subsection/subsectiontwo
