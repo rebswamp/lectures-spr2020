@@ -81,6 +81,8 @@
   sections:
   - title: "Modeling Intro"
     url: /04/01_modeling_intro  
+  - title: "Running Some Regressions"
+    url: /04/02_regression_mechanics
 
 #    subsections:
 #    - url: /01/3/subsection/subsections
