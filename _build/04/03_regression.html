@@ -13,7 +13,7 @@ prev_page:
 next_page:
   url: 
 suffix: .ipynb
-search: beta y regression x align text log variables diamonds good ideal hat variable begin end cut fair price carat model categorical data fit sklearn dummy uparrow avg values value u higher very statsmodels media giphy different cases premium line its get same nice above html qualitative aka term changes com e g estimate predicted including sum method linear carats diamond average increase interpretation project coefficients gif called want might error estimation errors those python regressions tables because training api easily here example means unit units year w industry better slope rds page github io assignments results numerically interpret mechanical continuous
+search: beta y regression x align text log variables diamonds good ideal hat variable begin end cut fair price carat model categorical data fit sklearn dummy uparrow avg values value u higher very statsmodels media giphy different cases premium line its get same nice above html qualitative aka term changes com e g estimate predicted including sum method linear carats diamond average increase interpretation project coefficients gif called want might error estimation errors those python regressions tables because training api easily here example means unit units year h industry better slope rds page github io assignments results numerically interpret mechanical continuous
 
 comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
 ---
@@ -233,7 +233,7 @@ Dep. Variable:                 lprice   R-squared:                       0.933
 Model:                            OLS   Adj. R-squared:                  0.933
 Method:                 Least Squares   F-statistic:                 7.542e+05
 Date:                Tue, 24 Mar 2020   Prob (F-statistic):               0.00
-Time:                        13:18:18   Log-Likelihood:                -4073.2
+Time:                        19:22:30   Log-Likelihood:                -4073.2
 No. Observations:               53797   AIC:                             8150.
 Df Residuals:                   53795   BIC:                             8168.
 Df Model:                           1                                         
@@ -497,7 +497,7 @@ Dep. Variable:                 lprice   R-squared:                       0.936
 Model:                            OLS   Adj. R-squared:                  0.936
 Method:                 Least Squares   F-statistic:                 3.914e+05
 Date:                Tue, 24 Mar 2020   Prob (F-statistic):               0.00
-Time:                        13:18:54   Log-Likelihood:                -3136.4
+Time:                        19:22:33   Log-Likelihood:                -3136.4
 No. Observations:               53797   AIC:                             6279.
 Df Residuals:                   53794   BIC:                             6306.
 Df Model:                           2                                         
@@ -575,7 +575,7 @@ Warnings:
   <th>Date:</th>             <td>Tue, 24 Mar 2020</td> <th>  Prob (F-statistic):</th> <td>2.66e-204</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>13:18:54</td>     <th>  Log-Likelihood:    </th> <td> -76477.</td> 
+  <th>Time:</th>                 <td>19:22:34</td>     <th>  Log-Likelihood:    </th> <td> -76477.</td> 
 </tr>
 <tr>
   <th>No. Observations:</th>      <td> 53797</td>      <th>  AIC:               </th> <td>1.530e+05</td>
@@ -805,7 +805,7 @@ y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
 \end{align}<ul>
 <li>$\beta_1$ estimates the expected change in Y for a 1 unit increase in $X_1$ (as we covered above).</li>
 <li>But predictors usually change together!!!</li>
-<li><p>If Y = number of tackles by a football player in a year, $W$ is weight, and $W$ is height, and we estimate that</p>
+<li><p>If Y = number of tackles by a football player in a year, $W$ is weight, and $H$ is height, and we estimate that</p>
 <p>\begin{align}
   y = a +\hat{0.5} W + \hat{-0.1} H
   \end{align}</p>
@@ -864,7 +864,7 @@ y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;seaborn.axisgrid.FacetGrid at 0x1dc71050588&gt;</pre>
+<pre>&lt;seaborn.axisgrid.FacetGrid at 0x1d90e51f9c8&gt;</pre>
 </div>
 
 </div>
@@ -915,7 +915,7 @@ y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sm_ols</span><span class="p">(</span><span class="s1">&#39;lprice ~ lcarat + ideal + lcarat*ideal&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">subsample</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sm_ols</span><span class="p">(</span><span class="s1">&#39;lprice ~ lcarat + ideal + lcarat*ideal&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">subsample_of_equal_amounts</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -928,15 +928,71 @@ y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
 <div class="jb_output_wrapper }}">
 <div class="output_area">
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-11-29a5b7832395&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>sm_ols<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;lprice ~ lcarat + ideal + lcarat*ideal&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> data<span class="ansi-yellow-intense-fg ansi-bold">=</span>subsample<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>fit<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>summary<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
 
-<span class="ansi-red-intense-fg ansi-bold">NameError</span>: name &#39;subsample&#39; is not defined</pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table class="simpletable">
+<caption>OLS Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>         <td>lprice</td>      <th>  R-squared:         </th> <td>   0.900</td>
+</tr>
+<tr>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.899</td>
+</tr>
+<tr>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   2378.</td>
+</tr>
+<tr>
+  <th>Date:</th>             <td>Tue, 24 Mar 2020</td> <th>  Prob (F-statistic):</th>  <td>  0.00</td> 
+</tr>
+<tr>
+  <th>Time:</th>                 <td>19:22:34</td>     <th>  Log-Likelihood:    </th> <td> -148.45</td>
+</tr>
+<tr>
+  <th>No. Observations:</th>      <td>   800</td>      <th>  AIC:               </th> <td>   304.9</td>
+</tr>
+<tr>
+  <th>Df Residuals:</th>          <td>   796</td>      <th>  BIC:               </th> <td>   323.6</td>
+</tr>
+<tr>
+  <th>Df Model:</th>              <td>     3</td>      <th>                     </th>     <td> </td>   
+</tr>
+<tr>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>   
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+            <td></td>              <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>Intercept</th>            <td>    8.1812</td> <td>    0.015</td> <td>  546.823</td> <td> 0.000</td> <td>    8.152</td> <td>    8.211</td>
+</tr>
+<tr>
+  <th>ideal[T.True]</th>        <td>    0.3488</td> <td>    0.025</td> <td>   13.904</td> <td> 0.000</td> <td>    0.300</td> <td>    0.398</td>
+</tr>
+<tr>
+  <th>lcarat</th>               <td>    1.4810</td> <td>    0.032</td> <td>   46.542</td> <td> 0.000</td> <td>    1.419</td> <td>    1.543</td>
+</tr>
+<tr>
+  <th>lcarat:ideal[T.True]</th> <td>    0.2661</td> <td>    0.041</td> <td>    6.479</td> <td> 0.000</td> <td>    0.185</td> <td>    0.347</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Omnibus:</th>       <td>10.238</td> <th>  Durbin-Watson:     </th> <td>   1.966</td>
+</tr>
+<tr>
+  <th>Prob(Omnibus):</th> <td> 0.006</td> <th>  Jarque-Bera (JB):  </th> <td>  15.981</td>
+</tr>
+<tr>
+  <th>Skew:</th>          <td>-0.026</td> <th>  Prob(JB):          </th> <td>0.000339</td>
+</tr>
+<tr>
+  <th>Kurtosis:</th>      <td> 3.690</td> <th>  Cond. No.          </th> <td>    6.22</td>
+</tr>
+</table><br/><br/>Warnings:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 </div>
+
 </div>
 </div>
 </div>
