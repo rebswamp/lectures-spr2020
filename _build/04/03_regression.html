@@ -1,0 +1,995 @@
+---
+redirect_from:
+  - "/04/03-regression"
+interact_link: content/04/03_regression.ipynb
+kernel_name: python3
+kernel_path: content/04
+has_widgets: false
+title: |-
+  Regression - Mechanics and Interpretation
+pagenum: 22
+prev_page:
+  url: /04/02_git_collaboration.html
+next_page:
+  url: 
+suffix: .ipynb
+search: beta y regression x align text log variables diamonds good ideal hat variable begin end cut fair price carat model categorical data fit sklearn dummy uparrow avg values value u higher very statsmodels media giphy different cases premium line its get same nice above html qualitative aka term changes com e g estimate predicted including sum method linear carats diamond average increase interpretation project coefficients gif called want might error estimation errors those python regressions tables because training api easily here example means unit units year w industry better slope rds page github io assignments results numerically interpret mechanical continuous
+
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+    <main class="jupyter-page">
+    <div id="page-info"><div id="page-title">Regression - Mechanics and Interpretation</div>
+</div>
+    <div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Regression---Mechanics-and-Interpretation">Regression - Mechanics and Interpretation<a class="anchor-link" href="#Regression---Mechanics-and-Interpretation"> </a></h1><h2 id="Housecleaning">Housecleaning<a class="anchor-link" href="#Housecleaning"> </a></h2><ol>
+<li>Assignment 5 review</li>
+<li>All project instructions moved to <a href="https://ledatascifi.github.io/assignments/project.html">project page</a> under assignments tab</li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Objectives">Objectives<a class="anchor-link" href="#Objectives"> </a></h2><ol>
+<li>You can fit a regression with <code>statsmodels</code> or <code>sklearn</code></li>
+<li>You can view the results visually or numerically of your model with either </li>
+<li>You can interpret the mechanical meaning of the coefficients in a regression<ul>
+<li>continuous variables</li>
+<li>categorical a.k.a qualitative variables with two values (aka "dummy" or "binary" variables)</li>
+<li>categorical a.k.a qualitative variables with more than values (aka "fixed effects")</li>
+<li>how an interaction term changes interpretation</li>
+</ul>
+</li>
+<li>You understand what a t-stat / p-value does and does not tell you</li>
+<li>You can measure the goodness of fit on a regression</li>
+<li>You are aware of common regression analysis pitfalls and disasters</li>
+</ol>
+<p><img src="https://media.giphy.com/media/yoJC2K6rCzwNY2EngA/giphy.gif" alt=""></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Regression">Regression<a class="anchor-link" href="#Regression"> </a></h2><h3 id="Basics-and-notation">Basics and notation<a class="anchor-link" href="#Basics-and-notation"> </a></h3><ul>
+<li><strong>Regression</strong> is the single most important tool at the econometrician's disposal</li>
+<li><strong>Regression analysis</strong> is concerned with the description and evaluation of the relationship between a variable typically called the dependent variable, and one or more other variables, typically called the independent or explanatory variables.</li>
+<li>Alternative vocabulary:</li>
+</ul>
+<table>
+<thead><tr>
+<th style="text-align:left">y</th>
+<th style="text-align:left">x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">dependent variable</td>
+<td style="text-align:left">independent variables</td>
+</tr>
+<tr>
+<td style="text-align:left">regressand</td>
+<td style="text-align:left">regressors</td>
+</tr>
+<tr>
+<td style="text-align:left">effect variable</td>
+<td style="text-align:left">causal variables</td>
+</tr>
+<tr>
+<td style="text-align:left">explained variable</td>
+<td style="text-align:left">explanatory variables</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">features</td>
+</tr>
+</tbody>
+</table>
+<h3 id="The-regression-&quot;model&quot;-and-terminology">The regression "model" and terminology<a class="anchor-link" href="#The-regression-&quot;model&quot;-and-terminology"> </a></h3><p>If you want to describe the data (the scatterplot below, e.g.) you might fit a straight line</p>
+\begin{align} 
+y=a+\beta x
+\end{align}<p></p>
+<p>But that line can't exactly fit all the points of data (it's impossible to find all determinants of $y$ and $y$ may be mismeasured), so you need to account for the discrepancies, and so we add a "error term" or "disturbance" denoted by $u$</p>
+\begin{align} 
+y=a+\beta x+u
+\end{align}<p></p>
+<!-- explain reasons the u term exists -->
+
+<p>Now, we want to estimate $a$ and $\beta$ to best "fit" the data. Imagine you pick/estimate $\hat{a}$ and $\hat{\beta}$  to fit the data. If you apply that to all the X data points like $\hat{a} + \hat{\beta}x$ , then you get a <strong>predicted value for $y$</strong>:</p>
+\begin{align} 
+\hat{y} = \hat{a} + \hat{\beta}x
+\end{align}<p></p>
+<p>We call $\hat{y}$ the "fitted values" or the "predicted values" of y. And the difference between each actual $y$ and the predicted $\hat{y}$ is called the <strong>residual</strong> or <strong>error</strong>:</p>
+\begin{align} 
+y-\hat{y} = \hat{u} = \text{"residual" aka "error"}
+\end{align}<p></p>
+<p>The goal of estimation (any estimation, including regression) is to make these errors as "small" as possible. Regression is aka'ed as "Ordinary Least Squares" which as it sounds, takes those errors, squares them, adds those up, and minimizes the sum</p>
+\begin{align} 
+   \min &amp; \sum(y-\hat{y})^2 
+ = \min &amp; \sum(y-\hat{a} + \hat{\beta}x) 
+\end{align}<p></p>
+<p>So, to combine this with the "Modeling Intro" lecture, regression follows the same steps as any estimation:</p>
+<ol>
+<li>Select a model. _In a regression, the model is a line (if you only have 1 X variable) or a hyperplane (if you have many X variables).)</li>
+<li>Select a loss function. <em>In a regression, it's the sum of squared errors.</em></li>
+<li>Minimize the loss. <em>You can solve for the minimum analytically (take the derivative, ...) or numerically (gradient descent). Our python packages below handle this for you.</em></li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Running-regressions---codebook">Running regressions - codebook<a class="anchor-link" href="#Running-regressions---codebook"> </a></h3><ul>
+<li>3 ways to fit a regression</li>
+<li>Which ever you choose, you need to be able to extract the coefficients, t-stats, R2, AR2, residuals, and predicted values.</li>
+</ul>
+<p>Let's get our hands dirty quickly by loading data... and do a demo on diamonds</p>
+<p><img src="https://media.giphy.com/media/piXrzDejeWIM/giphy.gif" alt=""></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># load some data to practice regressions</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">diamonds</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;diamonds&#39;</span><span class="p">)</span>
+
+<span class="c1"># this alteration is not strictly necessary to practice a regression</span>
+<span class="c1"># but we use this in livecoding</span>
+<span class="n">diamonds2</span> <span class="o">=</span> <span class="p">(</span><span class="n">diamonds</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;carat &lt; 2.5&#39;</span><span class="p">)</span>               <span class="c1"># censor/remove outliers</span>
+            <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">lprice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">diamonds</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]))</span>  <span class="c1"># log transform price</span>
+            <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">lcarat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">diamonds</span><span class="p">[</span><span class="s1">&#39;carat&#39;</span><span class="p">]))</span>  <span class="c1"># log transform carats</span>
+            <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">ideal</span> <span class="o">=</span> <span class="n">diamonds</span><span class="p">[</span><span class="s1">&#39;cut&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Ideal&#39;</span><span class="p">)</span> 
+             
+             <span class="c1"># some regression packages want you to explicitly provide </span>
+             <span class="c1"># a variable for the constant</span>
+            <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">const</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>                           
+            <span class="p">)</span>  
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We will cover examples with <code>statsmodels</code> and <code>sklearn</code>.</p>
+<ul>
+<li>I prefer <code>statsmodels</code> when I want to look at tables of results and find specifying the model easier sometimes</li>
+<li>I prefer <code>sklearn</code> when I'm using regression within a prediction/ML exercise because <code>sklearn</code> has nice tools to construct "training" and "testing" samples</li>
+</ul>
+<h4 id="Regression-method-1:--statsmodels.api:">Regression method 1:  <code>statsmodels.api</code>:<a class="anchor-link" href="#Regression-method-1:--statsmodels.api:"> </a></h4>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>  
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">diamonds2</span><span class="p">[</span><span class="s1">&#39;lprice&#39;</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">diamonds2</span><span class="p">[[</span><span class="s1">&#39;const&#39;</span><span class="p">,</span><span class="s1">&#39;lcarat&#39;</span><span class="p">]]</span>
+
+<span class="n">model1</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">X</span><span class="p">)</span>                <span class="c1"># pick model type and specify model features</span>
+<span class="n">results1</span> <span class="o">=</span> <span class="n">model1</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>             <span class="c1"># estimate / fit</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results1</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>           <span class="c1"># view results </span>
+<span class="n">y_predicted1</span> <span class="o">=</span> <span class="n">results1</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>   <span class="c1"># get the predicted results</span>
+<span class="n">residuals1</span> <span class="o">=</span> <span class="n">results1</span><span class="o">.</span><span class="n">resid</span>         <span class="c1"># get the residuals</span>
+<span class="c1">#residuals1 = y - y_predicted1      # another way to get the residuals</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 lprice   R-squared:                       0.933
+Model:                            OLS   Adj. R-squared:                  0.933
+Method:                 Least Squares   F-statistic:                 7.542e+05
+Date:                Tue, 24 Mar 2020   Prob (F-statistic):               0.00
+Time:                        13:18:18   Log-Likelihood:                -4073.2
+No. Observations:               53797   AIC:                             8150.
+Df Residuals:                   53795   BIC:                             8168.
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          8.4525      0.001   6193.432      0.000       8.450       8.455
+lcarat         1.6819      0.002    868.465      0.000       1.678       1.686
+==============================================================================
+Omnibus:                      775.052   Durbin-Watson:                   1.211
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1334.265
+Skew:                           0.106   Prob(JB):                    1.85e-290
+Kurtosis:                       3.742   Cond. No.                         2.10
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Regression-method-2:--statsmodels.formula.api:">Regression method 2:  <code>statsmodels.formula.api</code>:<a class="anchor-link" href="#Regression-method-2:--statsmodels.formula.api:"> </a></h4><p>I like this because you can write the equation out more naturally, and it allows you to easily include categorical variables. <a href="https://stackoverflow.com/questions/50733014/linear-regression-with-dummy-categorical-variables">See here</a> for an example of that.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_remove_output">
+
+<div class="cell border-box-sizing code_cell rendered tag_remove_output">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">import</span> <span class="n">ols</span> <span class="k">as</span> <span class="n">sm_ols</span>
+
+<span class="n">model2</span>   <span class="o">=</span> <span class="n">sm_ols</span><span class="p">(</span><span class="s1">&#39;lprice ~ lcarat&#39;</span><span class="p">,</span>  <span class="c1"># specify model (you don&#39;t need to include the constant!)</span>
+                  <span class="n">data</span><span class="o">=</span><span class="n">diamonds2</span><span class="p">)</span>
+<span class="n">results2</span> <span class="o">=</span> <span class="n">model2</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>               <span class="c1"># estimate / fit</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results2</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>             <span class="c1"># view results ... identical to before</span>
+
+<span class="c1"># the prediction and residual and plotting are the exact same</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Regression-method-3:--sklearn:">Regression method 3:  <code>sklearn</code>:<a class="anchor-link" href="#Regression-method-3:--sklearn:"> </a></h4><p><code>sklearn</code> is pretty similar but it doesn't have the nice summary tables:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+
+<span class="n">model3</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>         
+<span class="n">results3</span> <span class="o">=</span> <span class="n">model3</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;INTERCEPT:&#39;</span><span class="p">,</span> <span class="n">results3</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>  <span class="c1"># yuck, definitely uglier</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;COEFS:&#39;</span><span class="p">,</span> <span class="n">results3</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> 
+
+<span class="c1"># the fitted predictions/residuals are just a little diff</span>
+<span class="n">y_predicted3</span> <span class="o">=</span> <span class="n">results3</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
+<span class="n">residuals3</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">y_predicted3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>INTERCEPT: 8.452511832951718
+COEFS: [0.         1.68193567]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That's so much uglier. Why use <code>sklearn</code>?</p>
+<p>Because <code>sklearn</code> is the go-to for training models using more sophisticated ML ideas (which we will talk about some later in the course!). Two nice walkthroughs:</p>
+<ul>
+<li><a href="https://jakevdp.github.io/PythonDataScienceHandbook/05.06-linear-regression.html">This guide from the PythonDataScienceHandbook</a> (you can use different data though)</li>
+<li>The "Linear Regression" section <a href="https://becominghuman.ai/linear-regression-in-python-with-pandas-scikit-learn-72574a2ec1a5">here</a> shows how you can run regressions on training samples and test them out of sample</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Plotting-the-regression-fit">Plotting the regression fit<a class="anchor-link" href="#Plotting-the-regression-fit"> </a></h3><p>This works with all of the above methods easily.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># let&#39;s plot our data with the OLS predicted fit</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;lcarat&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;lprice&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">diamonds2</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span> <span class="c1"># sampled just to avoid overplotting</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">diamonds2</span><span class="p">[</span><span class="s1">&#39;lcarat&#39;</span><span class="p">],</span><span class="n">y</span><span class="o">=</span><span class="n">y_predicted1</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+
+<span class="c1"># compare this to the built-in sns produces</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;lcarat&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;lprice&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">diamonds2</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span>
+            <span class="n">line_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;red&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Which is the same fit sns will give&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../images/04/03_regression_13_0.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Text(0.5, 1.0, &#39;Which is the same fit sns will give&#39;)</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../images/04/03_regression_13_2.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Example:-Including-dummy-variables">Example: Including dummy variables<a class="anchor-link" href="#Example:-Including-dummy-variables"> </a></h3><p>Suppose you started by estimating the price of diamonds as a function of carats</p>
+\begin{align} 
+\log(\text{price})=a+\beta_0 \log(\text{carat}) +u
+\end{align}<p></p>
+<p>but you realize it will be different for ideal cut diamonds. That is, a 1 carat diamond might cost $1,000, but if it's ideal, it's an extra $500 dollars.</p>
+\begin{align} 
+\log(\text{price})=
+    \begin{cases}
+      a+\beta_0 \log(\text{carat}) + \beta_1 +u, &amp; \text{if ideal cut}  \\
+      a+\beta_0 \log(\text{carat}) +u, &amp; \text{otherwise}
+    \end{cases} 
+\end{align}<p></p>
+<p>Notice that $\beta_0$ in this model are the same. Here is how you run this test:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># ideal is a dummy variable = 1 if ideal and 0 if not ideal</span>
+<span class="n">model_ideal</span>   <span class="o">=</span> <span class="n">sm_ols</span><span class="p">(</span><span class="s1">&#39;lprice ~ lcarat + ideal&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">diamonds2</span><span class="p">)</span>
+<span class="n">results_ideal</span> <span class="o">=</span> <span class="n">model_ideal</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>               <span class="c1"># estimate / fit</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results_ideal</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>             <span class="c1"># view results </span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 lprice   R-squared:                       0.936
+Model:                            OLS   Adj. R-squared:                  0.936
+Method:                 Least Squares   F-statistic:                 3.914e+05
+Date:                Tue, 24 Mar 2020   Prob (F-statistic):               0.00
+Time:                        13:18:54   Log-Likelihood:                -3136.4
+No. Observations:               53797   AIC:                             6279.
+Df Residuals:                   53794   BIC:                             6306.
+Df Model:                           2                                         
+Covariance Type:            nonrobust                                         
+=================================================================================
+                    coef    std err          t      P&gt;|t|      [0.025      0.975]
+---------------------------------------------------------------------------------
+Intercept         8.4182      0.002   5415.779      0.000       8.415       8.421
+ideal[T.True]     0.1000      0.002     43.662      0.000       0.096       0.105
+lcarat            1.6963      0.002    878.286      0.000       1.692       1.700
+==============================================================================
+Omnibus:                      794.680   Durbin-Watson:                   1.241
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1394.941
+Skew:                           0.101   Prob(JB):                    1.24e-303
+Kurtosis:                       3.763   Cond. No.                         2.67
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Example:-Including-categorical-variables">Example: Including categorical variables<a class="anchor-link" href="#Example:-Including-categorical-variables"> </a></h3><p>Method 2 also processes categorical variables easily!</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sm_ols</span><span class="p">(</span><span class="s1">&#39;lprice ~ cut&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">diamonds2</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table class="simpletable">
+<caption>OLS Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>         <td>lprice</td>      <th>  R-squared:         </th> <td>   0.018</td> 
+</tr>
+<tr>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.017</td> 
+</tr>
+<tr>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   239.6</td> 
+</tr>
+<tr>
+  <th>Date:</th>             <td>Tue, 24 Mar 2020</td> <th>  Prob (F-statistic):</th> <td>2.66e-204</td>
+</tr>
+<tr>
+  <th>Time:</th>                 <td>13:18:54</td>     <th>  Log-Likelihood:    </th> <td> -76477.</td> 
+</tr>
+<tr>
+  <th>No. Observations:</th>      <td> 53797</td>      <th>  AIC:               </th> <td>1.530e+05</td>
+</tr>
+<tr>
+  <th>Df Residuals:</th>          <td> 53792</td>      <th>  BIC:               </th> <td>1.530e+05</td>
+</tr>
+<tr>
+  <th>Df Model:</th>              <td>     4</td>      <th>                     </th>     <td> </td>    
+</tr>
+<tr>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>    
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+          <td></td>            <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>Intercept</th>        <td>    8.0688</td> <td>    0.025</td> <td>  320.067</td> <td> 0.000</td> <td>    8.019</td> <td>    8.118</td>
+</tr>
+<tr>
+  <th>cut[T.Good]</th>      <td>   -0.2328</td> <td>    0.029</td> <td>   -8.025</td> <td> 0.000</td> <td>   -0.290</td> <td>   -0.176</td>
+</tr>
+<tr>
+  <th>cut[T.Ideal]</th>     <td>   -0.4319</td> <td>    0.026</td> <td>  -16.536</td> <td> 0.000</td> <td>   -0.483</td> <td>   -0.381</td>
+</tr>
+<tr>
+  <th>cut[T.Premium]</th>   <td>   -0.1241</td> <td>    0.027</td> <td>   -4.663</td> <td> 0.000</td> <td>   -0.176</td> <td>   -0.072</td>
+</tr>
+<tr>
+  <th>cut[T.Very Good]</th> <td>   -0.2732</td> <td>    0.027</td> <td>  -10.188</td> <td> 0.000</td> <td>   -0.326</td> <td>   -0.221</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Omnibus:</th>       <td>14708.225</td> <th>  Durbin-Watson:     </th> <td>   0.049</td>
+</tr>
+<tr>
+  <th>Prob(Omnibus):</th>  <td> 0.000</td>   <th>  Jarque-Bera (JB):  </th> <td>2503.627</td>
+</tr>
+<tr>
+  <th>Skew:</th>           <td> 0.118</td>   <th>  Prob(JB):          </th> <td>    0.00</td>
+</tr>
+<tr>
+  <th>Kurtosis:</th>       <td> 1.970</td>   <th>  Cond. No.          </th> <td>    15.0</td>
+</tr>
+</table><br/><br/>Warnings:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Mechanical-interpretation-of-regression-coefficients">Mechanical interpretation of regression coefficients<a class="anchor-link" href="#Mechanical-interpretation-of-regression-coefficients"> </a></h2><h3 id="If-X-is-a-continuous-variable">If X is a continuous variable<a class="anchor-link" href="#If-X-is-a-continuous-variable"> </a></h3><table>
+<thead><tr>
+<th style="text-align:left">If the model is..................</th>
+<th style="text-align:left">then $\beta$ means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$y=a+\beta X$</td>
+<td style="text-align:left">If $X \uparrow $ 1 unit, then $y \uparrow$ by $\beta$ units</td>
+</tr>
+<tr>
+<td style="text-align:left">$\log y=a+\beta X$</td>
+<td style="text-align:left">If $X \uparrow $ 1 unit, then $y \uparrow$ by about $\beta$%</td>
+</tr>
+<tr>
+<td style="text-align:left">$y=a+\beta \log X$</td>
+<td style="text-align:left">If $X \uparrow $ 1%, then $y \uparrow$ by $\beta$ units</td>
+</tr>
+<tr>
+<td style="text-align:left">$\log y=a+\beta \log X$</td>
+<td style="text-align:left">If $X \uparrow $ 1%, then $y \uparrow$ by $\beta$%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="If-X-is-a-binary-variable">If X is a binary variable<a class="anchor-link" href="#If-X-is-a-binary-variable"> </a></h3><p>This is a categorical or qualitative variable with two values (aka "dummy"). E.g. gender in Census data, and <code>"ideal"</code> above.</p>
+<table>
+<thead><tr>
+<th style="text-align:left">If the model is..................</th>
+<th style="text-align:left">then $\beta$ means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$y=a+\beta X$</td>
+<td style="text-align:left">$y$ is $\beta$ units higher for cases when $X=1$ than when $X=0$.</td>
+</tr>
+<tr>
+<td style="text-align:left">$\log y=a+\beta X$</td>
+<td style="text-align:left">$y$ is about $\beta$ % higher for cases when $X=1$ than when $X=0$.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="If-X-is-a-categorical-variable">If X is a categorical variable<a class="anchor-link" href="#If-X-is-a-categorical-variable"> </a></h3><p>This is a categorical or qualitative variable with more than two values. E.g. <code>"cut"</code> in the diamonds dataset. In a regression, this ends up looking like</p>
+\begin{align} 
+\log(\text{price})=
+    \begin{cases}
+      a, &amp; \text{if cut is fair} \\
+      a +\beta_{Good}, &amp; \text{if cut is Good} \\
+      a +\beta_{Very Good}, &amp; \text{if cut is Very Good} \\
+      a +\beta_{Premium}, &amp; \text{if cut is Premium} \\
+      a +\beta_{Ideal}, &amp; \text{if cut is Ideal} 
+          \end{cases} 
+\end{align}<p></p>
+<p>So you do is take the cut variable <code>cut={Fair,Good,Very Good,Premium,Ideal}</code> and turn it into a dummy variable for "Good", a dummy variable for "Very Good", and so on.</p>
+<p><strong>Warning: You don't create a dummy variable for all the categories! That's why I skipped "Fair" in the prior paragraph.</strong></p>
+<p>Then...</p>
+<table>
+<thead><tr>
+<th style="text-align:left">$\beta$.....</th>
+<th style="text-align:left">means</th>
+<th style="text-align:left">or</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$\beta_{Good}$</td>
+<td style="text-align:left">The average log(price) for Good diamonds is $\beta_{Good}$ higher than Fair diamonds.</td>
+<td style="text-align:left">$avg_{Good}-avg_{Fair}$</td>
+</tr>
+<tr>
+<td style="text-align:left">$\beta_{Very Good}$</td>
+<td style="text-align:left">The average log(price) for Good diamonds is $\beta_{Very Good}$ higher than Fair diamonds.</td>
+<td style="text-align:left">$avg_{Very Good}-avg_{Fair}$</td>
+</tr>
+<tr>
+<td style="text-align:left">$\beta_{Premium}$</td>
+<td style="text-align:left">The average log(price) for Good diamonds is $\beta_{Premium}$ higher than Fair diamonds.</td>
+<td style="text-align:left">$avg_{Premium}-avg_{Fair}$</td>
+</tr>
+<tr>
+<td style="text-align:left">$\beta_{Ideal}$</td>
+<td style="text-align:left">The average log(price) for Good diamonds is $\beta_{Ideal}$ higher than Fair diamonds.</td>
+<td style="text-align:left">$avg_{Ideal}-avg_{Fair}$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>THE MAIN THING TO REMEMBER IS THAT $\beta_{value}$ COMPARES THAT $value$ TO THE <em>OMITTED</em> CATEGORY!</strong></p>
+<p>So, compare the regression above which reports that $a$ (intercept) = 8.0688 and $\beta_{Good}$ equals -0.2328 to this:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">diamonds2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;cut&#39;</span><span class="p">)[</span><span class="s1">&#39;lprice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="c1"># avg lprice by cut</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>cut
+Fair         8.068832
+Good         7.836076
+Ideal        7.636921
+Premium      7.944690
+Very Good    7.795675
+Name: lprice, dtype: float64</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>8.0688 + (-0.2328) = 7.8360!!!</p>
+<p>The nice part of <code>sm</code> is that it automatically "creates" the dummy variables and omits a value for you!</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Interpreting-with-multiple-variables-(THE-WOES-THEREOF)">Interpreting with multiple variables (THE WOES THEREOF)<a class="anchor-link" href="#Interpreting-with-multiple-variables-(THE-WOES-THEREOF)"> </a></h3><p>If you have multiple (up to N controls):</p>
+\begin{align}
+y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
+\end{align}<ul>
+<li>$\beta_1$ estimates the expected change in Y for a 1 unit increase in $X_1$ (as we covered above).</li>
+<li>But predictors usually change together!!!</li>
+<li><p>If Y = number of tackles by a football player in a year, $W$ is weight, and $W$ is height, and we estimate that</p>
+<p>\begin{align}
+  y = a +\hat{0.5} W + \hat{-0.1} H
+  \end{align}</p>
+<p>How do you interpret $\hat{\beta_1} &lt; 0 $ on H?</p>
+</li>
+</ul>
+<p>If categorical variables are included (e.g. year or industry), when thinking about the OTHER variables, you can think</p>
+
+<pre><code>- "comparing same firms within the same year..." 
+- "comparing firms in the same industry, controlling for industry factors..."</code></pre>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Extensions-to-the-model:-Interactions">Extensions to the model: Interactions<a class="anchor-link" href="#Extensions-to-the-model:-Interactions"> </a></h3><p>Suppose that an ideal cut diamond doesn't just add a fixed dollar value to the diamond. Perhaps it also changes the value of having a larger diamond. You might says that</p>
+<ul>
+<li>"the cut <strong>interacts</strong> with carat"</li>
+<li>"a better cut changes the slope/coefficient carat" which can be rephrased as</li>
+<li>"a better cut changes the return on a larger carat"</li>
+</ul>
+<p>Graphically, it's easy to see, as <code>sns.lmplot</code> by default gives each <code>hue</code> a unique slope:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">subsample_of_equal_amounts</span> <span class="o">=</span> <span class="n">diamonds2</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;cut in [&quot;Ideal&quot;,&quot;Fair&quot;]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;cut&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">400</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">subsample_of_equal_amounts</span><span class="p">,</span>
+           <span class="n">y</span><span class="o">=</span><span class="s1">&#39;lprice&#39;</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;lcarat&#39;</span><span class="p">,</span><span class="n">hue</span><span class="o">=</span><span class="s1">&#39;cut&#39;</span><span class="p">,</span><span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;seaborn.axisgrid.FacetGrid at 0x1dc71050588&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../images/04/03_regression_24_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Those two different lines above are estimated by</p>
+\begin{align} 
+\log(\text{price})= a+ \beta_0 \log(\text{carat}) + \beta_1 \text{Ideal} + \beta_2\log(\text{carat})\cdot \text{Ideal}
+\end{align}<p>If you plug in 1 for $ideal$, you get the line for ideal diamonds as</p>
+\begin{align} 
+\log(\text{price})= a+ \beta_1 +(\beta_0 + \beta_2) \log(\text{carat}) 
+\end{align}<p>If you plug in 0 for $ideal$, you get the line for fair diamonds as</p>
+\begin{align} 
+\log(\text{price})= a+ \beta_0 \log(\text{carat}) 
+\end{align}<p>So, by including that interaction term, you get that the slope on carats is different for Ideal than Fair diamonds.</p>
+<p><code>sm</code> will estimate that nicely:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sm_ols</span><span class="p">(</span><span class="s1">&#39;lprice ~ lcarat + ideal + lcarat*ideal&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">subsample</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-11-29a5b7832395&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>sm_ols<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;lprice ~ lcarat + ideal + lcarat*ideal&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> data<span class="ansi-yellow-intense-fg ansi-bold">=</span>subsample<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>fit<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>summary<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>: name &#39;subsample&#39; is not defined</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This shows that a 1% increase in carats is associated with a 1.47% increase in price for fair diamonds, but a 1.78% increase for ideal diamonds (1.47+0.28).</p>
+<p>Thus: The return on carats is different (and higher) for better cut diamonds!</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="https://media.giphy.com/media/nwyqBwP65XCAU/giphy.gif" alt=""></p>
+<h3 id="Reading-/-practice-for-this-topic">Reading / practice for this topic<a class="anchor-link" href="#Reading-/-practice-for-this-topic"> </a></h3><ol>
+<li>This page!</li>
+<li><a href="https://r4ds.had.co.nz/model-intro.html">Chapters 22-24 of R 4 Data Science</a> are an excellent overview of the thought process of modeling</li>
+<li>Use <code>statsmodels.api</code> to make nice regression tables by <a href="https://python.quantecon.org/ols.html">following this guide</a> (you can use different data though)</li>
+<li>Load the titanic dataset from <code>sns</code> and try some regressions.</li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Acknowledgments">Acknowledgments<a class="anchor-link" href="#Acknowledgments"> </a></h2><ul>
+<li>The demo on Diamonds is borrowed from <a href="https://r4ds.had.co.nz">R4DS</a>.</li>
+<li>Alberto Rossi provided excellent lecture notes  </li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+ 
+
+
+    </main>
+    

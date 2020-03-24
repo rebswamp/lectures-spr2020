@@ -81,8 +81,11 @@
   sections:
   - title: "Modeling Intro"
     url: /04/01_modeling_intro  
-  - title: "Running Some Regressions"
-    url: /04/02_regression_mechanics
+  - title: "Coding in Teams"
+    url: /04/02_git_collaboration
+  - title: "Regression - Mechanics and Interpretation"
+    url: /04/03_regression
+   
 
 #    subsections:
 #    - url: /01/3/subsection/subsections
