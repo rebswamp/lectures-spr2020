@@ -11,9 +11,9 @@ pagenum: 22
 prev_page:
   url: /04/02_git_collaboration.html
 next_page:
-  url: 
+  url: /04/04_introML.html
 suffix: .ipynb
-search: beta y regression x align text log variables diamonds good ideal hat variable begin end cut fair price carat model categorical data fit sklearn dummy uparrow avg values value u higher very statsmodels media giphy different cases premium line its get same nice above html qualitative aka term changes com e g estimate predicted including sum method linear carats diamond average increase interpretation project coefficients gif called want might error estimation errors those python regressions tables because training api easily here example means unit units year h industry better slope rds page github io assignments results numerically interpret mechanical continuous
+search: beta y variables log regression x hat align ideal variable text data carat good diamonds cut price begin end r fair model value media giphy categorical values p line increase dummy com fit sklearn t e g its different above carats diamond coefficient uparrow avg coefficients u get including because here higher very change deviation statsmodels gif same example cases say unit premium standard significant html aka stat not relationship only nice method linear better std blue focus results qualitative term changes does might points estimate predicted estimation those sum regressions tables im much why shows larger means average part
 
 comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
 ---
@@ -232,8 +232,8 @@ y-\hat{y} = \hat{u} = \text{"residual" aka "error"}
 Dep. Variable:                 lprice   R-squared:                       0.933
 Model:                            OLS   Adj. R-squared:                  0.933
 Method:                 Least Squares   F-statistic:                 7.542e+05
-Date:                Tue, 24 Mar 2020   Prob (F-statistic):               0.00
-Time:                        19:22:30   Log-Likelihood:                -4073.2
+Date:                Thu, 26 Mar 2020   Prob (F-statistic):               0.00
+Time:                        08:02:36   Log-Likelihood:                -4073.2
 No. Observations:               53797   AIC:                             8150.
 Df Residuals:                   53795   BIC:                             8168.
 Df Model:                           1                                         
@@ -496,8 +496,8 @@ COEFS: [0.         1.68193567]
 Dep. Variable:                 lprice   R-squared:                       0.936
 Model:                            OLS   Adj. R-squared:                  0.936
 Method:                 Least Squares   F-statistic:                 3.914e+05
-Date:                Tue, 24 Mar 2020   Prob (F-statistic):               0.00
-Time:                        19:22:33   Log-Likelihood:                -3136.4
+Date:                Thu, 26 Mar 2020   Prob (F-statistic):               0.00
+Time:                        08:02:40   Log-Likelihood:                -3136.4
 No. Observations:               53797   AIC:                             6279.
 Df Residuals:                   53794   BIC:                             6306.
 Df Model:                           2                                         
@@ -572,10 +572,10 @@ Warnings:
   <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   239.6</td> 
 </tr>
 <tr>
-  <th>Date:</th>             <td>Tue, 24 Mar 2020</td> <th>  Prob (F-statistic):</th> <td>2.66e-204</td>
+  <th>Date:</th>             <td>Thu, 26 Mar 2020</td> <th>  Prob (F-statistic):</th> <td>2.66e-204</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>19:22:34</td>     <th>  Log-Likelihood:    </th> <td> -76477.</td> 
+  <th>Time:</th>                 <td>08:02:40</td>     <th>  Log-Likelihood:    </th> <td> -76477.</td> 
 </tr>
 <tr>
   <th>No. Observations:</th>      <td> 53797</td>      <th>  AIC:               </th> <td>1.530e+05</td>
@@ -631,6 +631,201 @@ Warnings:
 </div>
 </div>
 
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Example:-Including-interaction-terms">Example: Including interaction terms<a class="anchor-link" href="#Example:-Including-interaction-terms"> </a></h3><p>Suppose that an ideal cut diamond doesn't just add a fixed dollar value to the diamond. Perhaps it also changes the value of having a larger diamond. You might say that</p>
+<ul>
+<li>A high quality cut is even more valuable for a larger diamond than it is for a small diamond. ("A great cut makes a diamond sparkle, but it's hard to see sparkle on a tiny diamond no matter what.")</li>
+<li>In other words, the effect of carats depends on the cut and visa versa</li>
+<li>In other words, "the cut variable <strong>interacts</strong> with the carat variable"</li>
+<li>So you might say that, "a better cut changes the slope/coefficient of carat"</li>
+<li>Or equivalently, "a better cut changes the return on a larger carat"</li>
+</ul>
+<p>Graphically, it's easy to see, as <code>sns.lmplot</code> by default gives each cut a unique slope on carats:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># notice how these lines have different slopes?</span>
+<span class="n">subsample_of_equal_amounts</span> <span class="o">=</span> <span class="n">diamonds2</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;cut in [&quot;Ideal&quot;,&quot;Fair&quot;]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;cut&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">400</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">subsample_of_equal_amounts</span><span class="p">,</span>
+           <span class="n">y</span><span class="o">=</span><span class="s1">&#39;lprice&#39;</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;lcarat&#39;</span><span class="p">,</span><span class="n">hue</span><span class="o">=</span><span class="s1">&#39;cut&#39;</span><span class="p">,</span><span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;seaborn.axisgrid.FacetGrid at 0x29128c19808&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../images/04/03_regression_19_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Those two different lines above are estimated by</p>
+\begin{align} 
+\log(\text{price})= a+ \beta_0 \log(\text{carat}) + \beta_1 \text{Ideal} + \beta_2\log(\text{carat})\cdot \text{Ideal}
+\end{align}<p>If you plug in 1 for $ideal$, you get the line for ideal diamonds as</p>
+\begin{align} 
+\log(\text{price})= a+ \beta_1 +(\beta_0 + \beta_2) \log(\text{carat}) 
+\end{align}<p>If you plug in 0 for $ideal$, you get the line for fair diamonds as</p>
+\begin{align} 
+\log(\text{price})= a+ \beta_0 \log(\text{carat}) 
+\end{align}<p>So, by including that interaction term, you get that the slope on carats is different for Ideal than Fair diamonds.</p>
+<p><code>sm</code> will estimate that nicely:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># you can include the interaction of x and z by adding &quot;+x*z&quot; in the spec, like:</span>
+<span class="n">sm_ols</span><span class="p">(</span><span class="s1">&#39;lprice ~ lcarat + ideal + lcarat*ideal&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">subsample_of_equal_amounts</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<table class="simpletable">
+<caption>OLS Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>         <td>lprice</td>      <th>  R-squared:         </th> <td>   0.888</td>
+</tr>
+<tr>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.888</td>
+</tr>
+<tr>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   2113.</td>
+</tr>
+<tr>
+  <th>Date:</th>             <td>Thu, 26 Mar 2020</td> <th>  Prob (F-statistic):</th>  <td>  0.00</td> 
+</tr>
+<tr>
+  <th>Time:</th>                 <td>08:02:40</td>     <th>  Log-Likelihood:    </th> <td> -152.23</td>
+</tr>
+<tr>
+  <th>No. Observations:</th>      <td>   800</td>      <th>  AIC:               </th> <td>   312.5</td>
+</tr>
+<tr>
+  <th>Df Residuals:</th>          <td>   796</td>      <th>  BIC:               </th> <td>   331.2</td>
+</tr>
+<tr>
+  <th>Df Model:</th>              <td>     3</td>      <th>                     </th>     <td> </td>   
+</tr>
+<tr>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>   
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+            <td></td>              <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>Intercept</th>            <td>    8.1804</td> <td>    0.015</td> <td>  545.561</td> <td> 0.000</td> <td>    8.151</td> <td>    8.210</td>
+</tr>
+<tr>
+  <th>ideal[T.True]</th>        <td>    0.3308</td> <td>    0.025</td> <td>   13.000</td> <td> 0.000</td> <td>    0.281</td> <td>    0.381</td>
+</tr>
+<tr>
+  <th>lcarat</th>               <td>    1.5102</td> <td>    0.036</td> <td>   42.452</td> <td> 0.000</td> <td>    1.440</td> <td>    1.580</td>
+</tr>
+<tr>
+  <th>lcarat:ideal[T.True]</th> <td>    0.1826</td> <td>    0.044</td> <td>    4.111</td> <td> 0.000</td> <td>    0.095</td> <td>    0.270</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Omnibus:</th>       <td>15.462</td> <th>  Durbin-Watson:     </th> <td>   2.066</td>
+</tr>
+<tr>
+  <th>Prob(Omnibus):</th> <td> 0.000</td> <th>  Jarque-Bera (JB):  </th> <td>  20.609</td>
+</tr>
+<tr>
+  <th>Skew:</th>          <td>-0.210</td> <th>  Prob(JB):          </th> <td>3.35e-05</td>
+</tr>
+<tr>
+  <th>Kurtosis:</th>      <td> 3.664</td> <th>  Cond. No.          </th> <td>    6.77</td>
+</tr>
+</table><br/><br/>Warnings:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This shows that a 1% increase in carats is associated with a 1.47% increase in price for fair diamonds, but a 1.78% increase for ideal diamonds (1.47+0.28).</p>
+<p>Thus: The return on carats is different (and higher) for better cut diamonds!</p>
+
+</div>
+</div>
 </div>
 </div>
 
@@ -826,13 +1021,23 @@ y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Extensions-to-the-model:-Interactions">Extensions to the model: Interactions<a class="anchor-link" href="#Extensions-to-the-model:-Interactions"> </a></h3><p>Suppose that an ideal cut diamond doesn't just add a fixed dollar value to the diamond. Perhaps it also changes the value of having a larger diamond. You might says that</p>
+<h3 id="A-useful-trick:-Comparing-the-size-of-two-coefficients">A useful trick: Comparing the size of two coefficients<a class="anchor-link" href="#A-useful-trick:-Comparing-the-size-of-two-coefficients"> </a></h3><p>Earlier, we estimated that $\log price = \hat{8.41} + \hat{1.69} \log carat + \hat{0.10} ideal$.</p>
+<p>So... I have questions:</p>
 <ul>
-<li>"the cut <strong>interacts</strong> with carat"</li>
-<li>"a better cut changes the slope/coefficient carat" which can be rephrased as</li>
-<li>"a better cut changes the return on a larger carat"</li>
+<li>Does that mean that $\log carat$ has a 17 times larger impact than $ideal$ in terms of price impact? </li>
+<li>How do we compare those magnitudes?</li>
+<li>More generally, how do we compare the magnitudes of any 2 control variables?</li>
 </ul>
-<p>Graphically, it's easy to see, as <code>sns.lmplot</code> by default gives each <code>hue</code> a unique slope:</p>
+<p>To which, I'd say that how "big" a coefficient is depends on the variable!</p>
+<ul>
+<li>For some variables, an increase of 1 unit is common (e.g. our $ideal$ dummy is one 40% of the time)</li>
+<li>For some variables, an increase of 1 unit is rare (e.g. leverage)</li>
+<li><strong>$\rightarrow$ the meaning of the coefficient's magnitude <em>depends on the corresponding variable's variation!</em></strong></li>
+<li>$\rightarrow$ so change variables so that a 1 unit increase implies the same amount of movement</li>
+<li><strong>$\rightarrow$ Solution: scale variables by their standard deviation!*</strong></li>
+</ul>
+<p>* <em>(Only continuous variables! Don't do this for dummy variables or categorical variables)</em></p>
+<p>Here is that solution in action:</p>
 
 </div>
 </div>
@@ -846,9 +1051,20 @@ y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">subsample_of_equal_amounts</span> <span class="o">=</span> <span class="n">diamonds2</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;cut in [&quot;Ideal&quot;,&quot;Fair&quot;]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;cut&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">400</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">subsample_of_equal_amounts</span><span class="p">,</span>
-           <span class="n">y</span><span class="o">=</span><span class="s1">&#39;lprice&#39;</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;lcarat&#39;</span><span class="p">,</span><span class="n">hue</span><span class="o">=</span><span class="s1">&#39;cut&#39;</span><span class="p">,</span><span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">standardize</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">/</span><span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="c1"># normalize(df[&#39;x&#39;]) will divide all &#39;x&#39; by the std deviation of &#39;x&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Divide lcarat by its std dev:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sm_ols</span><span class="p">(</span><span class="s1">&#39;lprice ~ lcarat + ideal&#39;</span><span class="p">,</span> 
+       <span class="c1"># for **just** this regression, divide </span>
+       <span class="n">data</span><span class="o">=</span><span class="n">diamonds2</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">lcarat</span> <span class="o">=</span> <span class="n">standardize</span><span class="p">(</span><span class="n">diamonds2</span><span class="p">[</span><span class="s1">&#39;lcarat&#39;</span><span class="p">]))</span> 
+       <span class="c1"># this doesn&#39;t change the diamonds2 data permanently, so the next time you call on</span>
+       <span class="c1"># diamonds2, you can use lcarat as if nothing changed. if you want to repeat this</span>
+       <span class="c1"># a bunch, you might instead create and save a permanent variable called &quot;lcarat_std&quot;</span>
+       <span class="c1"># where &quot;_std&quot; indicates that you divided it by the std dev.</span>
+      <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">The original reg:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sm_ols</span><span class="p">(</span><span class="s1">&#39;lprice ~ lcarat + ideal&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">diamonds2</span> <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -861,10 +1077,77 @@ y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
 <div class="jb_output_wrapper }}">
 <div class="output_area">
 
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Divide lcarat by its std dev:
+
+Intercept        8.418208
+ideal[T.True]    0.100013
+lcarat           0.985628
+dtype: float64
+
+
+The original reg:
+
+Intercept        8.418208
+ideal[T.True]    0.100013
+lcarat           1.696259
+dtype: float64
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>So a 1 standard deviation increase in $\log carat$ is associated with a 0.98% increase in price. Compared to $ideal$, we can say that a reasonable variation in carats is associated with a price increase about 10 times the size.</strong></p>
+<p>Notably, 0.98 is only 58% of the original coefficient (1.69).</p>
+<h4 id="Q:-Why-is-it-58%-of-the-previous-coefficient?">Q: Why is it 58% of the previous coefficient?<a class="anchor-link" href="#Q:-Why-is-it-58%-of-the-previous-coefficient?"> </a></h4><h4 id="A:-Because-the-standard-deviation-of-$\log-carat$-is-0.58!">A: Because the standard deviation of $\log carat$ is 0.58!<a class="anchor-link" href="#A:-Because-the-standard-deviation-of-$\log-carat$-is-0.58!"> </a></h4><p>This works because, if "$std$" stands for the standard deviation of $\log carat$ each of these steps is valid and doesn't change the estimation:</p>
+\begin{align}
+\log price &amp; = \hat{8.41} + \hat{1.69} \log carat + \hat{0.10} ideal \\
+           &amp; = \hat{8.41} + \hat{1.69} \frac{std}{std} \log carat + \hat{0.10} ideal \\
+           &amp; = \hat{8.41} + (\hat{1.69}*std) \frac{\log carat}{std}  + \hat{0.10} ideal 
+\end{align}<p>So what that last line shows is that if we divide the variable by its standard deviation, the coefficient will change by an offsetting amount.</p>
+<p>If a variable has a small standard deviation (e.g. 0.10), dividing the variable by 0.10 before running the regression will reduce the coefficient by 90%.</p>
+<p>Here, $\log carat$ has a deviation of 0.58, so scaling the variable before regressing dropped the</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Goodness-of-fit:-R2-and-Adjusted-R2">Goodness of fit: R2 and Adjusted R2<a class="anchor-link" href="#Goodness-of-fit:-R2-and-Adjusted-R2"> </a></h2><p>The next graph shows two different y variables (shown in blue and orange). Each is "modelled" as a linear function of carats. After we run a regression, we get a prediction for each.</p>
+<p>Which line/prediction do you think fits its corresponding data points better? Blue or orange?</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_remove_input">
+
+<div class="cell border-box-sizing code_cell rendered tag_remove_input">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;seaborn.axisgrid.FacetGrid at 0x1d90e51f9c8&gt;</pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x29128d2d108&gt;</pre>
 </div>
 
 </div>
@@ -875,7 +1158,7 @@ y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
 
 
 <div class="output_png output_subarea ">
-<img src="../images/04/03_regression_24_1.png"
+<img src="../images/04/03_regression_32_1.png"
 >
 </div>
 
@@ -891,113 +1174,17 @@ y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Those two different lines above are estimated by</p>
-\begin{align} 
-\log(\text{price})= a+ \beta_0 \log(\text{carat}) + \beta_1 \text{Ideal} + \beta_2\log(\text{carat})\cdot \text{Ideal}
-\end{align}<p>If you plug in 1 for $ideal$, you get the line for ideal diamonds as</p>
-\begin{align} 
-\log(\text{price})= a+ \beta_1 +(\beta_0 + \beta_2) \log(\text{carat}) 
-\end{align}<p>If you plug in 0 for $ideal$, you get the line for fair diamonds as</p>
-\begin{align} 
-\log(\text{price})= a+ \beta_0 \log(\text{carat}) 
-\end{align}<p>So, by including that interaction term, you get that the slope on carats is different for Ideal than Fair diamonds.</p>
-<p><code>sm</code> will estimate that nicely:</p>
+<p>Intuitively, the line model "fits" the blue data much better! Your eyes can tell you that the blue data points are much more tightly bunched around the blue line than the orange dots and line are.</p>
+<p>One way to summary that idea is via <strong>R2</strong>, aka "R-squared". <strong>R2 measures how much variation in the y variable is explained by the regression line, and ranges from 0 to 1</strong>. Every table above automatically reports R2.</p>
+<p>But there are a two massive problems with R2:</p>
+<ol>
+<li>Including extra X variables can never decrease R2, and in fact, variables that are <em>random noise</em> can increase R2.</li>
+<li>Because of (1), optimizing on R2 will quickly lead to including X variables you probably shouldn't. In other words, it will lead to overfitting a model, which means designing a model so specifically to your existing data that it will apply poorly to new data.   </li>
+</ol>
+<p>This is why you should probably focus on looking at the <strong>Adjusted R2</strong> in regressions, which is simply R2 with a penality for adding additional variables to the model.</p>
 
 </div>
 </div>
-</div>
-</div>
-
-<div class="jb_cell">
-
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sm_ols</span><span class="p">(</span><span class="s1">&#39;lprice ~ lcarat + ideal + lcarat*ideal&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">subsample_of_equal_amounts</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="jb_output_wrapper }}">
-<div class="output_area">
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<table class="simpletable">
-<caption>OLS Regression Results</caption>
-<tr>
-  <th>Dep. Variable:</th>         <td>lprice</td>      <th>  R-squared:         </th> <td>   0.900</td>
-</tr>
-<tr>
-  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.899</td>
-</tr>
-<tr>
-  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   2378.</td>
-</tr>
-<tr>
-  <th>Date:</th>             <td>Tue, 24 Mar 2020</td> <th>  Prob (F-statistic):</th>  <td>  0.00</td> 
-</tr>
-<tr>
-  <th>Time:</th>                 <td>19:22:34</td>     <th>  Log-Likelihood:    </th> <td> -148.45</td>
-</tr>
-<tr>
-  <th>No. Observations:</th>      <td>   800</td>      <th>  AIC:               </th> <td>   304.9</td>
-</tr>
-<tr>
-  <th>Df Residuals:</th>          <td>   796</td>      <th>  BIC:               </th> <td>   323.6</td>
-</tr>
-<tr>
-  <th>Df Model:</th>              <td>     3</td>      <th>                     </th>     <td> </td>   
-</tr>
-<tr>
-  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>   
-</tr>
-</table>
-<table class="simpletable">
-<tr>
-            <td></td>              <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
-</tr>
-<tr>
-  <th>Intercept</th>            <td>    8.1812</td> <td>    0.015</td> <td>  546.823</td> <td> 0.000</td> <td>    8.152</td> <td>    8.211</td>
-</tr>
-<tr>
-  <th>ideal[T.True]</th>        <td>    0.3488</td> <td>    0.025</td> <td>   13.904</td> <td> 0.000</td> <td>    0.300</td> <td>    0.398</td>
-</tr>
-<tr>
-  <th>lcarat</th>               <td>    1.4810</td> <td>    0.032</td> <td>   46.542</td> <td> 0.000</td> <td>    1.419</td> <td>    1.543</td>
-</tr>
-<tr>
-  <th>lcarat:ideal[T.True]</th> <td>    0.2661</td> <td>    0.041</td> <td>    6.479</td> <td> 0.000</td> <td>    0.185</td> <td>    0.347</td>
-</tr>
-</table>
-<table class="simpletable">
-<tr>
-  <th>Omnibus:</th>       <td>10.238</td> <th>  Durbin-Watson:     </th> <td>   1.966</td>
-</tr>
-<tr>
-  <th>Prob(Omnibus):</th> <td> 0.006</td> <th>  Jarque-Bera (JB):  </th> <td>  15.981</td>
-</tr>
-<tr>
-  <th>Skew:</th>          <td>-0.026</td> <th>  Prob(JB):          </th> <td>0.000339</td>
-</tr>
-<tr>
-  <th>Kurtosis:</th>      <td> 3.690</td> <th>  Cond. No.          </th> <td>    6.22</td>
-</tr>
-</table><br/><br/>Warnings:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
-</div>
-
-</div>
-</div>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -1005,8 +1192,54 @@ y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This shows that a 1% increase in carats is associated with a 1.47% increase in price for fair diamonds, but a 1.78% increase for ideal diamonds (1.47+0.28).</p>
-<p>Thus: The return on carats is different (and higher) for better cut diamonds!</p>
+<h2 id="Regression-coefficients-have-&quot;feelings&quot;">Regression coefficients have "feelings"<a class="anchor-link" href="#Regression-coefficients-have-&quot;feelings&quot;"> </a></h2><h3 id="OR:-T-stats-and-P-Values">OR: T-stats and P-Values<a class="anchor-link" href="#OR:-T-stats-and-P-Values"> </a></h3><p>Well, not feelings, like bad or good but more like uncertainty.</p>
+<p><img src="https://media.giphy.com/media/TIjVQiwWQFDMzjk4gU/giphy.gif" alt=""></p>
+<p>The tables above report t-stats and p-values for statistics, which I'm only going to briefly review here. <em>(I'm going to assume you are mostly familiar with these via your pre-reqs. Please let me know if I'm mistaken!)</em></p>
+<p>A coefficient's t-stat and p-value can be used to assess the probability that the coefficient is different than zero by random chance.</p>
+<ul>
+<li>A t-stat of 1.645 corresponds to a p-value of 0.10; meaning only 10% of the time would you get that coefficient randomly</li>
+<li>A t-stat of 1.96 corresponds to a p-value of 0.05; this is a common "threshold" to say a "relationship is <em><strong>statistically</strong></em> significant" and that "the relationship between X and y is not zero"</li>
+<li>A t-stat of 2.58 corresponds to a p-value of 0.01</li>
+</ul>
+<p>These thresholds are important and part of a sensible approach to learning from data, but...</p>
+<p>When people say a "relationship is statistically significant", what they can mean is 
+<br><br></p>
+<center>"LOOK YONDER, I HAVE FOUND A NEW, MEANINGFUL  <br>
+    CORRELATION THAT IS TRUE <br> (TRULY!) (VERILY!)  <br>
+    AND KNOWING IT WILL CHANGE THE WORLD!"</center><p>Which leads me to the next section.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Some-significant-warnings-about-&quot;statistical-significance&quot;">Some <em>significant</em> warnings about "statistical significance"<a class="anchor-link" href="#Some-significant-warnings-about-&quot;statistical-significance&quot;"> </a></h3><p>The focus on p-values can be dangerous. As it turns out, "p-hacking" (finding a significant relationship) is easy for a number of reasons:</p>
+<ul>
+<li>If you look at enough Xs and enough ys, you, by chance alone, can find "significant" relationships where <a href="https://www.tylervigen.com/spurious-correlations">none exist</a></li>
+<li><p>Your data can be biased. Maybe the most famous example:</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/en/2/28/Deweytruman12.jpg" alt=""></p>
+<p>The newspaper ran a telephone poll in 1948 and found a significant preference for Dewey. The problem? Phones were still expensive in 1948. Their polling method accounted for rural/urban and race, but not income.</p>
+<p>Another bias that contributed? The paper had to publish earlier than others due to printing issues, so they used an expert who had been right in 4 of the last 5 elections.</p>
+<p><img src="https://media.giphy.com/media/5fBH6zf7l8bxukYh74Q/giphy.gif" alt=""></p>
+<p>Turns out a sample size of five wasn't enough to confirm the expert had a crystal ball.</p>
+<p><img src="https://media.giphy.com/media/10uct1aSFT7QiY/giphy.gif" alt=""></p>
+<p>The notion of turning to people on hot streaks has been pretty roundly debunked in finance (e.g. mutual funds, stock pickers, etc). But my favorite example is <a href="https://www.textbook.ds100.org/ch/18/hyp_phacking.html#Paul-the-Octopus">Paul the Octopus</a>, who picked winners in all seven soccer matches Germany played during the 2010 World Cup.</p>
+</li>
+<li><p>Your sample restrictions can generate bias: If you evaluate the trading strategy "buy and hold current S&amp;P companies" for the last 50 years, you'll discover that this trading strategy was unbelievable!</p>
+</li>
+<li><p>Reusing the data: If you torture the data, it will confess</p>
+<p>There is a <a href="https://fivethirtyeight.com/features/science-isnt-broken/#part1">fun game in here</a>. The point: The choices you make about what variables to include or focus on can change the <em>statistical</em> results. And if you play with a dataset long enough, you'll find "results"...</p>
+</li>
+</ul>
+<h4 id="The-focus-on-p-values-can-be-dangerous-because-it-distorts-the-incentives-of-researchers:">The focus on p-values can be dangerous because it distorts the incentives of researchers:<a class="anchor-link" href="#The-focus-on-p-values-can-be-dangerous-because-it-distorts-the-incentives-of-researchers:"> </a></h4><ul>
+<li>Again: <strong>If you torture the data, it will confess (regardless of whether you or it wanted to)</strong></li>
+<li><strong>Motivated reasoning/cognitive dissonance/confirmation bias</strong>: Analysis like <a href="https://fivethirtyeight.com/features/science-isnt-broken/#part1">the game above</a> is fraught with temptations for humans. That 538 article mentions that about 2/3 of retractions are due to misconduct.</li>
+<li>Focus on p-value <strong>shifts attention: Statistical signicance does not mean meaningful or economic significance</strong></li>
+</ul>
 
 </div>
 </div>
@@ -1036,6 +1269,7 @@ y = a +\beta_0 X_0 + \beta_1 X_1+ ...+\beta_N X_N+ u
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Acknowledgments">Acknowledgments<a class="anchor-link" href="#Acknowledgments"> </a></h2><ul>
 <li>The demo on Diamonds is borrowed from <a href="https://r4ds.had.co.nz">R4DS</a>.</li>
+<li><a href="https://www.textbook.ds100.org/intro">DS100</a></li>
 <li>Alberto Rossi provided excellent lecture notes  </li>
 </ul>
 
