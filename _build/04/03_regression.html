@@ -13,7 +13,7 @@ prev_page:
 next_page:
   url: /04/04_introML.html
 suffix: .ipynb
-search: beta y variables log regression x hat align ideal variable text data carat good diamonds cut price begin end r fair model value media giphy categorical values p line increase dummy com fit sklearn t e g its different above carats diamond coefficient uparrow avg coefficients u get including because here higher very change deviation statsmodels gif same example cases say unit premium standard significant html aka stat not relationship only nice method linear better std blue focus results qualitative term changes does might points estimate predicted estimation those sum regressions tables im much why shows larger means average part
+search: beta y variables log regression x hat align ideal variable text data carat good diamonds cut price begin end r fair model value media giphy categorical values p line increase dummy com fit sklearn t e g its different above carats diamond coefficient uparrow avg coefficients u get including because here cases higher very change deviation statsmodels gif same example say unit premium standard significant html aka stat not relationship only nice method linear better std blue focus results qualitative term changes does might points estimate predicted estimation those sum regressions tables im much why shows larger means br average
 
 comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
 ---
@@ -836,7 +836,7 @@ Warnings:
 <h2 id="Mechanical-interpretation-of-regression-coefficients">Mechanical interpretation of regression coefficients<a class="anchor-link" href="#Mechanical-interpretation-of-regression-coefficients"> </a></h2><h3 id="If-X-is-a-continuous-variable">If X is a continuous variable<a class="anchor-link" href="#If-X-is-a-continuous-variable"> </a></h3><table>
 <thead><tr>
 <th style="text-align:left">If the model is..................</th>
-<th style="text-align:left">then $\beta$ means</th>
+<th style="text-align:left">then $\beta$ means (approx. in log cases)</th>
 </tr>
 </thead>
 <tbody>
@@ -846,11 +846,11 @@ Warnings:
 </tr>
 <tr>
 <td style="text-align:left">$\log y=a+\beta X$</td>
-<td style="text-align:left">If $X \uparrow $ 1 unit, then $y \uparrow$ by about $\beta$%</td>
+<td style="text-align:left">If $X \uparrow $ 1 unit, then $y \uparrow$ by about $100*\beta$%. <br> <em>(Exact: $100*(\exp(\beta)-1)$)</em></td>
 </tr>
 <tr>
 <td style="text-align:left">$y=a+\beta \log X$</td>
-<td style="text-align:left">If $X \uparrow $ 1%, then $y \uparrow$ by $\beta$ units</td>
+<td style="text-align:left">If $X \uparrow $ 1%, then $y \uparrow$ by about $\beta / 100$ units</td>
 </tr>
 <tr>
 <td style="text-align:left">$\log y=a+\beta \log X$</td>
