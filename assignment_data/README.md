@@ -1,9 +1,45 @@
 GH allows files of up to 100MB (although it "warns" you above 50MB). However, the limit for assignment repos appears to be 10MB. 
 
-So: I'm trying a work around. The idea is to stash files here, and have you manually download these and place them within your assignment repo. I hope to have a better solution, but this is my best bet on a quick basis.
+Here is our work around: The idea is to stash files here, and have you manually download these and place them within your assignment repo. 
 
-Sorry,
-Don
+# Fannie_Mae_Plus_Data
+
+This dataset combines info from Fannie_Mae with macro data from FRED. 
+
+|Variable Name| Variable Description |  
+|---|---|
+| Loan_Identifier  | A unique identifier for the mortgage loan.  |    
+| Origination_Channel  |  Channel refers to the three options listed  Retail (R) Correspondent (C) Broker (B) |    
+| Seller_Name  |  The name of the entity that delivered the mortgage loan to Fannie Mae. |
+| Original_Interest_Rate    | The original interest rate on a mortgage loan as identified in the original mortgage loan documents.|   
+| Original_UPB  |  The original amount of the mortgage loan as indicated by the mortgage documents. |   
+| Original_LTV_(OLTV)   |  A ratio calculated at the time of origination for a mortgage loan. The Original LTV reflects the loan-to-value ratio of the loan amount secured by a mortgaged property on the origination date of the underlying mortgage loan. |   
+| Original_Combined_LTV_(CLTV)   |   A ratio calculated at the time of origination for a mortgage loan. The CLTV reflects the loan-to-value ratio inclusive of all loans secured by a mortgaged property on the origination date of the underlying mortgage loan.|   
+| Number_of_Borrowers   |  The number of individuals obligated to repay the mortgage loan. |   
+| Original_Debt_to_Income_Ratio   |  A ratio calculated at origination derived by dividing the borrower’s total monthly obligations (including housing expense) by his or her stable monthly income. This calculation is used to determine the mortgage amount for which a borrower qualifies. |   
+| Borrower_Credit_Score_at_Origination     | When this term is used by Fannie Mae, it is referring to the "classic" FICO score developed by Fair Isaac Corporation.  |     
+| Loan_purpose  | An indicator that denotes whether the mortgage loan is either a refinance mortgage or a purchase money mortgage. |   
+| Property_type       | A field that denotes whether the property type securing the mortgage loan is a cooperative share, condominium, planned urban development, single-family home, or manufactured home.  |   
+|  Number_of_units         |  The number of units comprising the related mortgaged property. |   
+| Occupancy_type         | An indicator that denotes whether the mortgage loan, at its origination date, is secured by a principal residence, second home or investment property.  |   
+|  Zip_code_short     |  Limited to the first three digits of the code designated by the U.S. Postal Service where the subject property is located. |   
+| Primary_mortgage_insurance_percent     |  The original percentage of mortgage insurance coverage obtained for an insured conventional mortgage loan and used following the occurrence of an event of default to calculate the insurance benefit, as defined by the underlying master primary insurance policy. |  
+|    Co-borrower_credit_score_at_origination      |   When this term is used by Fannie Mae, it is referring to the "classic" FICO score developed by Fair Isaac Corporation. |  
+|  Mortgage_Insurance_type    | The entity that is responsible for the Mortgage Insurance premium payment.  |  
+|  Origination_Date          | The date of the note.  |  
+| First_payment_date   |  The date of the first scheduled mortgage loan payment to be made by the borrower under the terms of the mortgage loan documents. |  
+| First_time_home_buyer_indicator     | An indicator that denotes if the borrower or co-borrower qualifies as a first-time homebuyer.  |  
+| UNRATE     | National unemployment rate by month  |
+| CPIAUCSL     | Consumer Price Index for All Urban Consumers: All Items in U.S. City Average - monthly data |
+| RGDP     | Real Gross Domestic Product - quarterly data  |
+| TCMR     | 10-Year Treasury Constant Maturity Rate - given as daily data, but converted to average of daily data to match monthly origination date |
+| POILWTIUSDM     | Global price of WTI Crude - in US dollars per barrel  |
+| TTLCONS     | Total Construction Spending - in millions of US dollars  |
+| DEXUSEU     | U.S. / Euro Foreign Exchange Rate- daily - given as daily data, but converted to average of daily data to match monthly origination date |
+| BOPGSTB     | Trade Balance: Goods and Services, Balance of Payments Basis - in millions of dollars  |
+| GOLDAMGBD228NLBM     | Gold Fixing Price 10:30 A.M. (London time) in London Bullion Market, based in U.S. Dollars - given as daily data, but converted to average of daily data to match monthly origination date  |
+| CSUSHPISA     | S&P/Case-Shiller U.S. National Home Price Index  |
+| MSPUS     | Median Sales Price of Houses Sold for the United States  |
 
 # firms_2006_fuller.dta
 
