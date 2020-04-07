@@ -89,7 +89,10 @@
     url: /04/03_regression
   - title: "Intro to ML"
     url: /04/04_introML
-   
+  - title: "Sklearn starter kit"
+    url: /04/05_sklearn
+  - title: "Preprocessing and the Cardinal Sin"
+    url: /04/06_preprocessing
 
 #    subsections:
 #    - url: /01/3/subsection/subsections

@@ -1,0 +1,536 @@
+---
+redirect_from:
+  - "/04/06-preprocessing"
+interact_link: content/04/06_preprocessing.ipynb
+kernel_name: python3
+kernel_path: content/04
+has_widgets: false
+title: |-
+  Preprocessing and the Cardinal Sin
+pagenum: 26
+prev_page:
+  url: /04/05_sklearn.html
+next_page:
+  url: 
+suffix: .ipynb
+search: data model html sklearn missing x variables learn org scikit models training github values mean might stable transform preprocessing imputation io regression modules imp standardization variance categorical apply should before turn jakevdp pythondatasciencehandbook test xtest y pipeline improve transformations testing leakage applied using pipelines variable into vars instead feature pandas good examples impute fit xtrain means sample scaling features predict crossvalidate default walkthroughs after lecture continuous shouldnt info dataset predictions depending dictvectorizer string usable numeric onehotencoder takes array inputs dicts lets example pdsh engineering cant dealing com pdf quite too modeling observations any explicitly right project combination mechanics fittransform documentation
+
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+    <main class="jupyter-page">
+    <div id="page-info"><div id="page-title">Preprocessing and the Cardinal Sin</div>
+</div>
+    <div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Preprocessing">Preprocessing<a class="anchor-link" href="#Preprocessing"> </a></h1><h2 id="After-this-lecture,-you">After this lecture, you<a class="anchor-link" href="#After-this-lecture,-you"> </a></h2><ul>
+<li>Can prepare categorical variables for <code>sklearn</code> models</li>
+<li>Know that different imputation strategies exists and can use them</li>
+<li>Know that standardizing continuous variables can improve your models</li>
+<li>Know that you shouldn't apply preprocessing transformations with info from the testing dataset, that's called "data leakage" and is akin to letting your model "seeing the future" while training</li>
+<li>Know that you should apply the <strong>exact</strong> transformations to the testing data that you applied to the training data before making predictions</li>
+</ul>
+<p>All of these can be accomplished by using <code>pipelines</code>.</p>
+<h2 id="Preprocessing-categorical-variables">Preprocessing categorical variables<a class="anchor-link" href="#Preprocessing-categorical-variables"> </a></h2><p>Depending on the variable you have, you can turn to</p>
+<ul>
+<li><code>DictVectorizer</code> is how you turn string categorical variables into usable numeric vars</li>
+<li><code>OneHotEncoder</code> takes array-like inputs instead of dicts</li>
+</ul>
+<p>Let's start by borrowing a clear example from <a href="https://jakevdp.github.io/PythonDataScienceHandbook/05.04-feature-engineering.html">PDSH</a></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="mi">850</span><span class="p">,</span> <span class="s1">&#39;rooms&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;neighborhood&#39;</span><span class="p">:</span> <span class="s1">&#39;Queen Anne&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="mi">650</span><span class="p">,</span> <span class="s1">&#39;rooms&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;neighborhood&#39;</span><span class="p">:</span> <span class="s1">&#39;Queen Anne&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span> <span class="s1">&#39;rooms&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;neighborhood&#39;</span><span class="p">:</span> <span class="s1">&#39;Wallingford&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="mi">650</span><span class="p">,</span> <span class="s1">&#39;rooms&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;neighborhood&#39;</span><span class="p">:</span> <span class="s1">&#39;Wallingford&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span> <span class="s1">&#39;rooms&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;neighborhood&#39;</span><span class="p">:</span> <span class="s1">&#39;Fremont&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span> <span class="s1">&#39;rooms&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;neighborhood&#39;</span><span class="p">:</span> <span class="s1">&#39;Fremont&#39;</span><span class="p">}</span>
+<span class="p">]</span>
+<span class="n">data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[{&#39;price&#39;: 850, &#39;rooms&#39;: 4, &#39;neighborhood&#39;: &#39;Queen Anne&#39;},
+ {&#39;price&#39;: 650, &#39;rooms&#39;: 3, &#39;neighborhood&#39;: &#39;Queen Anne&#39;},
+ {&#39;price&#39;: 700, &#39;rooms&#39;: 1, &#39;neighborhood&#39;: &#39;Wallingford&#39;},
+ {&#39;price&#39;: 650, &#39;rooms&#39;: 3, &#39;neighborhood&#39;: &#39;Wallingford&#39;},
+ {&#39;price&#39;: 700, &#39;rooms&#39;: 3, &#39;neighborhood&#39;: &#39;Fremont&#39;},
+ {&#39;price&#39;: 600, &#39;rooms&#39;: 2, &#39;neighborhood&#39;: &#39;Fremont&#39;}]</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>sklearn</code> can't use <code>neighborhood</code> in a regression like <code>sm</code> could:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>    
+<span class="kn">from</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">import</span> <span class="n">ols</span> <span class="k">as</span> <span class="n">sm_ols</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The coefs from SM:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sm_ols</span><span class="p">(</span><span class="s1">&#39;price ~ neighborhood - 1&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">))</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+<span class="c1"># &quot;&quot;-1&quot; means no intercept. Don&#39;t do this! It&#39;s here for illustration</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The coefs from SM:
+neighborhood[Fremont]        650.0
+neighborhood[Queen Anne]     750.0
+neighborhood[Wallingford]    675.0
+dtype: float64
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So, we need to preprocess that data to run the same regression in <code>sklearn</code>. Depending on the variable you have, you can turn to</p>
+<ul>
+<li><code>DictVectorizer</code> is how you turn string categorical variables into usable numeric vars</li>
+<li><code>OneHotEncoder</code> takes array-like inputs instead of dicts</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create an object (&quot;vec&quot;) that can do the transform</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="kn">import</span> <span class="n">DictVectorizer</span>
+<span class="n">vec</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span> 
+
+<span class="c1"># apply vec with &quot;.fit_transform&quot;, save to new data obj</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">data2</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>              
+<span class="nb">print</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">())</span>  <span class="c1"># can use .get_feature_names() to recover names</span>
+
+<span class="c1"># now we can repeat the regression here</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reg coefs:&#39;</span><span class="p">)</span>
+<span class="n">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data2</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">],</span><span class="n">data2</span><span class="p">[:,</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">coef_</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[  0   1   0 850   4]
+ [  0   1   0 650   3]
+ [  0   0   1 700   1]
+ [  0   0   1 650   3]
+ [  1   0   0 700   3]
+ [  1   0   0 600   2]] 
+
+[&#39;neighborhood=Fremont&#39;, &#39;neighborhood=Queen Anne&#39;, &#39;neighborhood=Wallingford&#39;, &#39;price&#39;, &#39;rooms&#39;]
+Reg coefs:
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([650., 750., 675.])</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Imputation-/-Missing-Values">Imputation / Missing Values<a class="anchor-link" href="#Imputation-/-Missing-Values"> </a></h2><p>_We talked <a href="https://ledatascifi.github.io/lectures-spr2020/02/05_outro.html#Dealing-With-Missing-Values">about imputation a bit before</a> in the context of <code>pandas</code>. <a href="https://github.com/matthewbrems/ODSC-missing-data-may-18/blob/master/Analysis%20with%20Missing%20Data.pdf">These slides</a> on missing data are quite good! <a href="https://www.geeksforgeeks.org/working-with-missing-data-in-pandas/">This article</a> has examples too._</p>
+<p>Before modeling, you have to decide how to deal with missing values. You can</p>
+<ol>
+<li>Drop observations with any missing values, </li>
+<li>Impute missing values (mean, median, mode, interpolation, deduction, mean-of-group, etc), </li>
+<li>Or model the missing values explicitly (e.g. in a regression, as an incremental intercept but with no impact on the slope). </li>
+</ol>
+<p>What's the right choice? It depends. On the data, the domain, the question, and economic theory. My choices change from project to project. You might use a combination of these!</p>
+<p><strong>You should focus on the whys and hows of dealing with missing data rather than mechanics. (You can look up mechanics later.)</strong> You should have some livecoding from the prior lecture showing imputation in <code>pandas</code>.</p>
+<p><code>sklearn</code> comes with an <code>impute</code> class described in the <a href="https://scikit-learn.org/stable/modules/impute.html">official docs</a></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># silly data</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>   <span class="mi">3</span>  <span class="p">],</span>
+              <span class="p">[</span> <span class="mi">3</span><span class="p">,</span>   <span class="mi">7</span><span class="p">,</span>   <span class="mi">9</span>  <span class="p">],</span>
+              <span class="p">[</span> <span class="mi">3</span><span class="p">,</span>   <span class="mi">5</span><span class="p">,</span>   <span class="mi">2</span>  <span class="p">],</span>
+              <span class="p">[</span> <span class="mi">4</span><span class="p">,</span>   <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">6</span>  <span class="p">],</span>
+              <span class="p">[</span> <span class="mi">8</span><span class="p">,</span>   <span class="mi">8</span><span class="p">,</span>   <span class="mi">1</span>  <span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># it&#39;s this easy:</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+<span class="n">imp</span> <span class="o">=</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+<span class="n">imp</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[nan  0.  3.]
+ [ 3.  7.  9.]
+ [ 3.  5.  2.]
+ [ 4. nan  6.]
+ [ 8.  8.  1.]] 
+
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[4.5, 0. , 3. ],
+       [3. , 7. , 9. ],
+       [3. , 5. , 2. ],
+       [4. , 5. , 6. ],
+       [8. , 8. , 1. ]])</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>imp.fit_transform(X)</code> is the combination of <code>imp.fit(X)</code> and <code>imp.transform(X)</code>.</p>
+<p>If you have a train/test split, you shouldn't use <code>fit_transform</code>. Instead, use <code>imp.fit(X_train)</code> to get the means in the training sample and <code>imp.transform(X_test)</code> to apply those to the test data.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Standardization">Standardization<a class="anchor-link" href="#Standardization"> </a></h2><p>Effectively, this means that <strong>continuous</strong> variables should have a mean of 0 and a variance of one.</p>
+<p>The <a href="https://scikit-learn.org/stable/modules/preprocessing.html#standardization-or-mean-removal-and-variance-scaling"><code>sklearn</code> documentation</a> on this is quite good.</p>
+<blockquote><p>Standardization of datasets is a <strong>common requirement for many machine learning estimators</strong> implemented in scikit-learn; they might behave badly if the individual features do not more or less look like standard normally distributed data: Gaussian with zero mean and unit variance.</p>
+</blockquote>
+<p>Why does this matter? "If a feature has a variance that is orders of magnitude larger than others, it might dominate the objective function and make the estimator unable to learn from other features correctly as expected."</p>
+<p><strong>In other words: STANDARDIZATION WILL IMPROVE YOUR PREDICTIONS.</strong></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># a very simple example</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">2.</span><span class="p">],</span>
+                    <span class="p">[</span> <span class="mf">2.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+                    <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]])</span>
+<span class="n">X_scaled</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; X_scaled</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>         <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">40</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">X_scaled</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; Mean of each var:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">40</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">X_scaled</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; STD of each var:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">40</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">X_scaled</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre> X_scaled
+ ---------------------------------------- 
+ [[ 0.         -1.22474487  1.33630621]
+ [ 1.22474487  0.         -0.26726124]
+ [-1.22474487  1.22474487 -1.06904497]] 
+
+ Mean of each var:
+ ---------------------------------------- 
+ [0. 0. 0.] 
+
+ STD of each var:
+ ---------------------------------------- 
+ [1. 1. 1.] 
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>sklearn</code> can scale variables in many ways. Some alternative transforms are faster and some transform non-normal distributions into proto-normal distributions (which can improve the efficacy of many models).</p>
+<p>Visit (you guessed it!) <a href="https://scikit-learn.org/stable/modules/preprocessing.html#standardization-or-mean-removal-and-variance-scaling">the documentation</a> for more.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Data-leakage:">Data leakage:<a class="anchor-link" href="#Data-leakage:"> </a></h2><p>Now you know how to transform your data before training a model. You might be tempted to do something like:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="c1">#a bunch of sklearn stuff</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="c1">#load data</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1"># imputation, encode cat vars, standardize</span>
+
+<span class="c1"># and then you either do these lines:</span>
+<span class="n">Xtrain</span><span class="p">,</span> <span class="n">Xtest</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">,</span> <span class="n">ytest</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span><span class="n">train_size</span><span class="o">=.</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="c1"># something</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+<span class="n">y_predict</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xtest</span><span class="p">)</span> <span class="c1"># using X2 (out-of-sample data), predict y2</span>
+<span class="n">accuracy_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">)</span>
+
+<span class="c1"># or this:</span>
+<span class="n">cross_validate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The problem here is that <code>transform(X)</code> used info from the <strong>ENTIRE</strong> dataset, including observations that ended up in <code>Xtest</code>!</p>
+<p><strong>This means that your cross-validation scores are unreliable.</strong> They will be at the very least overoptimistic, and in some cases, result in models that are down-right completely invalid.</p>
+<h3 id="The-absolute-golden-rule-of-prediction-modeling-is...">The absolute golden rule of prediction modeling is...<a class="anchor-link" href="#The-absolute-golden-rule-of-prediction-modeling-is..."> </a></h3><p><strong>YOUR MODEL CAN'T HAVE ACCESS TO ANY DATA THAT IT WOULDN'T HAVE IN PRACTICE WHEN IT MAKES THE PREDICTION.</strong></p>
+<p>I know I already said that, and repetition is usually bad writing, but it must be said again. And again.</p>
+<h3 id="Data-leakage-can-be-tricky">Data leakage can be tricky<a class="anchor-link" href="#Data-leakage-can-be-tricky"> </a></h3><p>Here are some more examples:</p>
+<ul>
+<li>The outcome variable is a predictor (implicitly or explicitly)</li>
+<li>Predictor variables that are in response to the result (after the fact) or the possibility (anticipatory)</li>
+<li>Predicting loan default, the data might include employee IDs for recent customer service contacts. But the most recent contact might be with trouble-loan specialists (because the firm anticipated possible default due to some other signal). Using that employee's customer contacts to predict default would add no value - the lender already knew to assign that employee!</li>
+<li>The smell test - is it too good to be true? I've seen some asset pricing models with suspicious out-of-sample R2s. Predicting stock prices is hard! <em>The best OOS predictive R2 for individual stocks <a href="https://dachxiu.chicagobooth.edu/download/ML.pdf">in this paper</a> is 1.80% per month.</em></li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-solution,-or:-Safety-first,-via-Pipelines">The solution, or: Safety first, via Pipelines<a class="anchor-link" href="#The-solution,-or:-Safety-first,-via-Pipelines"> </a></h2><ol>
+<li>Be very familiar with the data and how it was collected and built </li>
+<li>Do your data prep within CV folds</li>
+</ol>
+<p>The second part of the solution is <a href="https://scikit-learn.org/stable/modules/compose.html">relatively easy to implement in <code>sklearn</code>: PIPES</a>!</p>
+<ul>
+<li>Pipelines make apply all steps to the data they receive</li>
+<li>In <code>cross_validate</code>'s training fold, the entire pipeline is applied to the training data</li>
+<li>In <code>cross_validate</code>'s testing fold, the saved transformations and model fits are applied to the test data</li>
+</ul>
+<p>Examples and walkthroughs:</p>
+<ul>
+<li><a href="https://jakevdp.github.io/PythonDataScienceHandbook/05.04-feature-engineering.html">PDSH has an example of imputing, creating polynomial features, then fitting a regression in one line</a><ul>
+<li><a href="https://jakevdp.github.io/PythonDataScienceHandbook/05.06-linear-regression.html">Another walkthrough with a pipeline</a></li>
+<li><a href="https://jakevdp.github.io/PythonDataScienceHandbook/05.07-support-vector-machines.html">A pipeline used to optimize model parameters</a></li>
+</ul>
+</li>
+<li><a href="https://scikit-learn.org/stable/modules/compose.html">sklearn doc with details</a></li>
+<li><a href="https://scikit-learn.org/stable/tutorial/statistical_inference/putting_together.html">sklearn doc with two walkthroughs</a>, these walkthroughs use a pipeline to optimize a model's parameters</li>
+</ul>
+<p>Let's follow quickly this walkthrough on <a href="https://chrisalbon.com/machine_learning/model_evaluation/cross_validation_pipeline/">scaling the iris data and building a classification model</a></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span> <span class="c1"># data</span>
+
+<span class="c1"># set up the pipeline, which will, given a set of observations </span>
+<span class="c1"># 1. fit and apply these steps to the training fold</span>
+<span class="c1"># 2. in the testing fold, apply the transform and model to predict (no estimation)</span>
+
+<span class="n">classifier_pipeline</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">(),</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># ok, go!</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">classifier_pipeline</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">scores</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;fit_time&#39;: array([0.00099707, 0.00099754, 0.        , 0.0009973 , 0.        ]),
+ &#39;score_time&#39;: array([0.00099659, 0.        , 0.00099778, 0.        , 0.0009973 ]),
+ &#39;test_score&#39;: array([0.96666667, 0.96666667, 0.96666667, 0.93333333, 1.        ])}</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+ 
+
+
+    </main>
+    
