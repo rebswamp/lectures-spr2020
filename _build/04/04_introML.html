@@ -7,7 +7,7 @@ kernel_path: content/04
 has_widgets: false
 title: |-
   Intro to ML
-pagenum: 23
+pagenum: 24
 prev_page:
   url: /04/03_regression.html
 next_page:
@@ -59,22 +59,25 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 \begin{align}
 E[\text{model error risk}] = \text{model bias}^2+\text{model variance}+\text{noise}
 \end{align}<p>_(If you want to see the derviation of this, you can go to the <a href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff">wiki page</a> or <a href="https://www.textbook.ds100.org/ch/15/bias_modeling.html">DS100</a>. The former's notation is a little simpler but the latter is more helpful with intuition)_</p>
-<h4 id="&quot;Model-bias&quot;">"Model bias"<a class="anchor-link" href="#&quot;Model-bias&quot;"> </a></h4><ul>
+<p><strong>"Model bias"</strong></p>
+<ul>
 <li><strong>Def: Is errors stemming from the model's assumptions in how it predicts the outcome variable</strong></li>
 <li>It's the opposite of model accuracy</li>
 <li>Adding more variables or polynomial transformations of existing variables will usually reduce bias </li>
 <li>Removing features will usually increase bias</li>
 <li>Adding more data to the training dataset can (but might not) reduce variance</li>
 </ul>
-<h4 id="&quot;Model-variance&quot;">"Model variance"<a class="anchor-link" href="#&quot;Model-variance&quot;"> </a></h4><ul>
+<p><strong>"Model variance"</strong></p>
+<ul>
 <li><strong>Def: Is extent to which estimated model varies from sample to sample</strong></li>
 <li>Adding more a new parameter (variables, etc) will usually increase model variance</li>
 <li>Adding more data to the training dataset will reduces variance</li>
 </ul>
-<h4 id="Decreasing-Noise">Decreasing Noise<a class="anchor-link" href="#Decreasing-Noise"> </a></h4><ul>
+<p><strong>Decreasing Noise</strong></p>
+<ul>
 <li>To reduce the noise term, you need more data, better data collection, and more accurate measurements</li>
 </ul>
-<h4 id="To-decrease-bias-and-variance,-however,-we-must-tune-the-complexity-of-our-models.">To decrease bias and variance, however, we must tune the complexity of our models.<a class="anchor-link" href="#To-decrease-bias-and-variance,-however,-we-must-tune-the-complexity-of-our-models."> </a></h4><p>&gt;</p>
+<p><strong>To decrease bias and variance, however, we must tune the complexity of our models.</strong></p>
 <blockquote><p><strong>THE FUNDAMENTAL TRADEOFF: Increasing model complexity increases its variance but reduces its bias</strong></p>
 <ul>
 <li>Models that are too simple have high bias but low variance </li>
@@ -82,9 +85,9 @@ E[\text{model error risk}] = \text{model bias}^2+\text{model variance}+\text{noi
 <li>Collecting a TON of data can allow you to use complex models with less variance </li>
 </ul>
 <p>This is the essence of the bias-variance tradeoff, a fundamental issue that we face in choosing models for prediction."</p>
+</blockquote>
 <p>_(This is adapted from <a href="https://www.textbook.ds100.org/ch/15/bias_modeling.html">DS100</a>)_</p>
 <p>Visually, that is</p>
-</blockquote>
 <table> <tr> <td style="text-align:center"> <b> (A) The classic bias-variance tradeoff </b> </td> <td style="text-align:center"> <b> (B) Adding more data reduces variance <br> at each level of complexity </b> </td> </tr> <tr> </tr>
     <tr><td><img src='bias_modeling_bias_var_plot.png' style="width:300px"></td><td><img src='bias_modeling_bias_var_shift.png' style="width:300px"></td></tr></table><ul>
 <li>Models that are too simple are said to be <strong>"underfit"</strong> and this is usually caused by bias</li>
@@ -120,7 +123,8 @@ E[\text{model error risk}] = \text{model bias}^2+\text{model variance}+\text{noi
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Model-evaluation-via-cross-validation-(CV)">Model evaluation via cross validation (CV)<a class="anchor-link" href="#Model-evaluation-via-cross-validation-(CV)"> </a></h2><h3 id="Holdout-sample">Holdout sample<a class="anchor-link" href="#Holdout-sample"> </a></h3><p>So we need a way to estimate the test error. The way we do that is by creating a <strong>holdout sample</strong> (step #2 in the flowchart above) to test the model at the end of the process.</p>
-<h4 id="YOU-CAN-ONLY-USE-THE-HOLDOUT-SAMPLE-ONCE!-If-you-use-it-during-the-iterative-training/evaluation-process,-it-stops-being-a-a-holdout-sample-and-effectively-becomes-part-of-the-training-set.">YOU CAN ONLY USE THE HOLDOUT SAMPLE ONCE! If you use it during the iterative training/evaluation process, it stops being a a holdout sample and effectively becomes part of the training set.<a class="anchor-link" href="#YOU-CAN-ONLY-USE-THE-HOLDOUT-SAMPLE-ONCE!-If-you-use-it-during-the-iterative-training/evaluation-process,-it-stops-being-a-a-holdout-sample-and-effectively-becomes-part-of-the-training-set."> </a></h4><p>Then, in the flowchart, we enter the grey box where all the ML magic happens, and pre-process the data (step #3).</p>
+<p><strong>YOU CAN ONLY USE THE HOLDOUT SAMPLE ONCE! If you use it during the iterative training/evaluation process, it stops being a a holdout sample and effectively becomes part of the training set.</strong></p>
+<p>Then, in the flowchart, we enter the grey box where all the ML magic happens, and pre-process the data (step #3).</p>
 <h3 id="Training-sample">Training sample<a class="anchor-link" href="#Training-sample"> </a></h3><p>So, we have the holdout sample and the training sample.</p>
 <p>If we fit the model on the training sample, and then examine its performance against the same sample, the error will be misleadingly low. (Duh! We fit the model on it!)</p>
 <p>It would be nice to have an extra test set, wouldn't it? So, we split our training set again, into a <em><strong>smaller training set</strong></em> and a <em><strong>validation set</strong></em>.</p>

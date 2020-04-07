@@ -83,6 +83,8 @@
     url: /04/01_modeling_intro  
   - title: "Coding in Teams"
     url: /04/02_git_collaboration
+  - title: "Sharing massive files with collaborators"
+    url: /04/02a_large_files
   - title: "Regression - Mechanics and Interpretation"
     url: /04/03_regression
   - title: "Intro to ML"
