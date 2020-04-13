@@ -1,0 +1,176 @@
+---
+redirect_from:
+  - "/04/05-sklearn"
+interact_link: content/04/05_sklearn.ipynb
+kernel_name: python3
+kernel_path: content/04
+has_widgets: false
+title: |-
+  Sklearn starter kit
+pagenum: 25
+prev_page:
+  url: /04/04_introML.html
+next_page:
+  url: /04/06_preprocessing.html
+suffix: .ipynb
+search: model set hyper param models crossvalidate html code pipeline sklearn functions parameters x y github might type grid optimal its class should randomstate scoring per compare groupkfold timeseriessplit obs group predicting sequence resources scikit learn org stable jakevdp io pythondatasciencehandbook random forests rough n essentials page just quick hit living document not meant walkthrough clearly modifications additions suggestions truly welcomed smattering key thoughts talked explicitly included below documentation before xtrain xtest ytrain ytest traintestsplit trainsize cv covered extensively here com ledatascifi lectures spr blob master assignmentdata lworksheet ipynb optimizing specific gridsearchcv randomizedsearchcv last lecture pass different looping confusionmatrix classificationreport fold
+
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+    <main class="jupyter-page">
+    <div id="page-info"><div id="page-title">Sklearn starter kit</div>
+</div>
+    <div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="sklearn-essentials"><code>sklearn</code> essentials<a class="anchor-link" href="#sklearn-essentials"> </a></h1>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This page is just a quick-hit of <code>sklearn</code> and is a living document. It's not meant as a walkthrough. (Clearly!)</p>
+<p>Modifications, additions, and suggestions are truly welcomed!</p>
+<p>A smattering of key <code>sklearn</code> functions and thoughts. Parameters we talked about in class are explicitly included below, but you should look at the documentation to see the parameters for all functions before you use them!</p>
+<ul>
+<li><code>Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, random_state=&lt;#&gt;,train_size=&lt;%&gt;)</code></li>
+<li><code>cross_validate(model,X,y,cv,scoring)</code> covered extensively in class <a href="https://github.com/LeDataSciFi/lectures-spr2020/blob/master/assignment_data/L20%20worksheet.ipynb">here</a></li>
+<li>Optimizing the parameters of a specific model: <code>GridSearchCV</code>, or <code>RandomizedSearchCV</code> </li>
+<li>Scoring functions per last lecture and how to pass to <code>cross_validate</code></li>
+<li>How to compare different models by looping over them with <code>cross_validate</code></li>
+<li><code>confusion_matrix</code> </li>
+<li><code>classification_report</code> </li>
+<li>Fold generators: <code>KFold</code>, <code>StratifiedKFold</code>, <code>GroupKFold</code>, <code>TimeSeriesSplit</code><ul>
+<li>Stratified is probably better when proportions are lop-sided</li>
+<li>Do you have multiple obs per "group" (a firm, person, etc.) and want to ensure no group is in both training and testing? <code>GroupKFold</code>    </li>
+<li>If you shuffle or introduce randomization, set <code>random_state</code>! </li>
+<li>Is time an important parameter! E.g. are you predicting stock prices? <code>TimeSeriesSplit</code></li>
+</ul>
+</li>
+<li><code>make_pipeline</code> for chaining steps in an estimation sequence </li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Great-resources">Great resources<a class="anchor-link" href="#Great-resources"> </a></h2><ol>
+<li><a href="https://scikit-learn.org/stable/user_guide.html">The best bookmark you can set</a></li>
+<li><a href="https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation-iterators">On folds</a></li>
+<li><a href="https://jakevdp.github.io/PythonDataScienceHandbook/05.07-support-vector-machines.html">PDSH on SVM</a> and on <a href="https://jakevdp.github.io/PythonDataScienceHandbook/05.08-random-forests.html">Random Forests</a> (note some module calls are obsolete, so you might need to update code) </li>
+</ol>
+<p>If you find other resources you think other people might benefit from, please email me!</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="A-rough-pseudo-code-for-ML-prediction">A rough pseudo-code for ML prediction<a class="anchor-link" href="#A-rough-pseudo-code-for-ML-prediction"> </a></h2><p>VERY ROUGH. Learning isn't a straight line or sequence of code. It's a cycle, a loop.</p>
+<div class="highlight"><pre><span></span><span class="c1"># imports</span>
+<span class="c1"># load data</span>
+
+<span class="c1">## optimize a series of models</span>
+<span class="c1"># set up pipeline for model type #1; set up hyper param grid; find optimal hyper param</span>
+<span class="c1">#     the pipeline includes preprocessing, estimator</span>
+<span class="c1">#     you should spend time interrogating model predictions, plotting and printing</span>
+<span class="c1">#     does the model struggle predicting certain obs? excel at some?</span>
+<span class="c1"># set up pipeline for model type #2; set up hyper param grid; find optimal hyper param</span>
+<span class="c1"># ...</span>
+<span class="c1"># set up pipeline for model type #N; set up hyper param grid; find optimal hyper param</span>
+
+<span class="c1">## compare the N optimized models</span>
+<span class="c1"># build list of models</span>
+<span class="c1"># for model in models:</span>
+<span class="c1">#    cross_validate(model, X, y,...)</span>
+<span class="c1"># pick the winner!</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="A-bunch-of-import-statements">A bunch of import statements<a class="anchor-link" href="#A-bunch-of-import-statements"> </a></h2><p>Any code you write might use none of these, some of these, or all of them!</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># dataset loader</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+
+<span class="c1"># model training and evalutation utilities </span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedKFold</span> <span class="c1"># this is one way to generate folds</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+
+<span class="c1"># metrics</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<span class="c1"># preprocessing and feature extraction</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="kn">import</span> <span class="n">DictVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+
+<span class="c1"># feature selection</span>
+
+<span class="c1"># models</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.discriminant_analysis</span> <span class="kn">import</span> <span class="n">LinearDiscriminantAnalysis</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+
+<span class="c1"># toy data</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+ 
+
+
+    </main>
+    

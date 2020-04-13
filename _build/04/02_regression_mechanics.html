@@ -1,0 +1,194 @@
+---
+redirect_from:
+  - "/04/02-regression-mechanics"
+interact_link: content/04/02_regression_mechanics.ipynb
+kernel_name: python3
+kernel_path: content/04
+has_widgets: false
+title: |-
+  Running Some Regressions
+pagenum: 21
+prev_page:
+  url: /04/01_modeling_intro.html
+next_page:
+  url: 
+suffix: .ipynb
+search: data github code repo com media giphy regression group work file pull html team want project here sample different might merge ask gif linear teams ledatascifi structure assignment proposal research question section need e g folder input its run same main issue changes three approach conflicts branching create request using desktop discussion issues before change model where discussions url corona crushers usual due title should answers questions www org problems our youll final dataset firm absolutely raw not transform into q fit zoom probably give line py basically approaches works done projects own walkthrough fork clone computer push try feedback
+
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+    <main class="jupyter-page">
+    <div id="page-info"><div id="page-title">Running Some Regressions</div>
+</div>
+    <div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Regression-Mechanics">Regression Mechanics<a class="anchor-link" href="#Regression-Mechanics"> </a></h1><h2 id="Housecleaning">Housecleaning<a class="anchor-link" href="#Housecleaning"> </a></h2><p><img src="https://i.imgur.com/9LNt8ji.jpg" alt="Drawing" style="width: 400px;"/></p>
+<h3 id="Teams">Teams<a class="anchor-link" href="#Teams"> </a></h3><h4 id="Who-still-needs-one?">Who still needs one?<a class="anchor-link" href="#Who-still-needs-one?"> </a></h4><h4 id="GitHub-for-your-team">GitHub for your team<a class="anchor-link" href="#GitHub-for-your-team"> </a></h4><p>GitHub set up two locations for your team:</p>
+<ol>
+<li>A team area where you can add discussions and extra repos if you want to experiment. The URL is like this: <a href="https://github.com/orgs/LeDataSciFi/teams/corona-crushers">https://github.com/orgs/LeDataSciFi/teams/corona-crushers</a> </li>
+<li>The usual repo URL structure for the assignment: <a href="https://github.com/LeDataSciFi/semester-project-corona-crushers">https://github.com/LeDataSciFi/semester-project-corona-crushers</a> </li>
+</ol>
+<h3 id="The-proposal,-due-Monday">The proposal, due Monday<a class="anchor-link" href="#The-proposal,-due-Monday"> </a></h3><p>In the "usual" repo, modify the README as a group.</p>
+<ul>
+<li>The title should be: "#Research Proposal: &lt; Title &gt;"</li>
+<li>A "Research Question" section about the research question that answers questions 1.1-1.3 <a href="https://www.textbook.ds100.org/ch/01/lifecycle_students_1.html">here</a><ol>
+<li>What do we want to know or what problems are we trying to solve?</li>
+<li>What are our hypotheses?</li>
+<li>What are our metrics of success? </li>
+</ol>
+</li>
+<li>A "Data" section about the data you think you'll need <ol>
+<li>What does the final dataset need to look like (mostly dictated by the question and the availability of data):<ul>
+<li>What is an observation, e.g. a firm, or a firm-year, etc.</li>
+<li>What is the sample period?</li>
+<li>What are the sample conditions? (Years, restrictions you anticipate (e.g. exclude or require some industries)</li>
+<li>What variables are absolutely necessary and what would you like to have if possible?</li>
+</ul>
+</li>
+<li>What data do we have and what data do we need?</li>
+<li>How will we collect more data? </li>
+<li>What are the raw inputs and how will you store them (the folder structure(s) for each input type). </li>
+<li>Speculate at a high level (not specific code!) about how you'll transform the raw data into the final form</li>
+</ol>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Collaboration-as-a-group">Collaboration as a group<a class="anchor-link" href="#Collaboration-as-a-group"> </a></h2><h3 id="Q:-How-should-you-&quot;meet&quot;?"><strong>Q: How should you "meet"?</strong><a class="anchor-link" href="#Q:-How-should-you-&quot;meet&quot;?"> </a></h3><p>A: It's up to you! Be entrepreneurial and run your group as you all see fit.</p>
+<ul>
+<li>WhatsApp, groupme, google doc, zoom, skype...</li>
+<li>How can we work on code at the same time? Crowdsourced from your students<ul>
+<li>Zoom allows for sharing screen, and others can jump in and control</li>
+<li>Probably best to "give ownership" over parts to different people</li>
+</ul>
+</li>
+</ul>
+<h3 id="Q:-How-do-we-code-&quot;at-the-same-time&quot;?"><strong>Q: How do we code "at the same time"?</strong><a class="anchor-link" href="#Q:-How-do-we-code-&quot;at-the-same-time&quot;?"> </a></h3><p>The main issue is that two people might make conflicting changes. E.g., Johnny added a line to <code>data.py</code> but Cindy deleted a line from <code>data.py</code>.</p>
+<p>A: You have, basically, three approaches, and you might use all three at different points of the project:</p>
+<ol>
+<li><strong>Free-for-all approach</strong> Everyone works in the "master" branch of the repo all the time. This is what your default instinct might be. It can work, but you will have to fix merge conflicts to update and progress at all. <ul>
+<li>One option is the "one person at a time on one code file at a time".</li>
+</ul>
+</li>
+<li><strong>The "branching" approach.</strong> Basically, you create an offshoot of the folder to work on, and when you're done and happy, you create a "pull request" where you ask the main project's owner (your own team, in this case) to pull your branch's changes up to the main repo.<ul>
+<li>See <a href="https://www.attosol.com/create-and-merge-branches-using-github-desktop-client/">here for a walkthrough</a>.</li>
+</ul>
+</li>
+<li><strong>The fork-and-clone approach.</strong><ul>
+<li>You fork the repo (make your own version), clone it to your computer, make changes there, push it up to GitHub, then give a pull request.</li>
+<li>It's somewhat like branching, but your work is outside the repo completely. I would probably recommend not using this. </li>
+<li>But if you want to try this, <a href="https://guides.github.com/activities/forking/">here is a walkthrough</a>.</li>
+</ul>
+</li>
+</ol>
+<h3 id="Feedback-request-/-Discussion-Participation">Feedback request / Discussion Participation<a class="anchor-link" href="#Feedback-request-/-Discussion-Participation"> </a></h3><p><strong>I would love your feedback on how you deal with the asynchronous work problem!</strong></p>
+<ul>
+<li>Please let me know what issues/problems your group runs into</li>
+<li>What solutions did you use (were they good or awful?)</li>
+<li>If your group has an easy time, or finds something that works well, please let me and your classmates know! </li>
+<li>Submit your experience on this via the discussion board </li>
+</ul>
+<p>Because of the shift to remote learning, the participation grade is going to rely heavily on discussions in the issue repo.</p>
+<ul>
+<li>Questions and issues you ask </li>
+<li>Answers and discussion you have on classmates' issues is absolutely key</li>
+<li>Quantity and quality of your posts both matter!</li>
+<li>Review the instructions for <a href="https://ledatascifi.github.io/studentresourcevert/resource-landing.html#how-to-properly-ask-for-help">"how to ask for help"</a> before you post your next issue</li>
+</ul>
+<h3 id="Recommendations">Recommendations<a class="anchor-link" href="#Recommendations"> </a></h3><ol>
+<li><p>No matter which of the three approaches, you choose, <strong>FOLLOW THESE RULES EVERY SINGLE TIME YOU WORK ON CODE OR DO ANYTHING IN THE FOLDER:</strong></p>
+<ul>
+<li>BEFORE YOU START A CODING SESSION: Go to GH Desktop and "Fetch/Pull" origin</li>
+<li><p>WHEN YOU ARE DONE WITH A SESSION: Clear your code, rerun all, save file, then push to cloud</p>
+<p><strong>It's very important to do these every single time you code on your computer in group projects!</strong></p>
+<p><strong>Why?</strong></p>
+<p>If you forget to fetch/pull before you start (and someone made a change on the github repo since you last synced), or if someone is working at the same time (and pushes a change to the github repo that conflicts with a change you made), you are likely to receive a "Merge Conflict" notification from GH Desktop.</p>
+</li>
+</ul>
+</li>
+<li><p>Your most experienced coder might be given "CEO" status over the repo and "leads the way" on pull requests and gives guidance on merge conflicts.</p>
+</li>
+<li>Instead of putting the entire project in one ipynb file, structure the project like the latest assignment: <ul>
+<li>One code file to download each input needed, </li>
+<li>One code file to parse/transform each input, </li>
+<li>One "get_all_data" code file that, if executed, would run all files above</li>
+<li>One code to build the analysis sample, explore it, and analyze it </li>
+</ul>
+</li>
+</ol>
+<h3 id="Branching-Demo">Branching Demo<a class="anchor-link" href="#Branching-Demo"> </a></h3><p><img src="https://media.giphy.com/media/d7neiLOpRXaz5bueyd/giphy.gif" alt=""></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Regression">Regression<a class="anchor-link" href="#Regression"> </a></h2><p><img src="https://media.giphy.com/media/nwyqBwP65XCAU/giphy.gif" alt=""></p>
+<h3 id="Required-reading-for-this-topic">Required reading for this topic<a class="anchor-link" href="#Required-reading-for-this-topic"> </a></h3><ol>
+<li><a href="https://r4ds.had.co.nz/model-intro.html">Chapters 22-24 of R 4 Data Science</a> are an excellent overview of the thought process of modeling</li>
+<li>Use <code>statsmodels.api</code> to make nice regression tables by <a href="https://python.quantecon.org/ols.html">following this guide</a> (you can use different data though)</li>
+<li>If you want to train a model using more sophisticated ML ideas (which we will talk about some later in the course!), use <code>sklearn.linear_model</code> and <a href="https://jakevdp.github.io/PythonDataScienceHandbook/05.06-linear-regression.html">follow this guide</a> (you can use different data though)<ul>
+<li><em>The "Linear Regression" section <a href="https://becominghuman.ai/linear-regression-in-python-with-pandas-scikit-learn-72574a2ec1a5">here</a> shows how you can run regressions on training samples and test them out of sample</em></li>
+</ul>
+</li>
+</ol>
+<h3 id="Demo-on-Diamonds">Demo on Diamonds<a class="anchor-link" href="#Demo-on-Diamonds"> </a></h3><p>Inspired by R4DS.</p>
+<p><img src="https://media.giphy.com/media/piXrzDejeWIM/giphy.gif" alt=""></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Homework">Homework<a class="anchor-link" href="#Homework"> </a></h3><ol>
+<li>Load the titanic dataset from <code>sns</code> and try some regressions.</li>
+<li>Required reading above.</li>
+<li>Obviously, the 5th assignment is nearly due.</li>
+<li>As is your team's proposal.</li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Objectives">Objectives<a class="anchor-link" href="#Objectives"> </a></h3><ol>
+<li>You can fit a regression with <code>statsmodels.api</code> or <code>sklearn.linear_model</code></li>
+<li>You can view the results of your model with either</li>
+<li>Practice estimating and interpreting linear models</li>
+</ol>
+<p><img src="https://media.giphy.com/media/yoJC2K6rCzwNY2EngA/giphy.gif" alt=""></p>
+
+</div>
+</div>
+</div>
+</div>
+
+ 
+
+
+    </main>
+    
